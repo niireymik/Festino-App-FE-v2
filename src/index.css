@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .dynamic-padding {
+    padding-left: calc(20 / 430 * 100%) !important;
+    padding-right: calc(20 / 430 * 100%) !important;
+  }
+}
+
+/* Fonts */
+@import './assets/css/jalnan2.css';
+@import './assets/css/pretendardvariable.css';
+
+html {
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Pretendard Variable';
+  min-width: 375px;
+  max-width: 500px;
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+}
+
+@media (min-width: 500px) {
+  html {
+    display: flex;
+    justify-content: center;
+  }
+
+  body {
+    min-width: 500px;
+    width: 500px;
+    max-width: 500px;
+    @apply shadow-2xl;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
