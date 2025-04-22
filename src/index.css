@@ -1,3 +1,7 @@
+/* Fonts */
+@import './assets/css/jalnan2.css';
+@import './assets/css/pretendardvariable.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,10 +12,6 @@
     padding-right: calc(20 / 430 * 100%) !important;
   }
 }
-
-/* Fonts */
-@import './assets/css/jalnan2.css';
-@import './assets/css/pretendardvariable.css';
 
 html {
   margin: 0px;
