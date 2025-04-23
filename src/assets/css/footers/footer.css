@@ -1,0 +1,5 @@
+.limit-width {
+  min-width: 375px;
+  max-width: 500px;
+  margin-top: auto;
+}
