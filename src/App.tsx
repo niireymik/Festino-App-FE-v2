@@ -13,7 +13,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/timetable" element={<TimeTablePage />} />
           <Route path="/booth" element={<BoothPage />} />
-          <Route path="tabling" element={<TablingPage />} />
+          <Route path="/reserve" element={<TablingPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
