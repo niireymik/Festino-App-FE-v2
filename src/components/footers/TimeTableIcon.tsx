@@ -1,6 +1,6 @@
 import { IconProps } from "@/types/footers/Footer.types";
 
-const TimeTableIcon : React.FC<IconProps> = ({ isActive = false }) => {
+const TimeTableIcon : React.FC<IconProps> = ({ isActive }) => {
   return (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
