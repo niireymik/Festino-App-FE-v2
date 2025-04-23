@@ -1,4 +1,9 @@
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/mains/HomePage';
+import TimeTablePage from './pages/mains/TimeTablePage';
+import BoothPage from './pages/mains/BoothPage';
+import TablingPage from './pages/mains/TablingPage';
+import MainLayout from './layouts/MainLayout';
 
 function App() {
   return (
