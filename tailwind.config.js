@@ -100,7 +100,10 @@ export default {
         pretendard: ['Pretendard Variable'],
         jalnan2: ['jalnan2'],
       },
-      backgroundImage: {},
+      backgroundImage: {
+        'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
+        'header-team-introduction': "url('/icons/headers/festino-icon.svg')"
+      },
       borderRadius: {
         'lg-xl': '0.625rem', //10px
         '3xl': '1.25rem', // 20px
