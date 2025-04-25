@@ -104,10 +104,6 @@ export default {
         'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')"
       },
       borderRadius: {
-        'lg-xl': '0.625rem', //10px
-        '3xl': '1.25rem', // 20px
-        '3.5xl': '1.5rem', // 24px
-        '10xl': '3.125rem', //50px
       },
       borderColor: (theme) => ({
         ...theme('colors'),
