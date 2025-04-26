@@ -1,28 +1,26 @@
+import BoothItem from "@/components/booths/BoothItem";
+import BoothMap from "@/components/booths/BoothMap";
 import CategoryItem from "@/components/booths/CategoryItem";
 import { BOOTH_CATEGORY } from "@/constants";
 import { useBoothDataStore } from "@/stores/boothDataStore";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 
 const BoothPage: React.FC = () => {
   const { selectBoothMenu, setSelectBoothMenu } = useBoothDataStore();
 
-  const handleScrollToSelectedCategory = () => {
+  const handleScrollToSelectedCategory = useCallback(() => {
     const container = document.getElementById('category-container');
     const targetItem = document.getElementById(`category-item-${selectBoothMenu}`);
-
+  
     if (container && targetItem) {
       const scrollLeft = targetItem.offsetLeft - container.clientWidth / 2 + targetItem.clientWidth / 2;
-
-      container.scrollTo({
-        left: scrollLeft,
-        behavior: 'smooth',
-      });
+      container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
     }
-  };
-
+  }, [selectBoothMenu]);
+  
   useEffect(() => {
     handleScrollToSelectedCategory();
-  }, [selectBoothMenu]);
+  }, [handleScrollToSelectedCategory]);
 
   return (
     <div>
@@ -42,12 +40,12 @@ const BoothPage: React.FC = () => {
       </div>
 
       {/* 부스 지도 */}
-      {/* 부스 지도 컴포넌트 위치 예정 */}
+      <BoothMap />
 
       {/* 부스 카테고리 */}
       <div
         id="category-container"
-        className="w-full overflow-x-auto flex booth-category-container-padding"
+        className="w-full overflow-x-auto flex scrollbar-hide booth-category-container-padding"
       >
         {BOOTH_CATEGORY.map((item) => (
           <CategoryItem
