@@ -1,0 +1,7 @@
+.is-category-select-true {
+  @apply border border-primary-900 bg-primary-900 text-white
+}
+
+.is-category-select-false {
+  @apply border border-primary-900-light-20 text-primary-900-light-20
+}
