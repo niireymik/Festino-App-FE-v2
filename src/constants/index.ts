@@ -9,3 +9,11 @@ export const ICON_URL_MAP = [
   { name: "부스", component: BoothIcon, url: "/icons/distance.svg", width: "28px", router: "booth" },
   { name: "테이블링", component: TablingIcon, url: "/icons/hourglass_bottom.svg", width: "35px", router: "reserve" },
 ];
+
+export const BOOTH_CATEGORY = [
+  { id: 0, name: "전체" },
+  { id: 1, name: "야간부스" },
+  { id: 2, name: "주간부스" },
+  { id: 3, name: "푸드트럭" },
+  { id: 4, name: "편의시설" }
+]
