@@ -88,7 +88,9 @@ export default {
         jalnan2: ['jalnan2'],
       },
       backgroundImage: {
-        'cheer-up-tino': "url('/images/tinos/tino-cheer-up.svg')",
+        // tino
+        'cheer-up-tino': "url('/images/tinos/cheer-up.svg')",
+        'error-half': "url('/images/tinos/error-half.svg')",
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
