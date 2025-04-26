@@ -8,7 +8,7 @@ import NotificationPage from './pages/mains/NotificationPage';
 import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
 
-function App() {
+const App : React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
