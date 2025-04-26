@@ -74,7 +74,7 @@ export default {
       backgroundColor: (theme) => ({
         ...theme('colors'),
         'map-color': 'rgba(211, 211, 211, 0.1)',
-        'instagram-bg': '#F5F6F8',
+        'tag': '#F5F6F8',
         'error': 'rgba(255, 109, 109, 0.16)',
       }),
       fontSize: {
@@ -101,9 +101,11 @@ export default {
         'talent-icon': "url('/icons/homes/talent.svg')",
         // booth
         'booth-banner': "url('/images/booths/banners/booth.svg')",
-        'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')"
+        'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')",
+        'default': "url('/images/booths/default.svg')"
       },
       borderRadius: {
+        "2.5xl": "1.25rem", // 20px
       },
       borderColor: (theme) => ({
         ...theme('colors'),
