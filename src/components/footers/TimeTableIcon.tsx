@@ -1,4 +1,4 @@
-import { IconProps } from "@/types/footers/Footer.types";
+import { IconProps } from "@/types/Footer.types";
 
 const TimeTableIcon : React.FC<IconProps> = ({ isActive }) => {
   return (
