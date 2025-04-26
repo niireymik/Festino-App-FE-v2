@@ -59,6 +59,9 @@ const BoothPage: React.FC = () => {
           />
         ))}
       </div>
+
+      {/* 부스 정보 목록 */}
+      <BoothItem />
     </div>
   );
 };
