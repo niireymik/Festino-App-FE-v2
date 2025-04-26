@@ -9,43 +9,26 @@ export default {
         primary: {
           900: {
             DEFAULT: '#0073F0',
-            light: 'rgba(0, 115, 240, 0.2)',
-            lighter: 'rgba(0, 115, 240, 0.12)',
-            lightest: 'rgba(0, 115, 240, 0.06)',
-          },
-        },
-        secondary: {
-          200: '#F2F4F6',
-          100: '#CCCCCC',
-        },
-      },
-      textColor: {
-        primary: {
-          900: {
-            DEFAULT: '#0073F0',
-            light: 'rgba(0, 115, 240, 0.2)',
             'light-68': 'rgba(0, 115, 240, 0.68)',
+            'light-40': 'rgba(0, 115, 240, 0.4)',
+            'light-20': 'rgba(0, 115, 240, 0.2)',
             'light-16': 'rgba(0, 115, 240, 0.16)',
+            'light-12': 'rgba(0, 115, 240, 0.12)',
             'light-6': 'rgba(0, 115, 240, 0.06)',
-          },
-          800: {
-            DEFAULT: '#F00E00',
-            light: 'rgba(240, 14, 0, 0.12)',
           },
           700: {
             DEFAULT: '#3082F6',
             light: 'rgba(48, 130, 246, 0.4)',
           },
-          600: '#54A6FF',
-          500: '#4fa3ff',
-          300: '#cfe3ff',
-          100: '#f5f6f8',
-          50: 'rgba(0, 0, 0, 0.03)',
+          50: {
+            DEFAULT: '#FBFCFF',
+          },
         },
         secondary: {
           700: {
             DEFAULT: '#222222',
             'light-50': 'rgba(34, 34, 34, 0.5)',
+            'light-3': 'rgba(0, 0, 0, 0.03)', //secondary-200, primary-50
           },
           500: {
             DEFAULT: '#444444',
@@ -53,42 +36,46 @@ export default {
           },
           400: '#888888',
           300: '#999999',
-          200: '#F2F4F6',
           100: '#CCCCCC',
           50: {
             DEFAULT: '#EEEEEE',
             light: '#E1E1E1',
           },
         },
-        third: {
-          700: '#E2F4E1',
-          600: '#DAE8FA',
-          500: '#FBE4E4',
-          400: {
-            DEFAULT: '#888888',
-            lighter: 'rgba(136, 136, 136, 0.1)',
-          },
-          300: { DEFAULT: '#66CF55', lighter: 'rgba(102, 207, 85, 0.1)' },
-          200: {
-            DEFAULT: '#3082F6',
-            lighter: 'rgba(48, 130, 246, 0.1)',
-          },
-          100: {
-            DEFAULT: '#FF6D6D',
-            lighter: 'rgba(255, 109, 109, 0.1)',
-          },
+        'prepared': {
+          DEFAULT: '#66CF55',
+          light:'#E2F4E1'
         },
-        'notification-bg': '#FBFCFF',
-        'instagram-bg': '#F5F6F8',
+        'cooking': {
+          DEFAULT: '#3082F6',
+          light: '#DAE8FA'
+        },
+        'cancel': {
+          DEFAULT: '#888888',
+        },
+        'waiting': {
+          DEFAULT: '#FF6D6D',
+          light: '#FBE4E4'
+        },
+        'close': {
+          DEFAULT: "#F00E00",
+          light: 'rgba(240, 14, 0, 0.12)'
+        },
+        'open': {
+          DEFAULT: "#0073F0",
+          light: 'rgba(0, 115, 240, 0.12)'
+        },
+      },
+      textColor: (theme) => ({
+        ...theme('colors'),
         danger: '#FF3F3F',
         warning: '#FF5252',
-        error: 'rgba(255, 109, 109, 0.16)',
-      },
+      }),
       backgroundColor: (theme) => ({
-        ...theme('textColor'),
-        'primary-900-light-12': 'rgba(0, 115, 240, 0.12)',
-        'primary-900-light-16': 'rgba(0, 115, 240, 0.16)',
+        ...theme('colors'),
         'map-color': 'rgba(211, 211, 211, 0.1)',
+        'instagram-bg': '#F5F6F8',
+        'error': 'rgba(255, 109, 109, 0.16)',
       }),
       fontSize: {
         '3xs': '0.5rem', // 8px
@@ -101,8 +88,17 @@ export default {
         jalnan2: ['jalnan2'],
       },
       backgroundImage: {
+        // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
-        'header-team-introduction': "url('/icons/headers/festino-icon.svg')"
+        'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
+        //home
+        'home-banner': "url('/images/homes/home-banner.svg')",
+        'slide-banner-1': "url('/images/homes/slied-banner-1.svg')",
+        'slide-banner-2': "url('/images/homes/slied-banner-2.svg')",
+        'slide-banner-3': "url('/images/homes/slied-banner-3.svg')",
+        // booth
+        'booth-banner': "url('/images/booths/banners/booth.svg')",
+        'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')"
       },
       borderRadius: {
         'lg-xl': '0.625rem', //10px
@@ -111,13 +107,7 @@ export default {
         '10xl': '3.125rem', //50px
       },
       borderColor: (theme) => ({
-        ...theme('textColor'),
-        primary: '#D6E9FD',
-        'primary-900': theme('textColor.primary.900'),
-        'primary-700': 'rgba(48, 130, 246, 0.6)',
-        'primary-700-default': theme('textColor.primary.700'),
-        'secondary-300': theme('textColor.secondary.300'),
-        'primary-900-light-40': 'rgba(0, 115, 240, 0.40)',
+        ...theme('colors'),
       }),
       borderWidth: {},
       boxShadow: {},
