@@ -88,14 +88,17 @@ export default {
         jalnan2: ['jalnan2'],
       },
       backgroundImage: {
+        'cheer-up-tino': "url('/images/tinos/tino-cheer-up.png')",
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
         //home
         'home-banner': "url('/images/homes/home-banner.svg')",
-        'slide-banner-1': "url('/images/homes/slied-banner-1.svg')",
-        'slide-banner-2': "url('/images/homes/slied-banner-2.svg')",
-        'slide-banner-3': "url('/images/homes/slied-banner-3.svg')",
+        'slide-banner-1': "url('/images/homes/slide-banner-1.svg')",
+        'slide-banner-2': "url('/images/homes/slide-banner-2.svg')",
+        'slide-banner-3': "url('/images/homes/slide-banner-3.svg')",
+        'angle-bracket': "url('/icons/homes/angle-bracket.svg')",
+        'talent-icon': "url('/icons/homes/talent.svg')",
         // booth
         'booth-banner': "url('/images/booths/banners/booth.svg')",
         'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')"
@@ -109,8 +112,13 @@ export default {
       borderColor: (theme) => ({
         ...theme('colors'),
       }),
-      borderWidth: {},
-      boxShadow: {},
+      borderWidth: {
+        1: '0.5px',
+        2: '1px',
+      },
+      boxShadow: {
+        '4xl': '0px 0px 16px rgba(0, 0, 0, 0.04)',
+      },
     },
     screens: {
       xs: '405px',
