@@ -1,7 +1,12 @@
-import { BoothDataState } from '@/types/Booth.types';
-import { create } from 'zustand';
+import { create } from "zustand";
+import { mockBoothList } from "@/mocks/boothData";
+import { BoothDataState } from "@/types/Booth.types";
 
 export const useBoothDataStore = create<BoothDataState>((set) => ({
+  boothList: mockBoothList,
   selectBoothMenu: 0,
-  setSelectBoothMenu: (id) => set({ selectBoothMenu: id }),
+  setSelectBoothMenu: (index) => set({ selectBoothMenu: index }),
+  getBoothData: (type, id) => {
+    console.log(`Clicked booth: Type - ${type}, ID - ${id}`);
+  },
 }));
