@@ -23,11 +23,11 @@ const BoothPage: React.FC = () => {
   }, [handleScrollToSelectedCategory]);
 
   return (
-    <div>
+    <>
       {/* 배너 */}
       <div className="relative">
         <div className="w-full h-[220px] xs:h-[255px] sm:h-[295px] bg-booth-banner bg-no-repeat bg-cover z-1">
-          <div className="absolute w-auto h-auto top-[60px] xs:dynamic-top dynamic-padding sm:top-[72px]">
+          <div className="absolute w-auto h-auto top-[60px] dynamic-padding sm:top-[72px]">
             <div className="bg-gradient-to-b from-white from-50% to-primary-300 bg-clip-text text-transparent font-jalnan2 text-md xs:text-md sm:text-[19px]">
               티노와 함께
             </div>
@@ -60,7 +60,7 @@ const BoothPage: React.FC = () => {
 
       {/* 부스 정보 목록 */}
       <BoothItem />
-    </div>
+    </>
   );
 };
 
