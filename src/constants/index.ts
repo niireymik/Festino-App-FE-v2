@@ -16,4 +16,4 @@ export const BOOTH_CATEGORY = [
   { id: 2, name: "주간부스" },
   { id: 3, name: "푸드트럭" },
   { id: 4, name: "편의시설" }
-]
+];

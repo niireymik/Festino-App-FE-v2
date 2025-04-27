@@ -21,7 +21,7 @@ const Header : React.FC = () => {
         onClick={() => moveToDeveloperPage()}
       />
     </div>
-  )
-}
+  );
+};
 
 export default Header
