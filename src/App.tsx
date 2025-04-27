@@ -9,10 +9,12 @@ import NotificationPage from './pages/mains/NotificationPage';
 import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
+import ScrollToTop from './components/commons/ScrollToTop';
 
 const App : React.FC = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Main */}
         <Route path="/" element={<MainLayout />}>
