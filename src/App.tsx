@@ -7,6 +7,7 @@ import MainLayout from './layouts/MainLayout';
 import NotificationPage from './pages/mains/NotificationPage';
 import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
+import BoothDetailPage from './pages/mains/BoothDetailPage';
 
 const App : React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App : React.FC = () => {
           <Route index element={<HomePage />} />
           <Route path="timetable" element={<TimeTablePage />} />
           <Route path="booth" element={<BoothPage />} />
+          <Route path="booth/:boothType/:boothId" element={<BoothDetailPage />} />
           <Route path="reserve" element={<TablingPage />} />
           <Route path="notification" element={<NotificationPage />} />
         </Route>
