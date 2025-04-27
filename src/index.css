@@ -15,6 +15,9 @@
   .dynamic-top {
     top: calc(130 / 230 * 100%) !important;
   }
+  .dynamic-bottom {
+    padding-bottom: 5rem;
+  }
 }
 
 html {
