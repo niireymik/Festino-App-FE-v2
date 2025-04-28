@@ -58,7 +58,7 @@ const BoothDetailPage: React.FC = () => {
             <div className="bg-gradient-to-b from-white from-50% to-primary-300 bg-clip-text text-transparent font-jalnan2 text-md xs:text-md sm:text-[19px]">
               {getSlogan()}
             </div>
-            <div className="font-jalnan2 text-3xl bg-gradient-to-t from-white-opacity from-20% to-white text-transparent to-100% bg-clip-text">
+            <div className="font-jalnan2 text-2xl bg-gradient-to-b from-white from-50% to-primary-300 bg-clip-text text-transparent sm:text-3xl">
               {booth.adminName ? booth.adminName : booth.boothName}
             </div>
           </div>
