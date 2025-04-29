@@ -161,6 +161,33 @@ const TeamReviewPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className="flex flex-col w-full items-center justify-center px-6 gap-4 pt-6 pb-16">
+        <div className="text-primary-900 text-2xl font-bold">REVIEW</div>
+        <div className="text-secondary-700 text py-4 text-center">
+          Festino 서비스를 이용하면서 좋았던
+          <br />
+          불편했던 점을 작성해주세요!
+        </div>
+        <textarea
+          placeholder="내용을 작성해주세요."
+          className="text-xs border border-gray-200 rounded w-full px-4 py-4 h-[200px] resize-none"
+          v-model="content"
+        ></textarea>
+        <div className="flex w-full justify-between items-center placeholder-gray-400">
+          <input
+            type="text"
+            placeholder="이메일 (선택사항)"
+            className="text-xs rounded-lg border border-gray-200 px-4 w-[200px] h-[33px] align-middle"
+            v-model="email"
+          />
+          <button
+            className="text-primary-900 w-[112px] h-[33px] flex items-center justify-center rounded-lg border border-gray-200 gap-2 py-4"
+            type="button"
+          >
+            <img src="/images/teams/send.svg" /> 보내기
+          </button>
+        </div>
+      </div>
     </>
   );
 };
