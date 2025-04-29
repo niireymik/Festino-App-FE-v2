@@ -3,26 +3,23 @@ import SeeMore from "./SeeMore";
 import ShowPreview from "./ShowPreview";
 import SlideBanner from "./SlideBanner";
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { TABS, MOCK_NOTICE_ID } from '@/constants';
 
 const HomeTab: React.FC = () => {
-  const [timeTable] = useState('타임테이블');
-  const [notification] = useState('공지사항');
-
   const navigate = useNavigate();
 
   const handleClickNotice = () => {
-    navigate(`/notification`);
+    navigate(`/notice/${MOCK_NOTICE_ID}`);
   };
 
   return (
     <div>
       <DateSelector></DateSelector>
-      <SeeMore componentName={timeTable} />
+      <SeeMore componentName={TABS.TIME_TABLE} />
       <div className="px-5 pb-4">
         <ShowPreview />
       </div>
-      <SeeMore componentName={notification} />
+      <SeeMore componentName={TABS.NOTICE} />
       <div className="px-5">
         <div
           className="py-3 select-none px-4 rounded-2xl border-primary-900-light-16 border-1 shadow-4xl flex justify-between items-center cursor-pointer"
