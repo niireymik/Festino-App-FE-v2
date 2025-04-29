@@ -1,5 +1,3 @@
-import React from 'react';
-
 export interface Member {
   name: string;
   major: string;
