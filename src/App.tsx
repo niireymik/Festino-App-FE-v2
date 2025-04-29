@@ -4,11 +4,13 @@ import TimeTablePage from './pages/mains/TimeTablePage';
 import BoothPage from './pages/mains/BoothPage';
 import TablingPage from './pages/mains/TablingPage';
 import MainLayout from './layouts/MainLayout';
-import NotificationPage from './pages/mains/NotificationPage';
+import NoticePage from './pages/mains/NoticePage';
+import NoticeDetailPage from './pages/mains/NoticeDetailPage';
 import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
+
 
 const App : React.FC = () => {
   return (
@@ -22,9 +24,10 @@ const App : React.FC = () => {
           <Route path="booth" element={<BoothPage />} />
           <Route path="booth/:boothType/:boothId" element={<BoothDetailPage />} />
           <Route path="reserve" element={<TablingPage />} />
-          <Route path="notification" element={<NotificationPage />} />
+          <Route path="notification" element={<NoticePage />} />
+          <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
         </Route>
-
+        
         {/* Order */}
         <Route path="/order" element={<OrderLayout />}>
           <Route path=":boothId/:tableNum" element={<OrderHomePage />} />

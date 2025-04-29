@@ -11,7 +11,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ componentName }) => {
     if (name === '타임테이블') {
       navigate('/timetable');
     } else if (name === '공지사항') {
-      navigate('/notification');
+      navigate('/notice');
     } else {
       return;
     }
