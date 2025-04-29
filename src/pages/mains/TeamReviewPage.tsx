@@ -184,7 +184,7 @@ const TeamReviewPage: React.FC = () => {
             className="text-primary-900 w-[112px] h-[33px] flex items-center justify-center rounded-lg border border-gray-200 gap-2 py-4"
             type="button"
           >
-            <img src="/images/teams/send.svg" /> 보내기
+            <img src="./images/teamreview/send.svg" /> 보내기
           </button>
         </div>
       </div>
