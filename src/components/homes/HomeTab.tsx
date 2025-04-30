@@ -9,7 +9,7 @@ const HomeTab: React.FC = () => {
   const navigate = useNavigate();
 
   const handleClickNotice = () => {
-    navigate(`/notice/${MOCK_NOTICE_ID}`);
+    navigate(`/notices/${MOCK_NOTICE_ID}`);
   };
 
   return (

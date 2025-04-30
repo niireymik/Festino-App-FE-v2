@@ -7,8 +7,8 @@ const NoticeHeader: React.FC = () => {
   const handleClickBackArrow = () => {
     const currentPath = location.pathname;
 
-    if (currentPath.startsWith('/notice/')) {
-      navigate('/notice');
+    if (currentPath.startsWith('/notices/')) {
+      navigate('/notices');
     } else {
       navigate('/');
     }
