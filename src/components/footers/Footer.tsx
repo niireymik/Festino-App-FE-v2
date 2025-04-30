@@ -7,9 +7,12 @@ const Footer : React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   
-  const selectedFooterIndex = ICON_URL_MAP.findIndex((item) =>
-    pathname === `/${item.router}`
-  );  
+  const selectedFooterIndex = ICON_URL_MAP.findIndex((item) => {
+    if (pathname === '/notification') {
+      return true;
+    }
+    return pathname === `/${item.router}`;
+  });
 
   const handleClickFooter = (index: number) => {
     navigate(`/${ICON_URL_MAP[index].router}`);
