@@ -7,7 +7,7 @@ const NoticeListItem: React.FC = () => {
   const [isPinned] = useState(true);
 
   const handleClickNotice = () => {
-    navigate(`/notice/${MOCK_NOTICE_ID}`);
+    navigate(`/notices/${MOCK_NOTICE_ID}`);
   };
 
   return (

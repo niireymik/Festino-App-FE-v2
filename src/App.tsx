@@ -16,8 +16,8 @@ function App() {
           <Route path="/timetable" element={<TimeTablePage />} />
           <Route path="/booth" element={<BoothPage />} />
           <Route path="/reserve" element={<TablingPage />} />
-          <Route path="/notice" element={<NoticePage />} />
-          <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
+          <Route path="/notices" element={<NoticePage />} />
+          <Route path="/notices/:noticeId" element={<NoticeDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
