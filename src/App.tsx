@@ -5,6 +5,8 @@ import BoothPage from './pages/mains/BoothPage';
 import TablingPage from './pages/mains/TablingPage';
 import TeamReviewPage from './pages/mains/TeamReviewPage';
 import MainLayout from './layouts/MainLayout';
+import NoticePage from './pages/mains/NoticePage';
+import NoticeDetailPage from './pages/mains/NoticeDetailPage';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/booth" element={<BoothPage />} />
           <Route path="/reserve" element={<TablingPage />} />
           <Route path="/teamreview" element={<TeamReviewPage />} />
+          <Route path="/notices" element={<NoticePage />} />
+          <Route path="/notices/:noticeId" element={<NoticeDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
