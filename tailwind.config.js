@@ -101,6 +101,8 @@ export default {
         'slide-banner-3': "url('/images/homes/slide-banner-3.svg')",
         'angle-bracket': "url('/icons/homes/angle-bracket.svg')",
         'talent-icon': "url('/icons/homes/talent.svg')",
+        'arrow-back': "url('/icons/homes/arrow-back.svg')",
+        'pin-icon': "url('icons/homes/pin.svg')",
         // booth
         'booth-banner': "url('/images/booths/banners/booth.svg')",
         'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')",
