@@ -24,8 +24,8 @@ const App : React.FC = () => {
           <Route path="booth" element={<BoothPage />} />
           <Route path="booth/:boothType/:boothId" element={<BoothDetailPage />} />
           <Route path="reserve" element={<TablingPage />} />
-          <Route path="notification" element={<NoticePage />} />
-          <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
+          <Route path="/notices" element={<NoticePage />} />
+          <Route path="/notices/:noticeId" element={<NoticeDetailPage />} />
         </Route>
         
         {/* Order */}
