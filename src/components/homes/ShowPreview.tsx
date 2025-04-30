@@ -1,6 +1,6 @@
 const ShowPreview: React.FC = () => {
   const handleClickInstagram = () => {
-    window.open('https://www.instagram.com/tukorea_26_drama/', '_blank');
+    window.open('https://www.instagram.com/tukorea_drama/', '_blank');
   };
 
   return (

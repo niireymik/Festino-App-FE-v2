@@ -16,4 +16,11 @@ export const BOOTH_CATEGORY = [
   { id: 2, name: "주간부스" },
   { id: 3, name: "푸드트럭" },
   { id: 4, name: "편의시설" }
-]
+];
+
+export const TABS = {
+  TIME_TABLE: '타임테이블',
+  NOTICE: '공지사항',
+};
+
+export const MOCK_NOTICE_ID = 1;
