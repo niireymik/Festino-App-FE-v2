@@ -1,5 +1,4 @@
 import { ICON_URL_MAP } from "@/constants";
-import '@/assets/css/footers/footer.css';
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -39,7 +38,7 @@ const Footer : React.FC = () => {
         );
       })}
     </div>
-  )
-}
+  );
+};
 
 export default Footer;
