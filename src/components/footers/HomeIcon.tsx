@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from '@/types/footers/Footer.types';
+import { IconProps } from '@/types/Footer.types';
 
 const HomeIcon : React.FC<IconProps> = ({ isActive }) => {
   return (

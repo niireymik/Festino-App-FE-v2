@@ -74,7 +74,7 @@ export default {
       backgroundColor: (theme) => ({
         ...theme('colors'),
         'map-color': 'rgba(211, 211, 211, 0.1)',
-        'instagram-bg': '#F5F6F8',
+        'tag': '#F5F6F8',
         'error': 'rgba(255, 109, 109, 0.16)',
       }),
       fontSize: {
@@ -88,7 +88,9 @@ export default {
         jalnan2: ['jalnan2'],
       },
       backgroundImage: {
-        'cheer-up-tino': "url('/images/tinos/tino-cheer-up.png')",
+        // tino
+        'cheer-up-tino': "url('/images/tinos/cheer-up.svg')",
+        'error-half': "url('/images/tinos/error-half.svg')",
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
@@ -103,13 +105,11 @@ export default {
         'pin-icon': "url('icons/homes/pin.svg')",
         // booth
         'booth-banner': "url('/images/booths/banners/booth.svg')",
-        'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')"
+        'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')",
+        'default': "url('/images/booths/default.svg')"
       },
       borderRadius: {
-        'lg-xl': '0.625rem', //10px
-        '3xl': '1.25rem', // 20px
-        '3.5xl': '1.5rem', // 24px
-        '10xl': '3.125rem', //50px
+        "2.5xl": "1.25rem", // 20px
       },
       borderColor: (theme) => ({
         ...theme('colors'),

@@ -1,4 +1,4 @@
-import { IconProps } from "@/types/footers/Footer.types";
+import { IconProps } from "@/types/Footer.types";
 import React from "react";
 
 const BoothIcon : React.FC<IconProps> = ({ isActive }) => {
