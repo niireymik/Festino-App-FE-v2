@@ -5,23 +5,31 @@ import BoothPage from './pages/mains/BoothPage';
 import TablingPage from './pages/mains/TablingPage';
 import MainLayout from './layouts/MainLayout';
 import NoticePage from './pages/mains/NoticePage';
-import NoticeDetailPage from './pages/mains/NoticeDetailPage';
+import NotificationPage from './pages/mains/NotificationPage';
+import OrderLayout from './layouts/OrderLayout';
+import OrderHomePage from './pages/orders/OrderHomePage';
 
-function App() {
+const App : React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/timetable" element={<TimeTablePage />} />
-          <Route path="/booth" element={<BoothPage />} />
-          <Route path="/reserve" element={<TablingPage />} />
+        {/* Main */}
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="timetable" element={<TimeTablePage />} />
+          <Route path="booth" element={<BoothPage />} />
+          <Route path="reserve" element={<TablingPage />} />
           <Route path="/notices" element={<NoticePage />} />
           <Route path="/notices/:noticeId" element={<NoticeDetailPage />} />
+        </Route>
+
+        {/* Order */}
+        <Route path="/order" element={<OrderLayout />}>
+          <Route path=":boothId/:tableNum" element={<OrderHomePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

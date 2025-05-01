@@ -9,7 +9,7 @@ const BoothIcon : React.FC<IconProps> = ({ isActive }) => {
         className={isActive ? 'fill-primary-900' : 'fill-secondary-100'}
       />
     </svg>
-  )
-}
+  );
+};
 
 export default BoothIcon;
