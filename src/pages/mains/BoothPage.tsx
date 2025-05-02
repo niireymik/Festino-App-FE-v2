@@ -2,11 +2,11 @@ import BoothItem from "@/components/booths/BoothItem";
 import BoothMap from "@/components/booths/BoothMap";
 import CategoryItem from "@/components/booths/CategoryItem";
 import { BOOTH_CATEGORY } from "@/constants";
-import { useBoothDataStore } from "@/stores/boothDataStore";
+import { useBoothStore } from "@/stores/booths/boothStore";
 import React, { useEffect, useCallback } from "react";
 
 const BoothPage: React.FC = () => {
-  const { selectBoothMenu, setSelectBoothMenu } = useBoothDataStore();
+  const { boothList, selectBoothMenu, setSelectBoothMenu } = useBoothStore();
 
   const handleScrollToSelectedCategory = useCallback(() => {
     const container = document.getElementById('category-container');

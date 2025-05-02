@@ -1,13 +1,12 @@
 import React from "react";
-import { useBoothDataStore } from "@/stores/boothDataStore";
-import { Booth } from "@/types/Booth.types";
+import { useBoothStore } from "@/stores/booths/boothStore";
 import { truncateText } from "@/utils/utils";
 import StateLabel from "@/components/booths/StateLabel";
 
 const BoothItem: React.FC = () => {
-  const { boothList, selectBoothMenu, getBoothData } = useBoothDataStore();
+  const { boothList, getBoothData } = useBoothStore();
 
-  const handleClickBoothIntroduction = (type: string, id: number) => {
+  const handleClickBoothIntroduction = (type: string, id: string) => {
     getBoothData(type, id);
   };
 
@@ -24,21 +23,19 @@ const BoothItem: React.FC = () => {
     };
   };
 
-  const currentBoothList = boothList[selectBoothMenu] as Booth[] | "";
-
-  if (currentBoothList === "") {
+  if (!boothList) {
     return null;
   }
 
   return (
     <div className="w-full pb-20 dynamic-padding">
-      {currentBoothList.length === 0 ? (
+      {boothList.length === 0 ? (
         <div className="w-full h-[160px] bg-white shadow-4xl flex flex-col justify-between items-center rounded-2.5xl border border-primary-900-light-16">
           <div className="pt-5 font-semibold">부스 정보가 없습니다</div>
           <div className="w-[220px] h-[100px] bg-error-half bg-cover" />
         </div>
       ) : (
-        currentBoothList.map((booth, index) => {
+        boothList.map((booth, index) => {
           if (booth.boothIntro.includes("총학생회")) {
             return null;
           }
