@@ -22,8 +22,8 @@ const App : React.FC = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="timetable" element={<TimeTablePage />} />
-          <Route path="booth" element={<BoothPage />} />
-          <Route path="booth/:boothType/:boothId" element={<BoothDetailPage />} />
+          <Route path="booths" element={<BoothPage />} />
+          <Route path="booths/:boothType/:boothId" element={<BoothDetailPage />} />
           <Route path="reserve" element={<TablingPage />} />
           <Route path="team-review" element={<TeamReviewPage />} />
           <Route path="notices" element={<NoticePage />} />
