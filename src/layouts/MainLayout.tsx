@@ -7,7 +7,7 @@ const MainLayout : React.FC = () => {
       <Outlet />
       <Footer />
     </>
-  )
-}
+  );
+};
 
 export default MainLayout;

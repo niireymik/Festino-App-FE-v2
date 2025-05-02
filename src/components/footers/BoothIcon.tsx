@@ -1,4 +1,4 @@
-import { IconProps } from "@/types/footers/Footer.types";
+import { IconProps } from "@/types/Footer.types";
 import React from "react";
 
 const BoothIcon : React.FC<IconProps> = ({ isActive }) => {
@@ -9,7 +9,7 @@ const BoothIcon : React.FC<IconProps> = ({ isActive }) => {
         className={isActive ? 'fill-primary-900' : 'fill-secondary-100'}
       />
     </svg>
-  )
-}
+  );
+};
 
 export default BoothIcon;

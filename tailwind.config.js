@@ -74,7 +74,7 @@ export default {
       backgroundColor: (theme) => ({
         ...theme('colors'),
         'map-color': 'rgba(211, 211, 211, 0.1)',
-        'instagram-bg': '#F5F6F8',
+        'tag': '#F5F6F8',
         'error': 'rgba(255, 109, 109, 0.16)',
       }),
       fontSize: {
@@ -88,29 +88,45 @@ export default {
         jalnan2: ['jalnan2'],
       },
       backgroundImage: {
+        // tino
+        'cheer-up-tino': "url('/images/tinos/cheer-up.svg')",
+        'error-half': "url('/images/tinos/error-half.svg')",
+        'error-full': "url('/images/tinos/error.svg')",
+        // common
+        'instagram': "url('/icons/commons/instagram.png')",
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
         //home
         'home-banner': "url('/images/homes/home-banner.svg')",
-        'slide-banner-1': "url('/images/homes/slied-banner-1.svg')",
-        'slide-banner-2': "url('/images/homes/slied-banner-2.svg')",
-        'slide-banner-3': "url('/images/homes/slied-banner-3.svg')",
+        'slide-banner-1': "url('/images/homes/slide-banner-1.svg')",
+        'slide-banner-2': "url('/images/homes/slide-banner-2.svg')",
+        'slide-banner-3': "url('/images/homes/slide-banner-3.svg')",
+        'angle-bracket': "url('/icons/homes/angle-bracket.svg')",
+        'talent-icon': "url('/icons/homes/talent.svg')",
+        'arrow-back': "url('/icons/homes/arrow-back.svg')",
+        'pin-icon': "url('icons/homes/pin.svg')",
         // booth
         'booth-banner': "url('/images/booths/banners/booth.svg')",
-        'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')"
+        'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')",
+        'default': "url('/images/booths/default.svg')",
+        'arrow-back': "url('/icons/booths/arrow-back.svg')",
+        'arrow-forward': "url('/icons/booths/arrow-forward.svg')",
+        'reservation-status': "url('/images/booths/reserve.svg')"
       },
       borderRadius: {
-        'lg-xl': '0.625rem', //10px
-        '3xl': '1.25rem', // 20px
-        '3.5xl': '1.5rem', // 24px
-        '10xl': '3.125rem', //50px
+        "2.5xl": "1.25rem", // 20px
       },
       borderColor: (theme) => ({
         ...theme('colors'),
       }),
-      borderWidth: {},
-      boxShadow: {},
+      borderWidth: {
+        1: '0.5px',
+        2: '1px',
+      },
+      boxShadow: {
+        '4xl': '0px 0px 16px rgba(0, 0, 0, 0.04)',
+      },
     },
     screens: {
       xs: '405px',
