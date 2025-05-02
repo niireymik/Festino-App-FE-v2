@@ -7,7 +7,7 @@ const Header: React.FC = () => {
     navigate('/', { replace: true });
   };
   const moveToDeveloperPage = () => {
-    navigate('/teamreview', { replace: true });
+    navigate('/team-review', { replace: true });
   };
 
   return (
