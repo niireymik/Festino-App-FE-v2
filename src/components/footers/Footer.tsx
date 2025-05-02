@@ -2,16 +2,20 @@ import { ICON_URL_MAP } from "@/constants";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Footer : React.FC = () => {
+const Footer: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  
-  const selectedFooterIndex = ICON_URL_MAP.findIndex((item) => {
-    if (pathname === '/notification') {
-      return true;
+
+  const selectedFooterIndex = React.useMemo(() => {
+    if (pathname === '/notification' || pathname === '/notice') {
+      return 0;
+    } 
+    if (pathname.includes('/booth')) {
+      return 2;
     }
-    return pathname === `/${item.router}`;
-  });
+
+    return ICON_URL_MAP.findIndex((item) => pathname === `/${item.router}`);
+  }, [pathname]);
 
   const handleClickFooter = (index: number) => {
     navigate(`/${ICON_URL_MAP[index].router}`);
