@@ -6,19 +6,23 @@ import TablingPage from './pages/mains/TablingPage';
 import TeamReviewPage from './pages/mains/TeamReviewPage';
 import MainLayout from './layouts/MainLayout';
 import NoticePage from './pages/mains/NoticePage';
+import NoticeDetailPage from './pages/mains/NoticeDetailPage';
 import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
-import NoticeDetailPage from './pages/mains/NoticeDetailPage';
+import BoothDetailPage from './pages/mains/BoothDetailPage';
+import ScrollToTop from './components/commons/ScrollToTop';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Main */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="timetable" element={<TimeTablePage />} />
           <Route path="booth" element={<BoothPage />} />
+          <Route path="booth/:boothType/:boothId" element={<BoothDetailPage />} />
           <Route path="reserve" element={<TablingPage />} />
           <Route path="teamreview" element={<TeamReviewPage />} />
           <Route path="/notices" element={<NoticePage />} />
