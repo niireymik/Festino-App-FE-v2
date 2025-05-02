@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
     if (pathname.includes('/notices')) {
       return 0;
     } 
-    if (pathname.includes('/booth')) {
+    if (pathname.includes('/booths')) {
       return 2;
     }
 

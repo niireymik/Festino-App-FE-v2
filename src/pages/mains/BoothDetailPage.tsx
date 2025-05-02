@@ -13,7 +13,7 @@ const BoothDetailPage: React.FC = () => {
   );
 
   const handleClickBoothDetailBack = () => {
-    navigate("/booth");
+    navigate('/booths');
   };
 
   const sloganMap: { [key: string]: string } = {
