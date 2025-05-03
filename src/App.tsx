@@ -5,13 +5,13 @@ import BoothPage from './pages/mains/BoothPage';
 import TablingPage from './pages/mains/TablingPage';
 import MainLayout from './layouts/MainLayout';
 import NoticePage from './pages/mains/NoticePage';
-import NotificationPage from './pages/mains/NotificationPage';
+import NoticeDetailPage from './pages/mains/NoticeDetailPage';
 import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
 
-const App : React.FC = () => {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
