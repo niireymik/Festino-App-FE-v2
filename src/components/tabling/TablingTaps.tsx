@@ -1,11 +1,7 @@
 import Reservation from './Reservation';
 import SearchReservation from './SearchReservation';
-import { useState, useEffect } from 'react';
 
 const TablingTaps: React.FC = () => {
-  const [reservation, setReservation] = useState(true);
-  const [searchReservation, setSearchReservation] = useState(false);
-
   return (
     <>
       <div className="relative">
