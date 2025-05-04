@@ -24,7 +24,7 @@ const App: React.FC = () => {
           <Route path="booth" element={<BoothPage />} />
           <Route path="booth/:boothType/:boothId" element={<BoothDetailPage />} />
           <Route path="reserve" element={<TablingPage />} />
-          <Route path="teamreview" element={<TeamReviewPage />} />
+          <Route path="team-review" element={<TeamReviewPage />} />
           <Route path="/notices" element={<NoticePage />} />
           <Route path="/notices/:noticeId" element={<NoticeDetailPage />} />
         </Route>
