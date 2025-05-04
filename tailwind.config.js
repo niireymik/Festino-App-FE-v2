@@ -104,15 +104,16 @@ export default {
         'slide-banner-3': "url('/images/homes/slide-banner-3.svg')",
         'angle-bracket': "url('/icons/homes/angle-bracket.svg')",
         'talent-icon': "url('/icons/homes/talent.svg')",
-        'arrow-back': "url('/icons/homes/arrow-back.svg')",
+        'arrow-back-black': "url('/icons/homes/arrow-back.svg')",
         'pin-icon': "url('icons/homes/pin.svg')",
         // booth
         'booth-banner': "url('/images/booths/banners/booth.svg')",
         'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')",
         'default': "url('/images/booths/default.svg')",
         'arrow-back': "url('/icons/booths/arrow-back.svg')",
+        'arrow-back-white': "url('/icons/booths/arrow-back.svg')",
         'arrow-forward': "url('/icons/booths/arrow-forward.svg')",
-        'reservation-status': "url('/images/booths/reserve.svg')"
+        'reservation-status': "url('/images/booths/reserve.svg')",
       },
       borderRadius: {
         "2.5xl": "1.25rem", // 20px
