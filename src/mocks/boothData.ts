@@ -1,0 +1,203 @@
+// 목데이터 (Mock Booth List)
+
+import { BoothInfo, BoothMenu } from "@/types/Booth.types";
+
+export const MockBoothList = [
+  [
+    {
+      adminCategory: "야간부스",
+      boothId: "1",
+      boothIntro: "야간에만 운영하는 특별한 부스입니다.",
+      boothName: "밤하늘 바비큐",
+      boothImage: "/images/booth/night-bbq.jpg",
+      isOpen: true,
+      openTime: "18:00",
+      closeTime: "23:00",
+    },
+    {
+      adminCategory: "야간부스",
+      boothId: "2",
+      boothIntro: "야경과 함께 즐기는 맥주 한 잔",
+      boothName: "별빛 맥주",
+      boothImage: null,
+      isOpen: false,
+      openTime: "19:00",
+      closeTime: "24:00",
+    },
+  ],
+  [
+    {
+      adminCategory: "주간부스",
+      boothId: "3",
+      boothIntro: "주간에도 신나게 즐길 수 있는 다양한 활동",
+      boothName: "햇살 놀이터",
+      boothImage: "/images/booth/day-fun.jpg",
+      isOpen: true,
+      openTime: "10:00",
+      closeTime: "17:00",
+    },
+  ],
+  [
+    {
+      adminCategory: "푸드트럭",
+      boothId: "4",
+      boothIntro: "다양한 맛을 즐길 수 있는 푸드트럭",
+      boothName: "길거리 음식 페스티벌",
+      boothImage: "/images/booth/food-truck.jpg",
+      isOpen: true,
+      openTime: "11:00",
+      closeTime: "21:00",
+    },
+  ],
+  [
+    {
+      adminCategory: "편의시설",
+      boothId: "5",
+      boothIntro: "편하게 쉴 수 있는 휴게 공간",
+      boothName: "릴렉스존",
+      boothImage: null,
+      isOpen: true,
+      openTime: "09:00",
+      closeTime: "20:00",
+    },
+  ],
+];
+
+export const MockBoothDetailList: BoothInfo[] = [
+  {
+    boothId: "1",
+    boothName: "MECA : 메이드 카페",
+    adminCategory: "야간부스",
+    adminName: "메카트로닉스공학과",
+    openTime: "18:00",
+    closeTime: "24:00",
+    boothIntro: "한국공학대학교 제25대 메카트로닉스공학부 학생회 Drawing",
+    boothImage: [
+      "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/6724a695-d84e-4725-a89e-2e549e7c613d-tanghulu.jpeg",
+      "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/6724a695-d84e-4725-a89e-2e549e7c613d-tanghulu.jpeg"
+    ],
+    isOpen: true,
+    location: '운동장',
+    isOrder: true,
+    isReservation: true,
+    totalReservationNum: 7,
+    markerNum: 12,
+    instagram: 'as',
+    menuList: [
+      {
+        menuId: "ba4baffc-16bc-4642-aff4-0c1b0c9300ab",
+        menuName: "탕후루",
+        menuDescription: "선배 혹시 탕후루도 같이?",
+        menuImage: "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/6724a695-d84e-4725-a89e-2e549e7c613d-tanghulu.jpeg",
+        menuPrice: 4000,
+        isSoldOut: false,
+        menuType: 0,
+      },
+      {
+        menuId: "0cc2e165-503e-4fed-aa60-44c9d9d2ea1d",
+        menuName: "먹태",
+        menuDescription: "건어물의 끝판왕 먹태",
+        menuImage: "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/6724a695-d84e-4725-a89e-2e549e7c613d-tanghulu.jpeg",
+        menuPrice: 10000,
+        isSoldOut: false,
+        menuType: 1,
+      },
+    ],
+  },
+  {
+    boothId: "2",
+    boothName: "Food Truck : TUK 핫도그",
+    adminCategory: "푸드트럭",
+    adminName: "핫도그 푸드트럭",
+    location: '운동장',
+    openTime: "11:00",
+    closeTime: "20:00",
+    boothIntro: "바삭하고 고소한 핫도그를 즐길 수 있는 푸드트럭입니다!",
+    boothImage: [
+      "https://festino/foodtruck-hotdog1.jpg",
+      "https://festino/foodtruck-hotdog2.jpg"
+    ],
+    isOpen: true,
+    isOrder: false,
+    isReservation: false,
+    totalReservationNum: 0,
+    markerNum: 8,
+    menuList: [
+      {
+        menuId: "abcd1234-5678-efgh-9012-ijklmnopqrst",
+        menuName: "오리지널 핫도그",
+        menuDescription: "겉바속촉 오리지널 핫도그!",
+        menuImage: "https://festino/original-hotdog.jpg",
+        menuPrice: 4000,
+        isSoldOut: false,
+        menuType: 0,
+      },
+      {
+        menuId: "efgh5678-9012-ijkl-3456-mnopqrstuvwx",
+        menuName: "치즈 핫도그",
+        menuDescription: "쭈욱 늘어나는 치즈가 가득!",
+        menuImage: "https://festino/cheese-hotdog.jpg",
+        menuPrice: 5000,
+        isSoldOut: true,
+        menuType: 1,
+      },
+    ],
+  },
+];
+
+export const MockMenuList: BoothMenu[] = [
+  {
+    menuId: "1a2b3c4d-5e6f-7g8h-9i0j-abcdefgh1234",
+    menuName: "탕후루",
+    menuDescription: "선배 혹시 탕후루도 같이?",
+    menuImage: "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/6724a695-d84e-4725-a89e-2e549e7c613d-tanghulu.jpeg",
+    menuPrice: 4000,
+    isSoldOut: false,
+    menuType: 0,
+  },
+  {
+    menuId: "2b3c4d5e-6f7g-8h9i-0j1a-bcdefgh2345",
+    menuName: "먹태",
+    menuDescription: "건어물의 끝판왕 먹태",
+    menuImage: "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/150852b1-1054-4acc-a6b9-2c9db23132fb-muktae.jpeg",
+    menuPrice: 10000,
+    isSoldOut: false,
+    menuType: 1,
+  },
+  {
+    menuId: "3c4d5e6f-7g8h-9i0j-1a2b-cdefgh3456",
+    menuName: "아이스호떡",
+    menuDescription: "차가운 꿀이 들어간 신상 호떡!",
+    menuImage: "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/ice-hotteok.jpg",
+    menuPrice: 3000,
+    isSoldOut: true,
+    menuType: 1,
+  },
+  {
+    menuId: "4d5e6f7g-8h9i-0j1a-2b3c-defgh4567",
+    menuName: "계란말이",
+    menuDescription: "포근포근한 집밥 스타일 계란말이",
+    menuImage: "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/egg-roll.jpg",
+    menuPrice: 5000,
+    isSoldOut: false,
+    menuType: 0,
+  },
+  {
+    menuId: "5e6f7g8h-9i0j-1a2b-3c4d-efgh5678",
+    menuName: "잔치국수",
+    menuDescription: "든든하고 시원한 국수 한 그릇!",
+    menuImage: "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/noodle.jpg",
+    menuPrice: 6000,
+    isSoldOut: false,
+    menuType: 0,
+  },
+  {
+    menuId: "6f7g8h9i-0j1a-2b3c-4d5e-fgh6789",
+    menuName: "황도",
+    menuDescription: "시원한 황도 통조림, 여름 별미!",
+    menuImage: "https://tuk-planet.s3.ap-northeast-2.amazonaws.com/festino/peach.jpg",
+    menuPrice: 2000,
+    isSoldOut: true,
+    menuType: 1,
+  },
+];
