@@ -21,7 +21,7 @@ const initializeApp = async () => {
     createRoot(rootElement).render(
       <StrictMode>
         <App />
-      </StrictMode>
+      </StrictMode>,
     );
   }
 };

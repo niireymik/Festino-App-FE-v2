@@ -10,6 +10,7 @@ import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
+import OrderMainPage from './pages/orders/OrderMainPage';
 
 const App: React.FC = () => {
   return (
@@ -29,7 +30,7 @@ const App: React.FC = () => {
 
         {/* Order */}
         <Route path="/order" element={<OrderLayout />}>
-          <Route path=":boothId/:tableNum" element={<OrderHomePage />} />
+          <Route path=":boothId/:tableNum" element={<OrderMainPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
