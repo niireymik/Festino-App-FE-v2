@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const Review: React.FC = () => {
   const [rating, setRating] = useState(0);
@@ -29,6 +30,13 @@ const Review: React.FC = () => {
     };
 
     resetReview();
+
+    Swal.fire({
+      title: 'Thank you for your review!',
+      text: 'We will do our best to improve our service.',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    });
     console.log('제출 내용:', payload);
   };
 
