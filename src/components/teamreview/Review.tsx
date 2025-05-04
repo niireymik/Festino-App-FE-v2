@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
+import { Rating } from 'react-simple-star-rating';
 
 const Review: React.FC = () => {
   const [rating, setRating] = useState(0);
@@ -10,13 +11,8 @@ const Review: React.FC = () => {
   const [reuse, setReuse] = useState('');
   const [feedback, setFeedBack] = useState('');
 
-  const resetReview = () => {
-    setRating(0);
-    setGoodFunc('');
-    setBadFunc('');
-    setReason('');
-    setReuse('');
-    setFeedBack('');
+  const handleRating = (rate: number) => {
+    setRating(Math.round(rate * 2) / 2);
   };
 
   const handleSubmit = () => {
@@ -40,23 +36,32 @@ const Review: React.FC = () => {
     console.log('제출 내용:', payload);
   };
 
+  const resetReview = () => {
+    setRating(0);
+    setGoodFunc('');
+    setBadFunc('');
+    setReason('');
+    setReuse('');
+    setFeedBack('');
+  };
+
   const featureOptions = ['부스 위치 안내', '공연 정보 안내', '주문 기능', '예약 기능', '없음'];
 
   return (
     <div className="flex flex-col gap-[1rem]">
       <div className="flex flex-col gap-[0.5rem]">
         <div className="text-[0.95rem] font-bold">1. Festino 서비스가 얼마나 만족스러웠나요?</div>
-        <div className="flex">
-          {[1, 2, 3, 4, 5].map((val) => (
-            <span
-              key={val}
-              onClick={() => setRating(val)}
-              className="cursor-pointer text-4xl"
-              style={{ color: val <= rating ? '#ffc107' : '#e4e5e9' }}
-            >
-              ★
-            </span>
-          ))}
+        <div className="flex items-center">
+          <Rating
+            onClick={handleRating}
+            initialValue={rating}
+            transition
+            size={35}
+            fillColor="#0073F0"
+            emptyColor="rgba(0, 115, 240, 0.3)"
+            SVGstyle={{ display: 'inline-block' }}
+            className="flex"
+          />
         </div>
       </div>
 
