@@ -10,12 +10,14 @@ import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
+import ModalPage from './pages/mains/ModalPage';
 
 
 const App : React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <ModalPage />
       <Routes>
         {/* Main */}
         <Route path="/" element={<MainLayout />}>
