@@ -24,6 +24,14 @@
   .dynamic-tino-height {
     height: calc(230 / 430 * 100%) !important;
   }
+  .dynamic-item {
+    width: calc(100vw * 190 / 430) !important;
+    max-width: calc(500px * 190 / 430) !important;
+    min-width: calc(375px * 190 / 430) !important;
+    height: calc(100vw * 190 / 430) !important;
+    max-height: calc(500px * 190 / 430) !important;
+    min-height: calc(375px * 190 / 430) !important;
+  }
 }
 
 html {
