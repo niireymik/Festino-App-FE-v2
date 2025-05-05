@@ -1,25 +1,47 @@
 import { create } from 'zustand';
 import { api } from '@/utils/api';
-import { Booth, BoothInfo } from '@/types/Booth.types';
+import { BoothInfo, BoothStore } from '@/types/Booth.types';
 
-export interface BoothDataState {
-  boothList: Booth[];
-  boothData: BoothInfo | null;
-  selectBoothMenu: number;
-  setSelectBoothMenu: (index: number) => void;
-  getBoothData: (type: string, id: string) => Promise<void>;
-}
+export const useBoothStore = create<BoothStore>((set) => ({
+  boothListAll: [],
+  boothListNight: [],
+  boothListDay: [],
+  boothListFood:[],
+  boothListFacility:[],
+  boothDetail: null,
+  selectBoothCategory: 0,
 
-export const useBoothStore = create<BoothDataState>((set) => ({
-  boothList: [],
-  boothData: null,
-  selectBoothMenu: 0,
-
-  setSelectBoothMenu: (index: number) => {
-    set({ selectBoothMenu: index });
+  setSelectBoothCategory: (index: number) => {
+    set({ selectBoothCategory: index });
   },
 
-  getBoothData: async (type: string, id: string) => {
+  getBoothList: async () => {
+    try {
+      const urls = [
+        '/main/booth/all',
+        '/main/booth/night/all',
+        '/main/booth/day/all',
+        '/main/booth/food/all',
+        '/main/facility/all',
+      ];
+
+      const [all, night, day, food, facility] = await Promise.all(
+        urls.map((url) => api.get(url))
+      );
+
+      set({
+        boothListAll: all.data.boothList,
+        boothListNight: night.data.boothList,
+        boothListDay: day.data.boothList,
+        boothListFood: food.data.boothList,
+        boothListFacility: facility.data.facilityList,
+      });
+    } catch (error) {
+      console.error(`Error: ${error}, 부스 목록 받아오기 실패`, error);
+    }
+  },
+
+  getBoothDetail: async (type: string, id: string) => {
     let urlType = '';
     switch (type) {
       case '야간부스':
@@ -46,10 +68,10 @@ export const useBoothStore = create<BoothDataState>((set) => ({
           : `/main/booth/${urlType}/${id}`;
 
       const res = await api.get(endpoint);
-      const boothData: BoothInfo =
+      const boothDetail: BoothInfo =
         urlType === 'facility' ? res.data.facility : res.data.boothInfo;
 
-      set({ boothData });
+      set({ boothDetail });
     } catch (err) {
       console.error(`Failed to fetch booth data (${type})`, err);
     }
