@@ -18,6 +18,12 @@
   .dynamic-bottom {
     padding-bottom: 5rem;
   }
+  .dynamic-width {
+    width: calc(390 / 430 * 100%) !important;
+  }
+  .dynamic-tino-height {
+    height: calc(230 / 430 * 100%) !important;
+  }
 }
 
 html {
