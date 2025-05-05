@@ -6,7 +6,7 @@ import { useBoothStore } from '@/stores/booths/boothStore';
 
 const BoothDetailPage: React.FC = () => {
   const navigate = useNavigate();
-  const { boothData: booth } = useBoothStore();
+  const { boothDetail: booth } = useBoothStore();
 
   const handleClickBoothDetailBack = () => {
     navigate('/booths');
