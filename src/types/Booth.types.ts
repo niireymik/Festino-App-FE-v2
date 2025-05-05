@@ -16,6 +16,7 @@ export interface Booth {
   openTime: string;
   closeTime: string;
 }
+
 export interface BoothInfo extends Omit<Booth, 'boothImage'> {
   boothImage: string[];
   instagram?: string;
