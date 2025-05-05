@@ -28,12 +28,12 @@ const TablingTabs: React.FC = () => {
 
   return (
     <div className="relative">
-      <div className="dynamic-padding pt-[28px] h-auto w-full rounded-t-2.5xl bg-white bottom-0 z-50 absolute">
+      <div className="dynamic-padding mt-[-20px] pt-[28px] h-auto w-full rounded-t-2.5xl bg-white z-50 absolute">
         <div className="flex gap-[30px]">
           {(['예약하기', '예약조회'] as const).map((tab) => (
             <div
               key={tab}
-              className="w-[86px] flex flex-col items-center justify-between cursor-pointer relative"
+              className="w-[86px] h-[32px] flex flex-col items-center justify-between cursor-pointer relative"
               onClick={() => toggleTab(tab)}
             >
               <div className={`text-xl ${activeTab === tab ? 'font-bold' : 'text-secondary-300'}`}>{tab}</div>
