@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { api } from '@/utils/api';
 import { BoothInfo, BoothStore } from '@/types/Booth.types';
+import { BOOTH_TYPE_MAP } from '@/constants';
 
 export const useBoothStore = create<BoothStore>((set) => ({
   boothListAll: [],
@@ -42,38 +43,26 @@ export const useBoothStore = create<BoothStore>((set) => ({
   },
 
   getBoothDetail: async (type: string, id: string) => {
-    let urlType = '';
-    switch (type) {
-      case '야간부스':
-        urlType = 'night';
-        break;
-      case '주간부스':
-        urlType = 'day';
-        break;
-      case '푸드트럭':
-        urlType = 'food';
-        break;
-      case '편의시설':
-        urlType = 'facility';
-        break;
-      default:
-        console.warn('Unknown booth type:', type);
-        return;
+    const urlType = BOOTH_TYPE_MAP[type];
+  
+    if (!urlType) {
+      console.log('부스 타입이 존재하지 않습니다:', type);
+      return;
     }
-
+  
     try {
       const endpoint =
         urlType === 'facility'
           ? `/main/${urlType}/${id}`
           : `/main/booth/${urlType}/${id}`;
-
+  
       const res = await api.get(endpoint);
       const boothDetail: BoothInfo =
         urlType === 'facility' ? res.data.facility : res.data.boothInfo;
-
+  
       set({ boothDetail });
     } catch (err) {
-      console.error(`Failed to fetch booth data (${type})`, err);
+      console.error(`부스 정보가 없습니다: ${type}`, err);
     }
   },
 }));
