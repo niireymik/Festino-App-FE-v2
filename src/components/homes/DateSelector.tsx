@@ -1,4 +1,4 @@
-import useDateStore from "@/stores/dateStore";
+import useDateStore from "@/stores/homes/dateStore";
 
 const DateSelector: React.FC = () => {
   const { festivalDate, setDate } = useDateStore();
@@ -10,10 +10,10 @@ const DateSelector: React.FC = () => {
           <div
             className={`flex justify-center gap-2 w-[105px] xs:gap-4 xs:w-[122px] sm:gap-5 sm:w-[140px] py-2.5 px-0.5 rounded-full shadow-4xl text-xs items-center cursor-pointer ${
               festivalDate === date
-                 ? 'bg-primary-700 text-white font-bold'
-                 : 'text-primary-700-light font-normal border-primary-900-light-16 border-1'
-             }`}
-             onClick={() => setDate(date)}
+              ? 'bg-primary-700 text-white font-bold'
+              : 'text-primary-700-light font-normal border-primary-900-light-16 border-1'
+            }`}
+            onClick={() => setDate(date)}
           >
             <div>DAY {date}</div>
             <div>25.05.{date + 25}</div>

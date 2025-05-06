@@ -11,7 +11,7 @@ const SlideBanner: React.FC = () => {
   let isDragging = false;
 
   const handleClickMoveBooth = () => {
-    navigate('/booth');
+    navigate('/booths');
   };
 
   const handleClickMoveTabling = () => {
