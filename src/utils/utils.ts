@@ -7,3 +7,7 @@ export const truncateText = (text: string | undefined | null, length: number): s
 export const priceToString = (price: number) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
+
+export const openNewTap = (url: string) => {
+  window.open(url, '_blank');
+};

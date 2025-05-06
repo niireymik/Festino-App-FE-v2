@@ -6,7 +6,7 @@ const Header: React.FC = () => {
   const handleClickMainSymbol = () => {
     navigate('/', { replace: true });
   };
-  const moveToDeveloperPage = () => {
+  const handleClickTinoSymbol = () => {
     navigate('/team-review', { replace: true });
   };
 
@@ -18,7 +18,7 @@ const Header: React.FC = () => {
       />
       <div
         className="w-[32px] h-[32px] bg-header-team-introduction bg-center bg-no-repeat bg-[length:32px_32px] cursor-pointer"
-        onClick={() => moveToDeveloperPage()}
+        onClick={() => handleClickTinoSymbol()}
       />
     </div>
   );

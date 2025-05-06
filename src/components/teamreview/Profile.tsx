@@ -1,3 +1,5 @@
+import { openNewTap } from '@/utils/utils';
+
 export interface Member {
   name: string;
   major: string;
@@ -11,15 +13,8 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ member }) => {
-  const goToBlog = (url: string) => {
-    window.open(url, '_blank');
-  };
-
   return (
-    <div
-      className="flex w-full border-solid border-[0.39px] rounded-[5.5px] gap-3 items-center p-2"
-      style={{ boxShadow: '0px 1.57px 1.57px rgba(0, 0, 0, 0.05)' }}
-    >
+    <div className="flex w-full border-solid border-[0.39px] rounded-[5.5px] gap-3 items-center p-2 shadow-[0px_1.57px_1.57px_rgba(0,0,0,0.05)]">
       <div className="flex w-[61px] items-center">
         <img src={member.image} alt="`${member.name} 프로필`" className="w-full h-full bg-white" />
       </div>
@@ -33,8 +28,9 @@ const Profile: React.FC<ProfileProps> = ({ member }) => {
         </div>
         {member.blog && (
           <button
+            type="button"
             className="text-[7px] w-2/3 sm:w-1/2 flex items-center justify-center text-[#656565] m-0 px-[4.45px] p-1 rounded-sm border-[0.39px] border-[#999999]/30 gap-[3px]"
-            onClick={() => goToBlog(member.blog)}
+            onClick={() => openNewTap(member.blog)}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 256 256">
               <path

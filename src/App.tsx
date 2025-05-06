@@ -12,8 +12,7 @@ import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
 
-
-const App : React.FC = () => {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -29,7 +28,7 @@ const App : React.FC = () => {
           <Route path="notices" element={<NoticePage />} />
           <Route path="notices/:noticeId" element={<NoticeDetailPage />} />
         </Route>
-        
+
         {/* Order */}
         <Route path="/order" element={<OrderLayout />}>
           <Route path=":boothId/:tableNum" element={<OrderHomePage />} />

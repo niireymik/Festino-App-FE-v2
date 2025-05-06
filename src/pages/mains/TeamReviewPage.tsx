@@ -2,6 +2,7 @@ import Header from '@/components/headers/Header';
 import Profile from '@/components/teamreview/Profile';
 import { Member } from '@/components/teamreview/Profile';
 import Review from '@/components/teamreview/Review';
+import { openNewTap } from '@/utils/utils';
 
 const TeamReviewPage: React.FC = () => {
   const members: Member[] = [
@@ -105,10 +106,6 @@ const TeamReviewPage: React.FC = () => {
     },
   ];
 
-  const openDevTino = (url: string) => {
-    window.open(url, '_blank');
-  };
-
   return (
     <>
       <Header />
@@ -140,7 +137,7 @@ const TeamReviewPage: React.FC = () => {
           학생들이 모여 다양한 프로젝트와 활동을 통해 서로의 성장과 발전을 도모합니다.
         </div>
         <button
-          onClick={() => openDevTino('https://github.com/DEV-TINO')}
+          onClick={() => openNewTap('https://github.com/DEV-TINO')}
           className="bg-white text-xs w-28 font-bold flex items-center justify-center text-primary-900 m-0 px-[4.45px] py-2 rounded-[6px] border-[1px] border-[#999999]/30 gap-[5px]"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256">
