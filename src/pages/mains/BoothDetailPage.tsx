@@ -1,12 +1,23 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BoothMap from '@/components/booths/BoothMap';
 import MenuItem from '@/components/booths/MenuItem';
 import ImageSlider from '@/components/commons/ImageSlider';
 import { useBoothStore } from '@/stores/booths/boothStore';
+import { useEffect } from 'react';
+import { BOOTH_TYPE } from '@/constants';
 
 const BoothDetailPage: React.FC = () => {
   const navigate = useNavigate();
-  const { boothDetail: booth } = useBoothStore();
+  const { type, boothId } = useParams();
+  const { boothDetail, getBoothDetail } = useBoothStore();
+
+  const boothCategory = BOOTH_TYPE.find(item => {
+    if(item.type === type) {
+      return item.category;
+    } else {
+      console.log('부스 상세페이지: 부스 정보가 없습니다.')
+    }
+  });
 
   const handleClickBoothDetailBack = () => {
     navigate('/booths');
@@ -18,9 +29,15 @@ const BoothDetailPage: React.FC = () => {
     푸드트럭: '먹거리가 가득한',
   };
 
-  const getSlogan = () => sloganMap[booth?.adminCategory || ''] || '';
+  const getSlogan = () => sloganMap[boothDetail?.adminCategory || ''] || '';
 
-  if (!booth) {
+  useEffect(() => {
+    if(boothCategory && boothId) {
+      getBoothDetail(boothCategory?.category, boothId);
+    }
+  }, []);
+
+  if (!boothDetail) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="mt-4 text-center text-sm text-gray-600">
@@ -31,13 +48,13 @@ const BoothDetailPage: React.FC = () => {
   }
 
   const handleClickInstagram = () => {
-    if (booth.instagram) {
-      window.open(`https://www.instagram.com/${booth.instagram}/`, '_blank');
+    if (boothDetail.instagram) {
+      window.open(`https://www.instagram.com/${boothDetail.instagram}/`, '_blank');
     }
   };
 
   const handleRouterToReserve = () => {
-    navigate(`/reserve/${booth.boothId}`);
+    navigate(`/reserve/${boothDetail.boothId}`);
   };
 
   return (
@@ -55,7 +72,7 @@ const BoothDetailPage: React.FC = () => {
               {getSlogan()}
             </div>
             <div className="font-jalnan2 text-2xl bg-gradient-to-b from-white from-50% to-primary-300 bg-clip-text text-transparent sm:text-3xl">
-              {booth.adminName ?? booth.boothName}
+              {boothDetail.adminName ?? boothDetail.boothName}
             </div>
           </div>
         </div>
@@ -64,10 +81,10 @@ const BoothDetailPage: React.FC = () => {
 
       {/* 탭 정보 */}
       <div className="flex dynamic-padding items-center mt-4 pb-2">
-        <div className="text-secondary-300 text-sm font-light">{booth.adminCategory}</div>
+        <div className="text-secondary-300 text-sm font-light">{boothDetail.adminCategory}</div>
         <div className="text-secondary-300 bg-arrow-forward bg-cover w-[14px] h-[14px] mx-2"></div>
         <div className="text-secondary-300 text-sm font-light">
-          {booth.adminName ? `${booth.adminName} 부스` : booth.boothName}
+          {boothDetail.adminName ? `${boothDetail.adminName} 부스` : boothDetail.boothName}
         </div>
       </div>
 
@@ -82,7 +99,7 @@ const BoothDetailPage: React.FC = () => {
               위치
             </div>
             <div className="pl-4 text-secondary-500 font-light text-xs">
-              {booth.location ?? booth.adminCategory}
+              {boothDetail.location ?? boothDetail.adminCategory}
             </div>
           </div>
           <div className="flex items-center">
@@ -90,7 +107,7 @@ const BoothDetailPage: React.FC = () => {
               운영시간
             </div>
             <div className="pl-4 text-secondary-500 font-light text-xs">
-              {booth.openTime} ~ {booth.closeTime}
+              {boothDetail.openTime} ~ {boothDetail.closeTime}
             </div>
           </div>
         </div>
@@ -101,22 +118,22 @@ const BoothDetailPage: React.FC = () => {
 
       {/* 이미지 슬라이더 */}
       <div className="relative pt-[2.33%] px-[4.65%] pb-9">
-        <ImageSlider images={booth.boothImage} />
+        <ImageSlider images={boothDetail.boothImage} />
 
         {/* 인스타그램 버튼 */}
-        {booth.instagram && (
+        {boothDetail.instagram && (
           <div
             onClick={handleClickInstagram}
             className="text-xs text-secondary-500 rounded-full w-fit h-[26px] flex items-center justify-center bg-tag gap-1 mt-6 px-3 cursor-pointer"
           >
             <div className="min-w-[16px] h-[16px] bg-instagram bg-center bg-no-repeat bg-[length:16px_16px]" />
-            <div>@{booth.instagram}</div>
+            <div>{boothDetail.instagram}</div>
           </div>
         )}
 
         {/* 부스 소개글 */}
         <div className="pt-5 text-secondary-500 font-light break-words px-1 whitespace-pre-wrap">
-          {booth.boothIntro}
+          {boothDetail.boothIntro}
         </div>
       </div>
 
@@ -131,7 +148,7 @@ const BoothDetailPage: React.FC = () => {
               메인메뉴
             </div>
             <div className="pl-4 text-secondary-500 font-light text-xs">
-              {/* {booth.mainMenu?.join(', ') ?? '-'} */}
+              {/* {boothDetail.menuList?.join(', ') ?? '-'} */}
             </div>
           </div>
           <div className="flex items-center">
@@ -139,14 +156,14 @@ const BoothDetailPage: React.FC = () => {
               서브메뉴
             </div>
             <div className="pl-4 text-secondary-500 font-light text-xs">
-              {/* {booth.subMenu?.join(', ') ?? '-'} */}
+              {/* {boothDetail.menuList?.join(', ') ?? '-'} */}
             </div>
           </div>
         </div>
       </div>
 
       {/* 메뉴 상세 목록 */}
-      {booth.menuList?.map((menu) => (
+      {boothDetail.menuList?.map((menu) => (
         <MenuItem key={menu.menuId} menu={menu} />
       ))}
 
@@ -162,7 +179,7 @@ const BoothDetailPage: React.FC = () => {
               대기중인 팀
             </div>
             <div className="flex items-end">
-              <div className="font-bold text-7xl text-white">{booth.totalReservationNum ?? 0}</div>
+              <div className="font-bold text-7xl text-white">{boothDetail.totalReservationNum ?? 0}</div>
               <div className="pb-2 font-semibold text-xl text-white">팀</div>
             </div>
           </div>
