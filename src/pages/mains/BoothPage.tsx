@@ -24,9 +24,9 @@ const BoothPage: React.FC = () => {
   const handleClickBoothItem = (type: string, id: string) => {
     getBoothDetail(type, id);
     
-    const boothType = BOOTH_TYPE.find(booth => {
-      if(booth.category === type) {
-        return booth.type;
+    const boothType = BOOTH_TYPE.find(item => {
+      if(item.category === type) {
+        return item.type;
       } else {
         console.log('존재하지 않는 부스 유형입니다.');
       }
