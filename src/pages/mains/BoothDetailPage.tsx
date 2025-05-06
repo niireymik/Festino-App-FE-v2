@@ -4,7 +4,7 @@ import MenuItem from '@/components/booths/MenuItem';
 import ImageSlider from '@/components/commons/ImageSlider';
 import { useBoothStore } from '@/stores/booths/boothStore';
 import { useEffect } from 'react';
-import { BOOTH_TYPE } from '@/constants';
+import { BOOTH_TYPE, SLOGAN_MAP } from '@/constants';
 
 const BoothDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,13 +23,8 @@ const BoothDetailPage: React.FC = () => {
     navigate('/booths');
   };
 
-  const sloganMap: Record<string, string> = {
-    야간부스: '먹거리가 가득한',
-    주간부스: '즐거움이 가득한',
-    푸드트럭: '먹거리가 가득한',
-  };
-
-  const getSlogan = () => sloganMap[boothDetail?.adminCategory || ''] || '';
+  // 슬로건 받아오기
+  const getSlogan = () => SLOGAN_MAP[boothDetail?.adminCategory || ''] || '';
 
   useEffect(() => {
     if(boothCategory && boothId) {
