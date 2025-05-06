@@ -7,10 +7,10 @@ import MainLayout from './layouts/MainLayout';
 import NoticePage from './pages/mains/NoticePage';
 import NoticeDetailPage from './pages/mains/NoticeDetailPage';
 import OrderLayout from './layouts/OrderLayout';
-import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
 import OrderMainPage from './pages/orders/OrderMainPage';
+import OrderPaymentPage from './pages/orders/OrderPaymentPage';
 
 const App: React.FC = () => {
   return (
@@ -31,6 +31,7 @@ const App: React.FC = () => {
         {/* Order */}
         <Route path="/order" element={<OrderLayout />}>
           <Route path=":boothId/:tableNum" element={<OrderMainPage />} />
+          <Route path=":boothId/:tableNum/payment" element={<OrderPaymentPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

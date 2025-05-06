@@ -22,8 +22,8 @@ const OrderMainPage: React.FC = () => {
   }, [boothId, tableNum]);
 
   const handleClickFestinoButton = () => navigate('/main');
-  const handleClickOrderSearchButton = () => navigate(`/order-search/${boothId}`);
-  const handleClickPayment = () => navigate(`/order-payment/${boothId}`);
+  const handleClickOrderSearchButton = () => navigate(`/order/${boothId}/${tableNum}`);
+  const handleClickPayment = () => navigate(`/order/${boothId}/${tableNum}/payment`);
 
   return (
     <div className="flex flex-col">

@@ -57,6 +57,28 @@ export const useOrderStore = () => {
     setTotalPrice(0);
   };
 
+  const getMenuAll = async (boothId: string) => {
+    try {
+      const res = await api.get(`/main/menu/all/booth/${boothId}`);
+      if (res.data.success && Array.isArray(res.data.menuList)) {
+        const validMenus = res.data.menuList.filter(
+          (menu: MenuInfo) =>
+            menu &&
+            typeof menu.menuId === 'string' &&
+            typeof menu.menuName === 'string' &&
+            typeof menu.menuPrice === 'number' &&
+            typeof menu.menuType === 'string',
+        );
+        setMenuInfo(validMenus);
+      } else {
+        navigate('/error/NotFound');
+      }
+    } catch (error) {
+      console.error('Error get menu data:', error);
+      navigate('/error/NotFound');
+    }
+  };
+
   const handleTotalPrice = useCallback(() => {
     const total = userOrderList.reduce((sum, item) => sum + item.menuPrice, 0);
     setTotalPrice(total);
@@ -140,5 +162,6 @@ export const useOrderStore = () => {
     setBoothInfo,
     isUUID,
     getBoothDetail,
+    getMenuAll,
   };
 };
