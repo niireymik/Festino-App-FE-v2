@@ -1,9 +1,9 @@
-import { create } from 'zustand';
-import { IBaseModal } from '@/types/BaseModal.types';
+import { create } from "zustand";
+import { IBaseModal } from "@/types/BaseModal.types";
 
 const useBaseModal = create<IBaseModal>((set) => ({
   isModalOpen: false,
-  modalType: '',
+  modalType: "",
   setModalType: (type) => set({ modalType: type }),
   openModal: (type) =>
     set({

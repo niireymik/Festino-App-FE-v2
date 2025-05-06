@@ -8,6 +8,7 @@ export interface CategoryItemProps {
 export interface Booth {
   boothId: string;
   boothName: string;
+  adminName: string;
   adminCategory: string;
   boothIntro: string;
   boothImage: string | null;
@@ -16,11 +17,32 @@ export interface Booth {
   closeTime: string;
 }
 
-export interface BoothDataState {
-  boothList: Booth[][]; 
-  selectBoothMenu: number;
-  setSelectBoothMenu: (index: number) => void;
-  getBoothData: (type: string, id: number) => void;
+export interface BoothInfo extends Omit<Booth, 'boothImage'> {
+  boothImage: string[];
+  instagram?: string;
+  location?: string;
+  menuList?: Menu[];
+  isReservation?: boolean;
+  totalReservationNum?: number;
+}
+
+export interface BoothItemProps {
+  booth: Booth;
+  onClick: (type: string, id: string) => void;
+  getImageProps: (boothImage: string | null) => { className: string; style: React.CSSProperties };
+}
+
+export interface BoothStore {
+  boothListAll: Booth[];
+  boothListNight: Booth[];
+  boothListDay: Booth[];
+  boothListFood: Booth[];
+  boothListFacility: Booth[];
+  boothDetail: BoothInfo | null;
+  selectBoothCategory: number;
+  setSelectBoothCategory: (index: number) => void;
+  getBoothList: () => Promise<void>
+  getBoothDetail: (type: string, id: string) => Promise<void>;
 }
 
 export interface BoothStateLabelProps {
@@ -28,7 +50,7 @@ export interface BoothStateLabelProps {
   children: React.ReactNode;
 }
 
-export interface BoothMenu {
+export interface Menu {
   menuId: string;
   menuName: string;
   menuDescription: string;
@@ -38,27 +60,8 @@ export interface BoothMenu {
   menuType: number;
 }
 
-export interface BoothInfo {
-  boothId: string;
-  boothName: string;
-  adminCategory: string;
-  adminName: string;
-  openTime: string;
-  closeTime: string;
-  boothIntro: string;
-  boothImage: string[];
-  isOpen: boolean;
-  isOrder: boolean;
-  isReservation: boolean;
-  totalReservationNum: number;
-  markerNum: number;
-  menuList: BoothMenu[];
-  instagram?: string;
-  location: string;
-}
-
 export interface MenuItemProps {
-  menu: BoothMenu;
+  menu: Menu;
 }
 
 export interface ImageSliderProps {

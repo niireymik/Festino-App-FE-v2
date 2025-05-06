@@ -11,22 +11,24 @@ import OrderLayout from './layouts/OrderLayout';
 import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
+import ModalPage from './pages/mains/ModalPage';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <ModalPage />
       <Routes>
         {/* Main */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="timetable" element={<TimeTablePage />} />
-          <Route path="booth" element={<BoothPage />} />
-          <Route path="booth/:boothType/:boothId" element={<BoothDetailPage />} />
+          <Route path="booths" element={<BoothPage />} />
+          <Route path="booths/:type/:boothId" element={<BoothDetailPage />} />
           <Route path="reserve" element={<TablingPage />} />
-          <Route path="teamreview" element={<TeamReviewPage />} />
-          <Route path="/notices" element={<NoticePage />} />
-          <Route path="/notices/:noticeId" element={<NoticeDetailPage />} />
+          <Route path="team-review" element={<TeamReviewPage />} />
+          <Route path="notices" element={<NoticePage />} />
+          <Route path="notices/:noticeId" element={<NoticeDetailPage />} />
         </Route>
 
         {/* Order */}
