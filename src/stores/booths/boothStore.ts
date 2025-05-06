@@ -25,22 +25,33 @@ export const useBoothStore = create<BoothStore>((set) => ({
         '/main/booth/food/all',
         '/main/facility/all',
       ];
-
-      const [all, night, day, food, facility] = await Promise.all(
+  
+      const results = await Promise.allSettled(
         urls.map((url) => api.get(url))
       );
-
+  
+      const getData = (index: number, key: string) => {
+        const result = results[index];
+        return result.status === 'fulfilled' ? result.value.data[key] : [];
+      };
+  
       set({
-        boothListAll: all.data.boothList,
-        boothListNight: night.data.boothList,
-        boothListDay: day.data.boothList,
-        boothListFood: food.data.boothList,
-        boothListFacility: facility.data.facilityList,
+        boothListAll: getData(0, 'boothList'),
+        boothListNight: getData(1, 'boothList'),
+        boothListDay: getData(2, 'boothList'),
+        boothListFood: getData(3, 'boothList'),
+        boothListFacility: getData(4, 'facilityList'),
+      });
+  
+      results.forEach((result, idx) => {
+        if (result.status === 'rejected') {
+          console.warn(`Request failed at index ${idx}:`, result.reason);
+        }
       });
     } catch (error) {
-      console.error(`Error: ${error}, 부스 목록 받아오기 실패`, error);
+      console.error(`Unexpected error during booth list fetch:`, error);
     }
-  },
+  },  
 
   getBoothDetail: async (type: string, id: string) => {
     const urlType = BOOTH_TYPE_MAP[type];
