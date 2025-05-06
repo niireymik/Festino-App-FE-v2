@@ -11,6 +11,7 @@ const BoothDetailPage: React.FC = () => {
   const { type, boothId } = useParams();
   const { boothDetail, getBoothDetail } = useBoothStore();
 
+  // 부스 카테고리 받아오기
   const boothCategory = BOOTH_TYPE.find(item => {
     if(item.type === type) {
       return item.category;
@@ -19,6 +20,7 @@ const BoothDetailPage: React.FC = () => {
     }
   });
 
+  // 부스 페이지로 돌아가기
   const handleClickBoothDetailBack = () => {
     navigate('/booths');
   };
@@ -26,12 +28,14 @@ const BoothDetailPage: React.FC = () => {
   // 슬로건 받아오기
   const getSlogan = () => SLOGAN_MAP[boothDetail?.adminCategory || ''] || '';
 
+  // 부스 상세 정보 유지
   useEffect(() => {
     if(boothCategory && boothId) {
       getBoothDetail(boothCategory?.category, boothId);
     }
   }, []);
 
+  // 부스 정보 없을 때
   if (!boothDetail) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
@@ -42,12 +46,14 @@ const BoothDetailPage: React.FC = () => {
     );
   }
 
+  // 인스타그램으로 이동
   const handleClickInstagram = () => {
     if (boothDetail.instagram) {
       window.open(`https://www.instagram.com/${boothDetail.instagram}/`, '_blank');
     }
   };
 
+  // 예약하기 페이지로 이동
   const handleRouterToReserve = () => {
     navigate(`/reserve/${boothDetail.boothId}`);
   };
