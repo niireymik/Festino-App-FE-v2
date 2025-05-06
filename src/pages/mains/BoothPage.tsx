@@ -5,8 +5,10 @@ import { BOOTH_CATEGORY } from "@/constants";
 import { useBoothStore } from "@/stores/booths/boothStore";
 import { Booth } from "@/types/Booth.types";
 import React, { useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BoothPage: React.FC = () => {
+  const navigate = useNavigate();
   const { boothListAll, boothListNight, boothListDay, boothListFood, boothListFacility, getBoothList, getBoothDetail, selectBoothCategory, setSelectBoothCategory } = useBoothStore();
 
   const handleScrollToSelectedCategory = useCallback(() => {
@@ -21,6 +23,7 @@ const BoothPage: React.FC = () => {
 
   const handleClickBoothItem = (type: string, id: string) => {
     getBoothDetail(type, id);
+    navigate(`/booths/${type}/${id}`)
   };
 
   const getBoothImageProps = (boothImage: string | null) => {
