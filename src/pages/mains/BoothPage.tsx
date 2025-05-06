@@ -26,7 +26,6 @@ const BoothPage: React.FC = () => {
     
     const boothType = BOOTH_TYPE.find(booth => {
       if(booth.category === type) {
-        console.log(booth.type)
         return booth.type;
       } else {
         console.log('존재하지 않는 부스 유형입니다.');
