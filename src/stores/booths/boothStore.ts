@@ -1,57 +1,68 @@
 import { create } from 'zustand';
 import { api } from '@/utils/api';
-import { Booth, BoothInfo } from '@/types/Booth.types';
+import { BoothInfo, BoothStore } from '@/types/Booth.types';
+import { BOOTH_TYPE_MAP } from '@/constants';
 
-export interface BoothDataState {
-  boothList: Booth[];
-  boothData: BoothInfo | null;
-  selectBoothMenu: number;
-  setSelectBoothMenu: (index: number) => void;
-  getBoothData: (type: string, id: string) => Promise<void>;
-}
+export const useBoothStore = create<BoothStore>((set) => ({
+  boothListAll: [],
+  boothListNight: [],
+  boothListDay: [],
+  boothListFood:[],
+  boothListFacility:[],
+  boothDetail: null,
+  selectBoothCategory: 0,
 
-export const useBoothStore = create<BoothDataState>((set) => ({
-  boothList: [],
-  boothData: null,
-  selectBoothMenu: 0,
-
-  setSelectBoothMenu: (index: number) => {
-    set({ selectBoothMenu: index });
+  setSelectBoothCategory: (index: number) => {
+    set({ selectBoothCategory: index });
   },
 
-  getBoothData: async (type: string, id: string) => {
-    let urlType = '';
-    switch (type) {
-      case '야간부스':
-        urlType = 'night';
-        break;
-      case '주간부스':
-        urlType = 'day';
-        break;
-      case '푸드트럭':
-        urlType = 'food';
-        break;
-      case '편의시설':
-        urlType = 'facility';
-        break;
-      default:
-        console.warn('Unknown booth type:', type);
-        return;
-    }
+  getBoothList: async () => {
+    try {
+      const urls = [
+        '/main/booth/all',
+        '/main/booth/night/all',
+        '/main/booth/day/all',
+        '/main/booth/food/all',
+        '/main/facility/all',
+      ];
 
+      const [all, night, day, food, facility] = await Promise.all(
+        urls.map((url) => api.get(url))
+      );
+
+      set({
+        boothListAll: all.data.boothList,
+        boothListNight: night.data.boothList,
+        boothListDay: day.data.boothList,
+        boothListFood: food.data.boothList,
+        boothListFacility: facility.data.facilityList,
+      });
+    } catch (error) {
+      console.error(`Error: ${error}, 부스 목록 받아오기 실패`, error);
+    }
+  },
+
+  getBoothDetail: async (type: string, id: string) => {
+    const urlType = BOOTH_TYPE_MAP[type];
+  
+    if (!urlType) {
+      console.log('부스 타입이 존재하지 않습니다:', type);
+      return;
+    }
+  
     try {
       const endpoint =
         urlType === 'facility'
           ? `/main/${urlType}/${id}`
           : `/main/booth/${urlType}/${id}`;
-
+  
       const res = await api.get(endpoint);
-      const boothData: BoothInfo =
+      const boothDetail: BoothInfo =
         urlType === 'facility' ? res.data.facility : res.data.boothInfo;
-
-      set({ boothData });
+  
+      set({ boothDetail });
     } catch (err) {
-      console.error(`Failed to fetch booth data (${type})`, err);
+      console.error(`부스 정보가 없습니다: ${type}`, err);
     }
   },
 }));

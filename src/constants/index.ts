@@ -18,6 +18,26 @@ export const BOOTH_CATEGORY = [
   { id: 4, name: "편의시설" }
 ];
 
+export const BOOTH_TYPE = [
+  { category: "야간부스", type: "night"},
+  { category: "주간부스", type: "day"},
+  { category: "푸드트럭", type: "food"},
+  { category: "편의시설", type: "facility"},
+];
+
+export const BOOTH_TYPE_MAP: Record<string, string> = {
+  '야간부스': 'night',
+  '주간부스': 'day',
+  '푸드트럭': 'food',
+  '편의시설': 'facility',
+};
+
+export const SLOGAN_MAP: Record<string, string> = {
+  '야간부스': '먹거리가 가득한',
+  '주간부스': '즐거움이 가득한',
+  '푸드트럭': '먹거리가 가득한',
+};
+
 export const TABS = {
   TIME_TABLE: '타임테이블',
   NOTICE: '공지사항',

@@ -1,8 +1,10 @@
+import { getBoothImageProps } from "@/hooks/getBoothImageProps";
 import { ImageSliderProps } from "@/types/Booth.types";
 import React, { useState } from "react";
 
 const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const imageList = images.length > 0 ? images : [null];
 
   return (
     <div className="mt-4 relative">
@@ -19,13 +21,16 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
           setCurrentIndex(newIdx);
         }}
       >
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="snap-start min-w-full flex-shrink-0 aspect-square bg-contain bg-no-repeat bg-center"
-            style={{ backgroundImage: `url(${image})` }}
-          />
-        ))}
+        {imageList.map((image, index) => {
+          const { className, style } = getBoothImageProps(image);
+          return (
+            <div
+              key={index}
+              className={`snap-start min-w-full flex-shrink-0 aspect-square bg-contain bg-no-repeat bg-center ${className}`}
+              style={style}
+            />
+          );
+        })}
       </div>
     </div>
   );

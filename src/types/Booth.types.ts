@@ -16,20 +16,33 @@ export interface Booth {
   openTime: string;
   closeTime: string;
 }
+
 export interface BoothInfo extends Omit<Booth, 'boothImage'> {
   boothImage: string[];
   instagram?: string;
   location?: string;
   menuList?: Menu[];
+  isReservation?: boolean;
   totalReservationNum?: number;
 }
 
-export interface BoothDataState {
-  boothList: Booth[];
-  boothData: BoothInfo;
-  selectBoothMenu: number;
-  setSelectBoothMenu: (index: number) => void;
-  getBoothData: (type: string, id: string) => Promise<void>;
+export interface BoothItemProps {
+  booth: Booth;
+  onClick: (type: string, id: string) => void;
+  getImageProps: (boothImage: string | null) => { className: string; style: React.CSSProperties };
+}
+
+export interface BoothStore {
+  boothListAll: Booth[];
+  boothListNight: Booth[];
+  boothListDay: Booth[];
+  boothListFood: Booth[];
+  boothListFacility: Booth[];
+  boothDetail: BoothInfo | null;
+  selectBoothCategory: number;
+  setSelectBoothCategory: (index: number) => void;
+  getBoothList: () => Promise<void>
+  getBoothDetail: (type: string, id: string) => Promise<void>;
 }
 
 export interface BoothStateLabelProps {
