@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useOrderStore } from '@/stores/orders/orderStore';
-import MenuItem from '@/components/orders/Menus'; // 위에서 작성한 컴포넌트
+import MenuItem from '@/components/orders/Menus';
 import { formatPrice } from '@/utils/utils';
 import { useBaseModal } from '@/stores/baseModal';
 
@@ -37,7 +37,6 @@ const OrderPaymentPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full pt-[60px]">
-      {/* 상단 바 */}
       <div className="fixed top-0 w-full bg-white z-10 p-4 flex items-center justify-between border-b border-gray-200">
         <button onClick={() => navigate('/order-mainpage')}>
           <img src="/icons/common/back.svg" alt="Back" />
@@ -45,8 +44,6 @@ const OrderPaymentPage: React.FC = () => {
         <h1 className="text-lg font-bold">주문하기</h1>
         <div className="w-6" />
       </div>
-
-      {/* 메뉴 탭 */}
       <div className="flex gap-2 px-4 pt-2 mt-[60px] overflow-x-auto">
         {CATEGORIES.map((cat) => (
           <button
