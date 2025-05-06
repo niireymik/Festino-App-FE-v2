@@ -22,6 +22,7 @@ export interface BoothInfo extends Omit<Booth, 'boothImage'> {
   instagram?: string;
   location?: string;
   menuList?: Menu[];
+  isReservation?: boolean;
   totalReservationNum?: number;
 }
 
