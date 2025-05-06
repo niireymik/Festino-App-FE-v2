@@ -136,29 +136,33 @@ const BoothDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 구분선 */}
-      <div className="w-full h-3 bg-tag" />
+      {boothDetail.boothImage && (
+        <>
+          {/* 구분선 */}
+          <div className="w-full h-3 bg-tag" />
 
-      {/* 이미지 슬라이더 */}
-      <div className="relative pt-[2.33%] px-[4.65%] pb-9">
-        <ImageSlider images={boothDetail.boothImage} />
+        {/* 이미지 슬라이더 */}
+          <div className="relative pt-[2.33%] px-[4.65%] pb-9">
+            <ImageSlider images={boothDetail?.boothImage} />
 
-        {/* 인스타그램 버튼 */}
-        {boothDetail.instagram && (
-          <div
-            onClick={handleClickInstagram}
-            className="text-xs text-secondary-500 rounded-full w-fit h-[26px] flex items-center justify-center bg-tag gap-1 mt-6 px-3 cursor-pointer"
-          >
-            <div className="min-w-[16px] h-[16px] bg-instagram bg-center bg-no-repeat bg-[length:16px_16px]" />
-            <div>{boothDetail.instagram}</div>
+            {/* 인스타그램 버튼 */}
+            {boothDetail.instagram && (
+              <div
+                onClick={handleClickInstagram}
+                className="text-xs text-secondary-500 rounded-full w-fit h-[26px] flex items-center justify-center bg-tag gap-1 mt-6 px-3 cursor-pointer"
+              >
+                <div className="min-w-[16px] h-[16px] bg-instagram bg-center bg-no-repeat bg-[length:16px_16px]" />
+                <div>{boothDetail.instagram}</div>
+              </div>
+            )}
+
+            {/* 부스 소개글 */}
+            <div className="pt-5 text-secondary-500 font-light break-words px-1 whitespace-pre-wrap">
+              {boothDetail.boothIntro}
+            </div>
           </div>
-        )}
-
-        {/* 부스 소개글 */}
-        <div className="pt-5 text-secondary-500 font-light break-words px-1 whitespace-pre-wrap">
-          {boothDetail.boothIntro}
-        </div>
-      </div>
+        </>
+      )}
 
       {((boothDetail.menuList?.length !== 0) && boothDetail.menuList) && (
         <>
@@ -196,7 +200,6 @@ const BoothDetailPage: React.FC = () => {
           ))}
         </>
       )}
-
 
       {boothDetail.isReservation && (
         <>
