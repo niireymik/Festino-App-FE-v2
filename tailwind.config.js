@@ -94,6 +94,7 @@ export default {
         'error-full': "url('/images/tinos/error.svg')",
         // common
         'instagram': "url('/icons/commons/instagram.png')",
+        'x-button': "url('/icons/commons/x.png')",
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
