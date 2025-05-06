@@ -2,6 +2,7 @@ import BoothItem from "@/components/booths/BoothItem";
 import BoothMap from "@/components/booths/BoothMap";
 import CategoryItem from "@/components/booths/CategoryItem";
 import { BOOTH_CATEGORY, BOOTH_TYPE } from "@/constants";
+import { getBoothImageProps } from "@/hooks/getBoothImageProps";
 import { useBoothStore } from "@/stores/booths/boothStore";
 import { Booth } from "@/types/Booth.types";
 import React, { useEffect, useCallback } from "react";
@@ -33,19 +34,6 @@ const BoothPage: React.FC = () => {
     })
 
     navigate(`/booths/${boothType?.type}/${id}`)
-  };
-
-  const getBoothImageProps = (boothImage: string | null) => {
-    if (!boothImage) {
-      return {
-        className: "bg-default",
-        style: {},
-      };
-    }
-    return {
-      className: "",
-      style: { backgroundImage: `url(${boothImage})` },
-    };
   };
   
   useEffect(() => {
