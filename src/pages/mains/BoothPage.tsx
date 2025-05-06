@@ -1,7 +1,7 @@
 import BoothItem from "@/components/booths/BoothItem";
 import BoothMap from "@/components/booths/BoothMap";
 import CategoryItem from "@/components/booths/CategoryItem";
-import { BOOTH_CATEGORY } from "@/constants";
+import { BOOTH_CATEGORY, BOOTH_TYPE } from "@/constants";
 import { useBoothStore } from "@/stores/booths/boothStore";
 import { Booth } from "@/types/Booth.types";
 import React, { useEffect, useCallback } from "react";
@@ -23,7 +23,17 @@ const BoothPage: React.FC = () => {
 
   const handleClickBoothItem = (type: string, id: string) => {
     getBoothDetail(type, id);
-    navigate(`/booths/${type}/${id}`)
+    
+    const boothType = BOOTH_TYPE.find(booth => {
+      if(booth.category === type) {
+        console.log(booth.type)
+        return booth.type;
+      } else {
+        console.log('존재하지 않는 부스 유형입니다.');
+      }
+    })
+
+    navigate(`/booths/${boothType?.type}/${id}`)
   };
 
   const getBoothImageProps = (boothImage: string | null) => {
@@ -38,7 +48,6 @@ const BoothPage: React.FC = () => {
       style: { backgroundImage: `url(${boothImage})` },
     };
   };
-  console.log(boothListAll)
   
   useEffect(() => {
     getBoothList();
