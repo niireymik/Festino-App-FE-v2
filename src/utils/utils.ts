@@ -10,7 +10,8 @@ export const priceToString = (price: number) => {
 
 export const formatPhoneNum = (phoneNum: string) => {
   if (phoneNum === '') return '';
-  return phoneNum.replace(/-/g, '');};
+  return phoneNum.replace(/-/g, '');
+};
 
 export const openNewTap = (url: string) => {
   window.open(url, '_blank');
