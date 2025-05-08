@@ -32,6 +32,8 @@ interface ReservationStore {
   prevReserveBoothName: string;
   reserveInfo: ReserveInfo;
 
+  setRecentName: (name: string) => void;
+  setRecentPhoneNum: (phone: string) => void;
   setUserName: (name: string) => void;
   setSelectedNightBoothInfo: (booth: BoothInfo | null) => void;
   saveReservation: (
@@ -67,7 +69,11 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
       boothId: '',
     },
 
-    setUserName: (name) => set({ userName: name }),
+    setRecentPhoneNum: (phone: string) => set({ recentPhoneNum: phone }),
+
+    setRecentName: (name: string) => set({ recentName: name }),
+
+    setUserName: (name: string) => set({ userName: name }),
 
     setSelectedNightBoothInfo: (booth) => {
       set({ selectedNightBoothInfo: booth ? { ...booth } : null });
@@ -106,9 +112,11 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
             openModal('enterBoothModal');
           } else {
             openModal('searchReserveModal');
+            console.log('예약 있나?');
           }
         } else {
           openModal('noReserveModal');
+          console.log('예약 없음');
         }
       } catch (err) {
         closeModal();
