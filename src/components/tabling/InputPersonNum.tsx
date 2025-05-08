@@ -18,7 +18,7 @@ const InputPersonNum: React.FC<InputPersonNumberProps> = ({ value, onChange }) =
     <>
       <div className="text-xs">인원 수</div>
       <div className="h-11 w-full flex flex-row items-center py-2.5 gap-2.5">
-        <img src="/icons/person-plus.svg" className="w-6 h-6" />
+        <img src="/icons/tabling/person-plus.svg" className="w-6 h-6" />
         <input
           className="flex-1 focus:outline-none bg-inherit"
           type="text"

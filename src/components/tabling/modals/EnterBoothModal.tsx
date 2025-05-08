@@ -13,7 +13,7 @@ const EnterBoothModal: React.FC = () => {
         }}
       >
         <div className="w-12 h-12 bg-primary-900-light-16 rounded-full grid place-items-center">
-          <img src="/icons/info.svg" />
+          <img src="/icons/commons/info.svg" />
         </div>
         <div className="w-full flex flex-col gap-3 items-center text-center">
           <p className="text-secondary-700 text-xl font-bold">입장안내</p>
