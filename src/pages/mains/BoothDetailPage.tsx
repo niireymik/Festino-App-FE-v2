@@ -142,7 +142,7 @@ const BoothDetailPage: React.FC = () => {
           <div className="w-full h-3 bg-tag" />
 
         {/* 이미지 슬라이더 */}
-          <div className="relative pt-[2.33%] px-[4.65%] pb-9">
+          <div className="relative pt-[4.65%] px-[4.65%] pb-9">
             <ImageSlider images={boothDetail?.boothImage} />
 
             {/* 인스타그램 버튼 */}

@@ -7,7 +7,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const imageList = images.length > 0 ? images : [null];
 
   return (
-    <div className="mt-4 relative">
+    <div className="relative">
       {images.length > 1 && (
         <div className="absolute right-6 top-6 flex justify-center items-center w-[72px] h-8 bg-white opacity-80 rounded-full text-base text-secondary-500 z-1">
           {currentIndex + 1} / {images.length}
