@@ -329,7 +329,7 @@ const BoothMap: React.FC = () => {
           </div>
         </div>
 
-        {/* 부스 상세페이지용 */}
+        {/* 부스 상세페이지용 (수정해야함) */}
         {isBoothDetail && (
           <>
             {/* 해당 부스 마커만 표시 */}
