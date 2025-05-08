@@ -36,7 +36,7 @@ const Reservation: React.FC = () => {
 
   const handleClickReserveButton = () => {
     if (!selectedBoothId) return;
-    openModal('reserveModal');
+    openModal('reservationModal');
   };
 
   const navigate = useNavigate();
