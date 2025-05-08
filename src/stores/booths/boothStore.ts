@@ -12,7 +12,7 @@ export const useBoothStore = create<BoothStore>((set) => ({
   boothDetail: null,
   selectBoothCategory: 0,
 
-  setSelectBoothCategory: (index: number) => {
+  setSelectBoothCategory: (index: number | undefined) => {
     set({ selectBoothCategory: index });
   },
 
@@ -55,25 +55,24 @@ export const useBoothStore = create<BoothStore>((set) => ({
 
   getBoothDetail: async (type: string, id: string) => {
     const urlType = BOOTH_TYPE_MAP[type];
-  
-    if (!urlType) {
-      console.log('부스 타입이 존재하지 않습니다:', type);
-      return;
-    }
-  
+
+    if (!urlType) return;
+
     try {
       const endpoint =
         urlType === 'facility'
           ? `/main/${urlType}/${id}`
           : `/main/booth/${urlType}/${id}`;
-  
+
       const res = await api.get(endpoint);
       const boothDetail: BoothInfo =
         urlType === 'facility' ? res.data.facility : res.data.boothInfo;
-  
+
       set({ boothDetail });
+      return boothDetail;
     } catch (err) {
       console.error(`부스 정보가 없습니다: ${type}`, err);
+      return;
     }
   },
 }));
