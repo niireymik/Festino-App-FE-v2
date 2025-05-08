@@ -24,6 +24,7 @@ export interface BoothInfo extends Omit<Booth, 'boothImage'> {
   menuList?: Menu[];
   isReservation?: boolean;
   totalReservationNum?: number;
+  markerNum: number;
 }
 
 export interface BoothItemProps {
@@ -40,9 +41,9 @@ export interface BoothStore {
   boothListFacility: Booth[];
   boothDetail: BoothInfo | null;
   selectBoothCategory: number;
-  setSelectBoothCategory: (index: number) => void;
+  setSelectBoothCategory: (index: number | undefined) => void;
   getBoothList: () => Promise<void>
-  getBoothDetail: (type: string, id: string) => Promise<void>;
+  getBoothDetail: (type: string, id: string) => Promise<BoothInfo | undefined>;
 }
 
 export interface BoothStateLabelProps {
