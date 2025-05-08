@@ -7,6 +7,8 @@ import FailReservationModal from '@/components/tabling/modals/FailReservationMod
 import EnterBoothModal from '@/components/tabling/modals/EnterBoothModal';
 import SearchReservationModal from '@/components/tabling/modals/SearchReservationModal';
 import DuplicateModal from '@/components/tabling/modals/DuplicateModal';
+import ReservationModal from '@/components/tabling/modals/ReservationModal';
+import CompleteReserveModal from '@/components/tabling/modals/CompleteReserveModal';
 
 const ModalPage = () => {
   const { isModalOpen, modalType } = useBaseModal();
@@ -17,11 +19,13 @@ const ModalPage = () => {
     <ModalBackground>
       {modalType === 'timetable' && <TimetableModal />}
       {modalType === 'loadingModal' && <LoadingModal />}
-      {modalType === 'failReservationModal' && <FailReservationModal />}
       {modalType === 'enterBoothModal' && <EnterBoothModal />}
       {modalType === 'searchReservationModal' && <SearchReservationModal />}
       {modalType === 'noReserveModal' && <NoReserveModal />}
       {modalType === 'duplicateModal' && <DuplicateModal />}
+      {modalType === 'reservationModal' && <ReservationModal />}
+      {modalType === 'failReservationModal' && <FailReservationModal />}
+      {modalType === 'completeReserveModal' && <CompleteReserveModal />}
     </ModalBackground>
   );
 };
