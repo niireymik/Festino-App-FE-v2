@@ -1,29 +1,59 @@
 import React from 'react';
-import { useBoothMapStore } from '@/stores/booths/boothMapStore';
 import { openNewTap } from '@/utils/utils';
+import { BoothInfo } from '@/types/Booth.types';
 
 interface Props {
-  boothId: number;
+  booth: BoothInfo;
 }
 
-export const MapSpeechBubble: React.FC<Props> = ({ boothId }) => {
-  const { boothDataMap } = useBoothMapStore();
-  const booth = boothDataMap[boothId];
+export const MapSpeechBubble: React.FC<Props> = ({ booth }) => {
+  if (!booth?.boothId) {
+    return (
+      <div className="px-[18px] py-[11px] speech-bubble shadow-5xl flex flex-col justify-center items-center">
+        <div className="text-primary-800 font-semibold text-[11px]">부스 정보 미등록</div>
+        <div className="bg-tino-error-half bg-cover w-[75px] h-[40px]"></div>
+      </div>
+    );
+  }
 
-  if (!booth) return null;
-  
+  const isStudentCouncil = booth.boothName.includes('총학생회');
+  const isFacility = booth.adminCategory === '편의시설';
+  const isBoothCategory = booth.adminCategory.includes('부스');
+
   return (
-    <div className="p-2 rounded-lg border border-primary-500 shadow-lg bg-white animate-fade-in">
-      <div className="flex flex-col items-start gap-1">
-        <div className="text-sm font-semibold text-primary-900">{booth.boothName}</div>
-        <div className="text-xs text-muted-foreground line-clamp-2">{booth.boothIntro}</div>
-        <button
-          className="mt-1 px-2 py-1 text-xs border rounded-md border-primary-300 hover:bg-primary-50"
+    <div className="px-[18px] py-[11px] speech-bubble shadow-5xl flex flex-col justify-center">
+      <div
+        className={`text-primary-900 font-semibold text-[11px] pb-1 ${
+          isStudentCouncil ? 'flex justify-center items-center' : ''
+        }`}
+      >
+        {isFacility ? booth.boothName : booth.adminName}
+        {isBoothCategory && ' 부스'}
+      </div>
+
+      {isStudentCouncil ? (
+        <div 
+          className="w-full flex justify-center items-center"
           onClick={() => openNewTap("https://www.instagram.com/tukorea_drama/")}
         >
-          자세히 보기
-        </button>
-      </div>
+          <div className="text-[8px] text-secondary-500 rounded-full w-fit h-fit px-4 py-[1px] flex items-center justify-center bg-instagram-bg gap-1">
+            @tukorea_25_wind
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center">
+            <div className="w-[10px] h-[10px] bg-[url('/icons/booths/location_on.svg')]" />
+            <div className="text-[8px] pl-[2px] text-secondary-500">{booth.location}</div>
+          </div>
+          <div className="flex items-center">
+            <div className="w-[10px] h-[10px] bg-[url('/icons/booths/alarm.svg')]" />
+            <div className="text-[8px] pl-[2px] text-secondary-500">
+              {booth.openTime} ~ {booth.closeTime}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
