@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useReservationStore } from '@/stores/tabling/tablingStore';
-import { useBoothDataStore } from '@/stores/boothDataStore';
+import { useBoothStore } from '@/stores/booths/boothStore';
 import NoBooth from './NoBooth';
 import { BoothInfo } from '@/types/Booth.types';
 import useBaseModal from '@/stores/baseModal';
@@ -15,7 +15,7 @@ const Reservation: React.FC = () => {
     openNightBoothInfoLength,
   } = useReservationStore();
 
-  const { getBoothData } = useBoothDataStore();
+  const { getBoothDetail } = useBoothStore();
   const { openModal } = useBaseModal();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -44,8 +44,8 @@ const Reservation: React.FC = () => {
 
   const handleClickDetailButton = () => {
     if (!selectedBoothId) return;
-    getBoothData('야간부스', Number(selectedBoothId));
-    navigate(`/booth/detail/night/${selectedBoothId}`);
+    getBoothDetail('야간부스', String(selectedBoothId));
+    navigate(`/booths/night/${selectedBoothId}`);
   };
 
   const handleScrollToSelectedBooth = useCallback(() => {
