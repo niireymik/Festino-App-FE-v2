@@ -111,12 +111,10 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
           if (info.totalTeamCount === 1) {
             openModal('enterBoothModal');
           } else {
-            openModal('searchReserveModal');
-            console.log('예약 있나?');
+            openModal('searchReservationModal');
           }
         } else {
           openModal('noReserveModal');
-          console.log('예약 없음');
         }
       } catch (err) {
         closeModal();
