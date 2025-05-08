@@ -1,28 +1,67 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useReservationStore } from '@/stores/tabling/tablingStore';
+import { formatPhoneNum } from '@/utils/utils';
+import PersonalInfo from '../commons/PersonalInfo';
+import { usePersonalInfoStore } from '@/stores/personalInfoStore';
+import useBaseModal from '@/stores/baseModal';
+import { useNavigate } from 'react-router-dom';
 
 const SearchReservation: React.FC = () => {
-  const [name, setName] = useState('');
-  const [phoneNum, setPhoneNum] = useState('');
+  const [isInputNameFocused, setIsInputNameFocused] = useState<boolean>(false);
+  const [isInputPhoneNumFocused, setIsInputPhoneNumFocused] = useState<boolean>(false);
+  const [isInputFill, setIsInputFill] = useState<boolean>(false);
 
-  const [isInputNameFocused, setIsInputNameFocused] = useState(false);
-  const [isInputPhoneNumFocused, setIsInputPhoneNumFocused] = useState(false);
+  const { getReservation, setUserName, setRecentPhoneNum, setRecentName, recentName, recentPhoneNum } =
+    useReservationStore();
+  const { isAgreed } = usePersonalInfoStore();
+  const { openModal, closeModal } = useBaseModal();
+  const navigate = useNavigate();
 
-  const isActive = name.trim() !== '' && phoneNum.trim() !== '';
+  const regex = useMemo(() => /^010/, []);
+
+  const handleClickSearchButton = async () => {
+    if (!isInputFill || !isAgreed) return;
+    const inputInfo = { userName: recentName, phoneNum: formatPhoneNum(recentPhoneNum) };
+    await getReservation(inputInfo, { openModal, closeModal, navigate });
+    setUserName(recentName);
+  };
+
+  const formattedPhoneNum = (phoneNum: string) => {
+    const inputValue = phoneNum.replace(/\D/g, '');
+    let formattedValue = '';
+
+    if (inputValue.length > 3 && inputValue.length < 8) {
+      formattedValue = inputValue.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+    } else if (inputValue.length >= 8) {
+      formattedValue = inputValue.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+    } else {
+      formattedValue = inputValue;
+    }
+    return formattedValue;
+  };
+
+  useEffect(() => {
+    setIsInputFill(recentName.length >= 2 && recentPhoneNum.length === 13 && regex.test(recentPhoneNum));
+  }, [recentName, recentPhoneNum, regex]);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const digitsOnly = e.target.value.replace(/\D/g, '');
-    let formatted = '';
-    if (digitsOnly.length < 4) formatted = digitsOnly;
-    else if (digitsOnly.length < 8) formatted = digitsOnly.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-    else formatted = digitsOnly.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
-
-    setPhoneNum(formatted);
+    const formatted = formattedPhoneNum(e.target.value);
+    setRecentPhoneNum(formatted);
   };
 
-  const handleClickSearchButton = () => {
-    if (!isActive) return;
-    alert(`이름: ${name}, 전화번호: ${phoneNum}`);
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const filtered = e.target.value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣 ]/g, '').slice(0, 5);
+    setRecentName(filtered); // Zustand store의 recentName setter 함수
   };
+
+  useEffect(() => {
+    if (isInputNameFocused) {
+      document.getElementById('nameInput')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    if (isInputPhoneNumFocused) {
+      document.getElementById('phoneNumInput')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [isInputNameFocused, isInputPhoneNumFocused]);
 
   return (
     <>
@@ -35,10 +74,10 @@ const SearchReservation: React.FC = () => {
               <input
                 className="flex-1 focus:outline-none bg-inherit"
                 type="text"
-                value={name}
+                value={recentName}
                 placeholder="티노"
                 maxLength={5}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleNameChange}
                 onFocus={() => setIsInputNameFocused(true)}
                 onBlur={() => setIsInputNameFocused(false)}
                 id="nameInput"
@@ -55,7 +94,7 @@ const SearchReservation: React.FC = () => {
                 type="tel"
                 placeholder="010-1234-5678"
                 maxLength={13}
-                value={phoneNum}
+                value={recentPhoneNum}
                 onChange={handlePhoneChange}
                 onFocus={() => setIsInputPhoneNumFocused(true)}
                 onBlur={() => setIsInputPhoneNumFocused(false)}
@@ -65,16 +104,16 @@ const SearchReservation: React.FC = () => {
             <hr
               className={`border-0 h-[1px] mb-5 ${isInputPhoneNumFocused ? 'bg-primary-900' : 'bg-secondary-500-light-20'}`}
             />
-            {/* <PersonalInfo /> */}
+            <PersonalInfo />
           </div>
           <div className="px-5">
             <button
               type="button"
               className={`w-full h-[60px] text-white font-bold rounded-10xl mb-20 mt-5 ${
-                isActive ? 'bg-primary-900' : 'bg-secondary-100'
+                isInputFill && isAgreed ? 'bg-primary-900' : 'bg-secondary-100'
               }`}
               onClick={handleClickSearchButton}
-              disabled={!isActive}
+              disabled={!(isInputFill && isAgreed)}
             >
               조회하기
             </button>
