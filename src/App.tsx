@@ -12,6 +12,7 @@ import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
 import ModalPage from './pages/mains/ModalPage';
+import ErrorPage from './pages/mains/ErrorPage';
 
 const App: React.FC = () => {
   return (
@@ -35,6 +36,10 @@ const App: React.FC = () => {
         <Route path="/order" element={<OrderLayout />}>
           <Route path=":boothId/:tableNum" element={<OrderHomePage />} />
         </Route>
+
+        {/* Error */}
+        <Route path="/error/:page" element={<ErrorPage />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );
