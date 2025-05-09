@@ -119,7 +119,7 @@ const BoothMap: React.FC = () => {
   const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
   const [selectedBooth, setSelectedBooth] = useState<Booth | null>(null);
   // const [boothList, setBoothList] = useState<Booth[]>([]);
-  const { boothListAll, boothListNight, boothListDay, boothListFood, boothListFacility, selectBoothCategory, setSelectBoothCategory } = useBoothStore();
+  const { boothListAll, boothListNight, boothListDay, boothListFood, boothListFacility, selectBoothCategory, boothDetail, setSelectBoothCategory } = useBoothStore();
 
   const boothLists: Record<number, Booth[]> = {
     1: boothListNight,
@@ -204,7 +204,7 @@ const BoothMap: React.FC = () => {
       setZoom(1.6);
     }
     scrollToFirstMarker();
-  }, [selectBoothCategory, scrollToFirstMarker]);
+  }, [selectBoothCategory]);
 
   return (
     <div className="dynamic-padding">
@@ -296,38 +296,34 @@ const BoothMap: React.FC = () => {
           </div>
         </div>
 
-        {/* 부스 상세페이지용 (수정해야함) */}
-        {isBoothDetail && (
-          <>
-            {/* 해당 부스 마커만 표시 */}
-            {Object.entries(markers.detail).map(([category, markerList]) =>
-              markerList.map((marker, idx) => (
+        {/* 부스 상세페이지용 */}
+        {isBoothDetail && selectedMarker && selectedBooth && (
+        <>
+          {Object.entries(markers.detail).map(([category, markerList]) =>
+            markerList
+              .filter(marker => marker.markerNum === selectedBooth.markerNum)
+              .map((marker, idx) => (
                 <div
                   key={`${category}-${idx}`}
                   className="absolute cursor-pointer transition-transform duration-500 ease-in-out"
                   style={{
                     left: `${marker.left * zoom}px`,
                     bottom: `${marker.bottom * zoom}px`,
-                    transform: `scale(${selectedMarker?.markerNum === marker.markerNum ? 1.3 / zoom : 1 / zoom})`,
+                    transform: `scale(${1.3 / zoom})`,
                     transformOrigin: 'center bottom',
-                    zIndex: selectedMarker?.markerNum === marker.markerNum ? 1000 : 500,
+                    zIndex: 1000,
                   }}
-                  onClick={() => {setSelectedMarker(marker)}}
+                  onClick={() => setSelectedMarker(marker)}
                 >
                   <motion.div
                     className="relative w-14 h-14 bg-cover"
-                    style={{ 
-                      backgroundImage: 
-                        selectedMarker?.markerNum === marker.markerNum ?
-                          `url(/icons/booths/markers/after/${category}.svg)` :
-                          `url(/icons/booths/markers/before/${category}.svg)`
+                    style={{
+                      backgroundImage: `url(/icons/booths/markers/after/${category}.svg)`,
                     }}
                   >
-                    {selectedBooth && (
-                      <div className="absolute bottom-16">
-                        <MapSpeechBubble booth={selectedBooth} />
-                      </div>
-                    )}
+                    <div className="absolute bottom-16">
+                      <MapSpeechBubble booth={selectedBooth} />
+                    </div>
                   </motion.div>
                 </div>
               ))
