@@ -5,6 +5,12 @@ export interface CategoryItemProps {
   isSelected?: boolean;
 }
 
+export interface AccountInfo {
+  account: string;
+  accountHolder: string;
+  bankName: string;
+}
+
 export interface Booth {
   boothId: string;
   boothName: string;
@@ -15,12 +21,14 @@ export interface Booth {
   isOpen: boolean;
   openTime: string;
   closeTime: string;
+  markerNum: number;
+  location: string;
+  accountInfo: AccountInfo;
 }
 
 export interface BoothInfo extends Omit<Booth, 'boothImage'> {
   boothImage: string[];
   instagram?: string;
-  location?: string;
   menuList?: Menu[];
   isReservation?: boolean;
   totalReservationNum?: number;
