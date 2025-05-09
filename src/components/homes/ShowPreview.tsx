@@ -4,17 +4,19 @@ import { useTimetableStore } from "@/stores/homes/timetableStore";
 import useBaseModal from "@/stores/baseModal";
 import { openNewTap } from "@/utils/utils";
 import { COUNCIL_URL } from "@/constants";
+import { ClubData } from "@/types/ClubData.types";
 
 const ShowPreview: React.FC = () => {
   const { festivalDate } = useDateStore();
-  const { clubData, getClubTimetable } = useTimetableStore();
+  const { clubData, getClubTimetable, setSelectedClub } = useTimetableStore();
   const { openModal } = useBaseModal();
 
   useEffect(() => {
     getClubTimetable(festivalDate);
   }, [festivalDate]);
 
-  const openTimetableModal = () => {
+  const openTimetableModal = (club: ClubData) => {
+    setSelectedClub(club);
     openModal("timetable");
   };
 
@@ -22,7 +24,7 @@ const ShowPreview: React.FC = () => {
     <div className="w-full h-[160px] sm:h-[178px] bg-white rounded-3xl border-primary-900-light-16 border-1 flex justify-center select-none shadow-4xl">
       <div className="flex pt-3 w-full px-3 justify-evenly gap-1 overflow-x-auto reserve-container">
         {clubData.map((club, index) => (
-          <div onClick={openTimetableModal} key={index} className="flex flex-col items-center cursor-pointer">
+          <div onClick={() => openTimetableModal(club)} key={index} className="flex flex-col items-center cursor-pointer">
             <div
               className="border-2 border-primary bg-no-repeat bg-cover bg-center w-[86px] h-[86px] sm:w-[100px] sm:h-[100px] rounded-full"
               style={{backgroundImage: `url(${club.clubImage})`,}}>
