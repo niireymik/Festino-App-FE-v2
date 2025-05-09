@@ -1,5 +1,5 @@
 import useBaseModal from '@/stores/baseModal';
-import { useReservationStore } from '@/stores/tablings/tablingstore';
+import { useReservationStore } from '@/stores/tablings/tablingStore';
 import { useNavigate } from 'react-router-dom';
 
 const DuplicateModal: React.FC = () => {
