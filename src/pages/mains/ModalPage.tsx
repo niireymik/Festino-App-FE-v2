@@ -1,15 +1,15 @@
 import useBaseModal from '@/stores/baseModal';
 import ModalBackground from '@/components/modals/ModalBackground';
 import TimetableModal from '@/components/homes/TimetableModal';
-import NoReserveModal from '@/components/tabling/modals/NoReserveModal';
-import LoadingModal from '@/components/tabling/modals/LoadingModal';
-import FailReservationModal from '@/components/tabling/modals/FailReservationModal';
-import EnterBoothModal from '@/components/tabling/modals/EnterBoothModal';
-import SearchReservationModal from '@/components/tabling/modals/SearchReservationModal';
-import DuplicateModal from '@/components/tabling/modals/DuplicateModal';
-import ReservationModal from '@/components/tabling/modals/ReservationModal';
-import CompleteReserveModal from '@/components/tabling/modals/CompleteReserveModal';
-import MessageFailModal from '@/components/tabling/modals/MessageFailModal';
+import NoReserveModal from '@/components/tablings/modals/NoReserveModal';
+import LoadingModal from '@/components/tablings/modals/LoadingModal';
+import FailReservationModal from '@/components/tablings/modals/FailReservationModal';
+import EnterBoothModal from '@/components/tablings/modals/EnterBoothModal';
+import SearchReservationModal from '@/components/tablings/modals/SearchReservationModal';
+import DuplicateModal from '@/components/tablings/modals/DuplicateModal';
+import ReservationModal from '@/components/tablings/modals/ReservationModal';
+import CompleteReserveModal from '@/components/tablings/modals/CompleteReserveModal';
+import MessageFailModal from '@/components/tablings/modals/MessageFailModal';
 
 const ModalPage = () => {
   const { isModalOpen, modalType } = useBaseModal();

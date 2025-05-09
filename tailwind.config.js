@@ -115,7 +115,7 @@ export default {
         'arrow-forward': "url('/icons/booths/arrow-forward.svg')",
         'reservation-status': "url('/images/booths/reserve.svg')",
         // tabling
-        'tabling-banner': "url('/images/tabling/tino-tabling.svg')"
+        'tabling-banner': "url('/images/tablings/tino-tabling.svg')"
       },
       borderRadius: {
         "2.5xl": "1.25rem", // 20px

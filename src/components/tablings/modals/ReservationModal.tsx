@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import InputName from '../InputName';
 import InputPersonNum from '../InputPersonNum';
 import InputPhoneNum from '../InputPhoneNum';
-import { useReservationStore } from '@/stores/tabling/tablingStore';
+import { useReservationStore } from '@/stores/tablings/tablingStore';
 import { formatPhoneNum } from '@/utils/utils';
 import PersonalInfo from '@/components/commons/PersonalInfo';
 import { usePersonalInfoStore } from '@/stores/personalInfoStore';
@@ -80,9 +80,7 @@ const ReservationModal: React.FC = () => {
         }}
       >
         <div className="text-secondary-700 text-xl font-semibold">{newNightBooth?.adminName} 부스 예약</div>
-        <div
-          className="w-full flex flex-col justify-start px-4"
-        >
+        <div className="w-full flex flex-col justify-start px-4">
           <InputName value={recentName} onChange={setRecentName} />
           <div className="mb-[30px]">
             <InputPhoneNum value={recentPhoneNum} onChange={setRecentPhoneNum} />

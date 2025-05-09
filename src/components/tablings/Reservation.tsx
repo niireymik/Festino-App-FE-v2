@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useReservationStore } from '@/stores/tabling/tablingStore';
+import { useReservationStore } from '@/stores/tablings/tablingStore';
 import { useBoothStore } from '@/stores/booths/boothStore';
 import NoBooth from './NoBooth';
 import { BoothInfo } from '@/types/Booth.types';

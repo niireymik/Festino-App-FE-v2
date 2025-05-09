@@ -1,4 +1,4 @@
-import { useReservationStore } from '@/stores/tabling/tablingStore';
+import { useReservationStore } from '@/stores/tablings/tablingStore';
 import useBaseModal from '@/stores/baseModal';
 
 const SearchReservationModal: React.FC = () => {

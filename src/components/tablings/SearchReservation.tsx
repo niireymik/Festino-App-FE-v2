@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useReservationStore } from '@/stores/tabling/tablingStore';
+import { useReservationStore } from '@/stores/tablings/tablingStore';
 import { formatPhoneNum } from '@/utils/utils';
 import PersonalInfo from '../commons/PersonalInfo';
 import { usePersonalInfoStore } from '@/stores/personalInfoStore';
@@ -70,7 +70,7 @@ const SearchReservation: React.FC = () => {
           <div className="px-4">
             <div className="text-xs">이름</div>
             <div className="h-11 w-full flex flex-row items-center py-2.5 gap-2.5">
-              <img src="/icons/tabling/person.svg" className="w-6 h-6" />
+              <img src="/icons/tablings/person.svg" className="w-6 h-6" />
               <input
                 className="flex-1 focus:outline-none bg-inherit"
                 type="text"
@@ -88,7 +88,7 @@ const SearchReservation: React.FC = () => {
             />
             <div className="text-xs">전화번호</div>
             <div className="h-11 w-full flex flex-row items-center py-2.5 gap-2.5">
-              <img src="/icons/tabling/phone.svg" className="w-6 h-6" />
+              <img src="/icons/tablings/phone.svg" className="w-6 h-6" />
               <input
                 className="flex-1 focus:outline-none bg-inherit"
                 type="tel"

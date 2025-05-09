@@ -1,5 +1,5 @@
 import useBaseModal from '@/stores/baseModal';
-import { useReservationStore } from '@/stores/tabling/tablingStore';
+import { useReservationStore } from '@/stores/tablings/tablingStore';
 
 const EnterBoothModal: React.FC = () => {
   const { closeModal } = useBaseModal();
