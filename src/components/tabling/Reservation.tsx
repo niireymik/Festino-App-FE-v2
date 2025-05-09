@@ -7,19 +7,22 @@ import { BoothInfo } from '@/types/Booth.types';
 import useBaseModal from '@/stores/baseModal';
 
 const Reservation: React.FC = () => {
-  const {
-    getAllNightBooth,
-    setSelectedNightBoothInfo,
-    openNightBoothInfo,
-    selectedNightBoothInfo,
-    openNightBoothInfoLength,
-  } = useReservationStore();
+  const { getAllNightBooth, setSelectedNightBoothInfo, openNightBoothInfo, openNightBoothInfoLength } =
+    useReservationStore();
 
   const { getBoothDetail } = useBoothStore();
   const { openModal } = useBaseModal();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedBoothId, setSelectedBoothId] = useState<string>('');
+
+  const handleClickReserveButton = () => {
+    if (!selectedBoothId) return;
+    openModal('reservationModal');
+  };
+
+  const navigate = useNavigate();
+  const { boothId: boothIdFromRoute } = useParams<{ boothId?: string }>();
 
   const handleClickMajorBox = useCallback(
     (booth: BoothInfo) => {
@@ -33,14 +36,6 @@ const Reservation: React.FC = () => {
     },
     [selectedBoothId, setSelectedNightBoothInfo],
   );
-
-  const handleClickReserveButton = () => {
-    if (!selectedBoothId) return;
-    openModal('reservationModal');
-  };
-
-  const navigate = useNavigate();
-  const { boothId: boothIdFromRoute } = useParams<{ boothId?: string }>();
 
   const handleClickDetailButton = () => {
     if (!selectedBoothId) return;
@@ -67,13 +62,6 @@ const Reservation: React.FC = () => {
     const fetchBooths = async () => {
       setIsLoading(true);
       await getAllNightBooth();
-
-      const boothId = boothIdFromRoute ?? selectedNightBoothInfo?.boothId ?? '';
-      if (boothId) {
-        setSelectedBoothId(boothId);
-        const info = openNightBoothInfo?.find((info) => info.boothId === boothId);
-        if (info) setSelectedNightBoothInfo({ ...info });
-      }
       setIsLoading(false);
     };
 
