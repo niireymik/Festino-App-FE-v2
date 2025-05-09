@@ -1,54 +1,7 @@
 import { api } from '@/utils/api';
 import { create } from 'zustand';
 import { BoothInfo } from '@/types/Booth.types';
-
-interface ReserveInfo {
-  userName: string;
-  phoneNum: string;
-  personCount: number;
-  boothId: string;
-}
-
-interface ReservationInfo {
-  reservationId: string;
-  personCount: number;
-  boothId: string;
-  adminName: string;
-  totalTeamCount: number;
-  date: number;
-  reservationNum: number;
-  reservationType: string;
-}
-
-interface ReservationStore {
-  recentName: string;
-  recentPhoneNum: string;
-  reservationInfo: ReservationInfo | null;
-  userName: string;
-  nightBoothInfo: BoothInfo[] | null;
-  openNightBoothInfo: BoothInfo[] | null;
-  openNightBoothInfoLength: number;
-  selectedNightBoothInfo: BoothInfo | null;
-  prevReserveBoothName: string;
-  reserveInfo: ReserveInfo;
-
-  setRecentName: (name: string) => void;
-  setRecentPhoneNum: (phone: string) => void;
-  setSelectedNightBoothInfo: (booth: BoothInfo | null) => void;
-  saveReservation: (
-    payload: ReserveInfo,
-    utils: { openModal: (type: string) => void; closeModal: () => void; navigate: (path: string) => void },
-  ) => Promise<void>;
-  getReservation: (
-    payload: { userName: string; phoneNum: string },
-    utils: { openModal: (type: string) => void; closeModal: () => void; navigate: (path: string) => void },
-  ) => Promise<void>;
-  getAllNightBooth: () => Promise<void>;
-  checkDuplicateReserve: (
-    phoneNum: string,
-    utils: { openModal: (type: string) => void; closeModal: () => void; navigate: (path: string) => void },
-  ) => Promise<void>;
-}
+import { ReservationStore } from '@/types/Tabling.types';
 
 export const useReservationStore = create<ReservationStore>((set, get) => {
   return {
