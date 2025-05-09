@@ -34,7 +34,6 @@ interface ReservationStore {
 
   setRecentName: (name: string) => void;
   setRecentPhoneNum: (phone: string) => void;
-  setUserName: (name: string) => void;
   setSelectedNightBoothInfo: (booth: BoothInfo | null) => void;
   saveReservation: (
     payload: ReserveInfo,
@@ -72,8 +71,6 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
     setRecentPhoneNum: (phone: string) => set({ recentPhoneNum: phone }),
 
     setRecentName: (name: string) => set({ recentName: name }),
-
-    setUserName: (name: string) => set({ userName: name }),
 
     setSelectedNightBoothInfo: (booth) => {
       set({ selectedNightBoothInfo: booth ? { ...booth } : null });
@@ -138,7 +135,6 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
     checkDuplicateReserve: async (phoneNum, { openModal, closeModal, navigate }) => {
       try {
         const res = await api.get(`/main/reservation/duplication?phoneNum=${phoneNum}`);
-        closeModal();
         if (res.data.success) {
           set({ prevReserveBoothName: res.data.adminName });
           openModal('duplicateModal');
