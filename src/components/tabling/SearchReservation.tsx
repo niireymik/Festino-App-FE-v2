@@ -10,48 +10,48 @@ const SearchReservation: React.FC = () => {
   const [isInputNameFocused, setIsInputNameFocused] = useState<boolean>(false);
   const [isInputPhoneNumFocused, setIsInputPhoneNumFocused] = useState<boolean>(false);
   const [isInputFill, setIsInputFill] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string>('');
+  const [userPhoneNum, setUserPhoneNum] = useState<string>('');
 
-  const { getReservation, setUserName, setRecentPhoneNum, setRecentName, recentName, recentPhoneNum } =
-    useReservationStore();
-  const { isAgreed } = usePersonalInfoStore();
+  const { getReservation } = useReservationStore();
+  const { isAgreed, setIsAgreed } = usePersonalInfoStore();
   const { openModal, closeModal } = useBaseModal();
   const navigate = useNavigate();
 
-  const regex = useMemo(() => /^010/, []);
-
   const handleClickSearchButton = async () => {
     if (!isInputFill || !isAgreed) return;
-    const inputInfo = { userName: recentName, phoneNum: formatPhoneNum(recentPhoneNum) };
+    const inputInfo = { userName: userName, phoneNum: formatPhoneNum(userPhoneNum) };
     await getReservation(inputInfo, { openModal, closeModal, navigate });
-    setUserName(recentName);
+    setUserName('');
+    setUserPhoneNum('');
+    setIsAgreed(false);
   };
 
-  const formattedPhoneNum = (phoneNum: string) => {
-    const inputValue = phoneNum.replace(/\D/g, '');
-    let formattedValue = '';
+  const regex = useMemo(() => /^010/, []);
 
-    if (inputValue.length > 3 && inputValue.length < 8) {
-      formattedValue = inputValue.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-    } else if (inputValue.length >= 8) {
-      formattedValue = inputValue.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
-    } else {
-      formattedValue = inputValue;
-    }
-    return formattedValue;
+  const formatPhoneNumber = (input: string): string => {
+    const digits = input.replace(/\D/g, '');
+    if (digits.length < 4) return digits;
+    if (digits.length < 8) return digits.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+    return digits.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
   };
 
   useEffect(() => {
-    setIsInputFill(recentName.length >= 2 && recentPhoneNum.length === 13 && regex.test(recentPhoneNum));
-  }, [recentName, recentPhoneNum, regex]);
+    setIsInputFill(userName.length >= 2 && userPhoneNum.length === 13 && regex.test(userPhoneNum));
+  }, [regex, userName.length, userPhoneNum]);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formattedPhoneNum(e.target.value);
-    setRecentPhoneNum(formatted);
+    const rawValue = e.target.value;
+    const formatted = formatPhoneNumber(rawValue);
+    setUserPhoneNum(formatted);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filtered = e.target.value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣 ]/g, '').slice(0, 5);
-    setRecentName(filtered); // Zustand store의 recentName setter 함수
+    let filtered = e.target.value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣 ]/g, '');
+    if (filtered.length > 5) {
+      filtered = filtered.slice(0, 5);
+    }
+    setUserName(filtered);
   };
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const SearchReservation: React.FC = () => {
               <input
                 className="flex-1 focus:outline-none bg-inherit"
                 type="text"
-                value={recentName}
+                value={userName}
                 placeholder="티노"
                 maxLength={5}
                 onChange={handleNameChange}
@@ -94,7 +94,7 @@ const SearchReservation: React.FC = () => {
                 type="tel"
                 placeholder="010-1234-5678"
                 maxLength={13}
-                value={recentPhoneNum}
+                value={userPhoneNum}
                 onChange={handlePhoneChange}
                 onFocus={() => setIsInputPhoneNumFocused(true)}
                 onBlur={() => setIsInputPhoneNumFocused(false)}
