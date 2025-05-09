@@ -3,7 +3,7 @@ import { api } from '@/utils/api';
 import { Notice, NoticeStore } from '@/types/Notice.types';
 
 export const useNoticeStore = create<NoticeStore>((set) => ({
-  mainNoticeData: [],
+  mainNoticeData: null,
   noticeData: null,
   pinNotices: [],
   notices: [],
@@ -15,7 +15,7 @@ export const useNoticeStore = create<NoticeStore>((set) => ({
       set({ mainNoticeData: res.data.noticeInfo });
     } catch (error) {
       console.error('getMainNotice 실패:', error);
-      set({ mainNoticeData: [] });
+      set({ mainNoticeData: null });
     }
   },
 

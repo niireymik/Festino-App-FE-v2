@@ -1,5 +1,5 @@
 export interface Notice {
-  noticeId: number;
+  noticeId: string;
   title: string;
   content: string;
   updateAt: string;
@@ -7,7 +7,7 @@ export interface Notice {
 }
 
 export interface NoticeStore {
-  mainNoticeData: Notice[];
+  mainNoticeData: Notice | null;
   noticeData: Notice | null;
   pinNotices: Notice[];
   notices: Notice[];
@@ -19,7 +19,7 @@ export interface NoticeStore {
 }
 
 export interface NoticeDetail {
-  noticeId: number;
+  noticeId: string;
   title: string;
   content: string;
   updateAt: string;
