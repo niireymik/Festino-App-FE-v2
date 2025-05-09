@@ -4,7 +4,7 @@ import { MapSpeechBubble } from '@/components/booths/MapSpeechBubble';
 import { useParams } from 'react-router-dom';
 import { useBoothStore } from '@/stores/booths/boothStore';
 import 'primeicons/primeicons.css';
-import { Booth, BoothInfo } from '@/types/Booth.types';
+import { Booth } from '@/types/Booth.types';
 
 interface Marker {
   markerNum?: number;
@@ -117,9 +117,16 @@ const BoothMap: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [zoom, setZoom] = useState(1);
   const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
-  const [boothDataMap, setBoothDataMap] = useState<Record<number, BoothInfo>>({});
-  const [selectedBooth, setSelectedBooth] = useState<BoothInfo | null>(null);
-  const { boothListNight, boothListDay, boothListFood, getBoothDetail, selectBoothCategory, setSelectBoothCategory } = useBoothStore();
+  const [selectedBooth, setSelectedBooth] = useState<Booth | null>(null);
+  // const [boothList, setBoothList] = useState<Booth[]>([]);
+  const { boothListAll, boothListNight, boothListDay, boothListFood, boothListFacility, selectBoothCategory, setSelectBoothCategory } = useBoothStore();
+
+  const boothLists: Record<number, Booth[]> = {
+    1: boothListNight,
+    2: boothListDay,
+    3: boothListFood,
+    4: boothListFacility
+  };
 
   // 확대/축소
   const handleZoom = (delta: number) => {
@@ -129,115 +136,75 @@ const BoothMap: React.FC = () => {
   // 포커스된 마커로 자동 스크롤
   const focusOnMarker = useCallback((marker: Marker) => {
     const container = containerRef.current;
-    if (
-      !container ||
-      marker.scrollLeft == null ||
-      marker.scrollTop == null
-    ) return;
-  
+    if (!container || marker.scrollLeft == null || marker.scrollTop == null) return;
+
     container.scrollTo({
-      left: (marker.scrollLeft! / 1.6) * zoom,
-      top: (marker.scrollTop! / 1.6) * zoom,
+      left: (marker.scrollLeft / 1.6) * zoom,
+      top: (marker.scrollTop / 1.6) * zoom,
       behavior: 'smooth'
     });
-  }, [zoom]);  
-  
+  }, [zoom]);
+
+  // 카테고리 클릭 시, 카테고리 최상단의 부스를 활성화
+  const scrollToFirstMarker = useCallback(() => {
+    const currentBoothList = boothLists[selectBoothCategory] || [];
+    if (!currentBoothList.length) return;
+
+    const firstBooth = currentBoothList[0];
+    const marker = Object.values(markers.detail).flat().find(
+      (m) => m.markerNum === firstBooth.markerNum
+    );
+
+    if (marker && firstBooth) {
+      setSelectedBooth(firstBooth);
+      setSelectedMarker(marker);
+    }
+  }, [boothLists, selectBoothCategory]);
+
+  // 대왕 마커 클릭
   const handleBigBoothMarker = useCallback((marker: Marker) => {
     if (marker.tab === undefined) return;
     setSelectBoothCategory(marker.tab);
-    setSelectedMarker(marker);
-  }, [setSelectBoothCategory]);  
+    requestAnimationFrame(scrollToFirstMarker);
+  }, [setSelectBoothCategory, scrollToFirstMarker]);
 
-  const scrollToFirstMarker = async () => {
-    if (![1, 2, 3].includes(selectBoothCategory)) return;
-
-    let boothList: Booth[] = [];
-    let type = '';
-
-    if (selectBoothCategory === 1) {
-      boothList = boothListNight;
-      type = '야간부스';
-    } else if (selectBoothCategory === 2) {
-      boothList = boothListDay;
-      type = '주간부스';
-    } else if (selectBoothCategory === 3) {
-      boothList = boothListFood;
-      type = '푸드트럭';
-    }
-
-    if (boothList.length === 0) return;
-
-    const boothInfo = await getBoothDetail(type, boothList[0].boothId);
-
-    if (!boothInfo?.markerNum) return;
-
-    const found = Object.values(markers.detail).flat().find(
-      (marker) => marker.markerNum === boothInfo.markerNum
-    );
-
-    if (!found) {
-      return;
-    }
-
-    setSelectedMarker(found);
-  };
-
-  const handleMarkerClick = async (marker: Marker) => {
+  // 부스 마커 클릭
+  const handleMarkerClick = useCallback((marker: Marker) => {
     if (!marker.markerNum) return;
+  
+    // 동일한 마커 클릭이면 무시
+    if (selectedMarker?.markerNum === marker.markerNum) return;
+  
     setSelectedMarker(marker);
-
-    const booth = boothDataMap[marker.markerNum];
-
+  
+    const booth = boothListAll.find((b) => b.markerNum === marker.markerNum);
     if (booth) {
       setSelectedBooth(booth);
-    } else {
-      // 필요 시 실시간 요청하여 업데이트 가능
-      let boothList: Booth[] = [];
-      let boothType = '';
-
-      if (selectBoothCategory === 1) {
-        boothList = boothListNight;
-        boothType = '야간부스';
-      } else if (selectBoothCategory === 2) {
-        boothList = boothListDay;
-        boothType = '주간부스';
-      } else if (selectBoothCategory === 3) {
-        boothList = boothListFood;
-        boothType = '푸드트럭';
-      }
-
-      const boothInfo = boothList.find((b) => b.boothId);
-      if (!boothInfo) return;
-      const detail = await getBoothDetail(boothType, boothInfo.boothId);
-      if (detail?.markerNum) {
-        setBoothDataMap((prev) => ({ ...prev, [detail.markerNum]: detail }));
-        setSelectedBooth(detail);
-      }
     }
-  };
+  }, [boothListAll, selectedMarker]);
   
-  useEffect(() => {
-    isBoothDetail;
-  }, []);
 
+  // 선택한 부스 마커가 변경될 시
+  useEffect(() => {
+    if (!selectedMarker) return;
+  
+    focusOnMarker(selectedMarker);
+  
+    const booth = boothListAll.find(b => b.markerNum === selectedMarker.markerNum);
+    if (booth && selectedBooth?.boothId !== booth.boothId) {
+      setSelectedBooth(booth);
+    }
+  }, [selectedMarker, focusOnMarker, boothListAll, selectedBooth]);    
+  
   // 카테고리 변경될 때마다 실행
   useEffect(() => {
     if (selectBoothCategory === 0) {
       setZoom(1);
-      scrollToFirstMarker();
-    } else if ([1, 2, 3, 4].includes(selectBoothCategory)) {
+    } else {
       setZoom(1.6);
-      scrollToFirstMarker();
     }
-  }, [zoom, selectBoothCategory]);
-  
-  // 선택한 마커 변경될 시
-  useEffect(() => {
-    if (selectedMarker) {
-      focusOnMarker(selectedMarker);
-      handleMarkerClick(selectedMarker);
-    }
-  }, [selectedMarker, focusOnMarker]);
+    scrollToFirstMarker();
+  }, [selectBoothCategory, scrollToFirstMarker]);
 
   return (
     <div className="dynamic-padding">
@@ -315,7 +282,7 @@ const BoothMap: React.FC = () => {
                               `url(/icons/booths/markers/before/${category}.svg)`
                         }}
                       >
-                        {selectedMarker?.markerNum === marker.markerNum && selectedBooth && (
+                        {selectedBooth && selectedMarker?.markerNum === marker.markerNum && selectedBooth?.markerNum === marker.markerNum && (
                           <div className="absolute bottom-16">
                             <MapSpeechBubble booth={selectedBooth} />
                           </div>
