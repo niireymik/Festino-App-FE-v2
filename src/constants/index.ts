@@ -43,7 +43,6 @@ export const TABS = {
   NOTICE: '공지사항',
 };
 
-
 export const COUNCIL_URL = 'https://www.instagram.com/tukorea_drama/';
 
 export const REGEX = /^010/;
