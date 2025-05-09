@@ -42,3 +42,5 @@ export const TABS = {
   TIME_TABLE: '타임테이블',
   NOTICE: '공지사항',
 };
+
+export const COUNCIL_URL = 'https://www.instagram.com/tukorea_drama/';

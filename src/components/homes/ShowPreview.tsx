@@ -1,11 +1,9 @@
 import useBaseModal from "@/stores/baseModal";
+import { openNewTap } from "@/utils/utils";
+import { COUNCIL_URL } from "@/constants";
 
 const ShowPreview: React.FC = () => {
   const { openModal } = useBaseModal();
-
-  const handleClickInstagram = () => {
-    window.open('https://www.instagram.com/tukorea_drama/', '_blank');
-  };
 
   const openTimetableModal = () => {
     openModal("timetable");
@@ -22,7 +20,7 @@ const ShowPreview: React.FC = () => {
           </div>
         ))}
 
-        <div className="flex flex-col items-center cursor-pointer" onClick={handleClickInstagram}>
+        <div className="flex flex-col items-center cursor-pointer" onClick={() => openNewTap(COUNCIL_URL)}>
           <div className="border-2 border-primary bg-cover bg-center bg-talent-icon w-[86px] h-[86px] sm:w-[100px] sm:h-[100px] rounded-full"></div>
           <div className="text-primary-700 font-medium pt-6">연예인 공연</div>
         </div>
