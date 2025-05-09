@@ -1,33 +1,10 @@
 import { create } from "zustand";
 import { api } from "@/utils/api";
-
-export interface MusicItem {
-  artist: string;
-  title: string;
-  performer: string;
-}
-
-export interface ClubData {
-  clubId: string;
-  performer: string;
-  showDate: string;
-  showStartTime: string;
-  showEndTime: string;
-  clubImage: string;
-  clubDescription: string;
-  instagram: string;
-  musicList: MusicItem[];
-  isShowing: boolean;
-}
-
-interface TimetableStore {
-  clubData: ClubData[];
-  getClubTimetable: (day: number) => Promise<void>;
-}
+import { TimetableStore } from "@/types/ClubData.types"
 
 export const useTimetableStore = create<TimetableStore>((set) => ({
   clubData: [],
-
+  selectedClub: null,
   getClubTimetable: async (day) => {
     try {
       const res = await api.get(`/main/club/all/date/${day}`);
@@ -37,4 +14,5 @@ export const useTimetableStore = create<TimetableStore>((set) => ({
       set({ clubData: [] });
     }
   },
+  setSelectedClub: (club) => set({ selectedClub: club }),
 }));
