@@ -10,20 +10,20 @@ const SearchReservation: React.FC = () => {
   const [isInputNameFocused, setIsInputNameFocused] = useState<boolean>(false);
   const [isInputPhoneNumFocused, setIsInputPhoneNumFocused] = useState<boolean>(false);
   const [isInputFill, setIsInputFill] = useState<boolean>(false);
-  const [userName, setUserName] = useState<string>('');
-  const [userPhoneNum, setUserPhoneNum] = useState<string>('');
+  const [inputPhoneNum, setInputPhoneNum] = useState<string>('');
+  const [inputName, setInputName] = useState<string>('');
 
-  const { getReservation } = useReservationStore();
+  const { setUserName, getReservation } = useReservationStore();
   const { isAgreed, setIsAgreed } = usePersonalInfoStore();
   const { openModal, closeModal } = useBaseModal();
   const navigate = useNavigate();
 
   const handleClickSearchButton = async () => {
     if (!isInputFill || !isAgreed) return;
-    const inputInfo = { userName: userName, phoneNum: formatPhoneNum(userPhoneNum) };
+    const inputInfo = { userName: inputName, phoneNum: formatPhoneNum(inputPhoneNum) };
     await getReservation(inputInfo, { openModal, closeModal, navigate });
-    setUserName('');
-    setUserPhoneNum('');
+    setInputName('');
+    setInputPhoneNum('');
     setIsAgreed(false);
   };
 
@@ -37,13 +37,13 @@ const SearchReservation: React.FC = () => {
   };
 
   useEffect(() => {
-    setIsInputFill(userName.length >= 2 && userPhoneNum.length === 13 && regex.test(userPhoneNum));
-  }, [regex, userName.length, userPhoneNum]);
+    setIsInputFill(inputName.length >= 2 && inputPhoneNum.length === 13 && regex.test(inputPhoneNum));
+  }, [inputName.length, inputPhoneNum, regex]);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     const formatted = formatPhoneNumber(rawValue);
-    setUserPhoneNum(formatted);
+    setInputPhoneNum(formatted);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +51,7 @@ const SearchReservation: React.FC = () => {
     if (filtered.length > 5) {
       filtered = filtered.slice(0, 5);
     }
+    setInputName(filtered);
     setUserName(filtered);
   };
 
@@ -74,7 +75,7 @@ const SearchReservation: React.FC = () => {
               <input
                 className="flex-1 focus:outline-none bg-inherit"
                 type="text"
-                value={userName}
+                value={inputName}
                 placeholder="티노"
                 maxLength={5}
                 onChange={handleNameChange}
@@ -94,7 +95,7 @@ const SearchReservation: React.FC = () => {
                 type="tel"
                 placeholder="010-1234-5678"
                 maxLength={13}
-                value={userPhoneNum}
+                value={inputPhoneNum}
                 onChange={handlePhoneChange}
                 onFocus={() => setIsInputPhoneNumFocused(true)}
                 onBlur={() => setIsInputPhoneNumFocused(false)}
