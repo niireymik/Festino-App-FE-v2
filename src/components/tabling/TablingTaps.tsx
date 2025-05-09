@@ -28,7 +28,7 @@ const TablingTabs: React.FC = () => {
 
   return (
     <div className="relative">
-      <div className="dynamic-padding mt-[-30px] pt-[28px] h-auto w-full rounded-t-2.5xl bg-white z-30 absolute">
+      <div className="dynamic-padding mt-[-30px] pt-[28px] h-auto w-full rounded-t-2.5xl bg-white z-10 absolute">
         <div className="flex gap-[30px]">
           {(['예약하기', '예약조회'] as const).map((tab) => (
             <div
