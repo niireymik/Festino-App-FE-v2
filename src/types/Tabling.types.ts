@@ -30,6 +30,7 @@ export interface ReservationStore {
   prevReserveBoothName: string;
   reserveInfo: ReserveInfo;
 
+  setUserName: (name: string) => void;
   setRecentName: (name: string) => void;
   setRecentPhoneNum: (phone: string) => void;
   setSelectedNightBoothInfo: (booth: BoothInfo | null) => void;

@@ -21,6 +21,8 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
       boothId: '',
     },
 
+    setUserName: (name: string) => set({ userName: name }),
+
     setRecentPhoneNum: (phone: string) => set({ recentPhoneNum: phone }),
 
     setRecentName: (name: string) => set({ recentName: name }),
