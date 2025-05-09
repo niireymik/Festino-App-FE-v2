@@ -1,5 +1,6 @@
 import { NoticeDetail } from '@/types/Notice.types';
 import ImageSlider from '@/components/commons/ImageSlider';
+import { formatDateTime } from '@/utils/utils';
 
 type NoticeProps = {
   notice: NoticeDetail;
@@ -12,9 +13,9 @@ const Notice: React.FC<NoticeProps> = ({ notice }) => {
         <div className="font-medium break-words text-secondary-500">
           {notice.title}
         </div>
-        <div className="text-xs text-secondary-300">{notice.uploadTime}</div>
+        <div className="text-xs text-secondary-300">{formatDateTime(notice.updateAt)}</div>
       </div>
-      <div className="w-full h-auto flex flex-col rounded-3xl border-primary-900-light-16 border justify-center items-center p-5 gap-[20px] select-none">
+      <div className="w-full flex flex-col rounded-3xl border-primary-900-light-16 border justify-center items-center p-5 gap-[20px] select-none">
         <div className="relative w-full">
           {notice.imageUrl ? (
             <ImageSlider images={notice.imageUrl} />

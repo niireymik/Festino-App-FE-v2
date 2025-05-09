@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Notice } from '@/types/Notice.types';
+import { getRelativeTime } from '@/utils/utils';
 
 interface NoticeListItemProps {
   notice: Notice;
@@ -10,7 +11,6 @@ const NoticeListItem: React.FC<NoticeListItemProps> = ({ notice }) => {
   const navigate = useNavigate();
 
   const handleClickNotice = () => {
-    console.log(notice)
     navigate(`/notices/${notice.noticeId}`);
   };
 
@@ -34,7 +34,7 @@ const NoticeListItem: React.FC<NoticeListItemProps> = ({ notice }) => {
         </div>
       )}
       <div className="flex justify-end pr-4 text-xs text-secondary-500 w-[90px]">
-        3시간 전
+        {getRelativeTime(notice.updateAt)}
       </div>
     </div>
   );

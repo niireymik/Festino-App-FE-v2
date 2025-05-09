@@ -2,7 +2,7 @@ export interface Notice {
   noticeId: number;
   title: string;
   content: string;
-  uploadTime: string;
+  updateAt: string;
   isPin: boolean;
 }
 
@@ -22,7 +22,7 @@ export interface NoticeDetail {
   noticeId: number;
   title: string;
   content: string;
-  uploadTime: string;
+  updateAt: string;
   isPin: boolean;
   imageUrl?: string[];
 }
