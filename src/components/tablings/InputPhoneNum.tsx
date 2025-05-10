@@ -1,9 +1,5 @@
-import { useState } from 'react';
-
-interface InputPhoneNumProps {
-  value: string;
-  onChange: (value: string) => void;
-}
+import { useState } from "react";
+import { InputPhoneNumProps } from "@/types/Tabling.types";
 
 const InputPhoneNum: React.FC<InputPhoneNumProps> = ({ value, onChange }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);

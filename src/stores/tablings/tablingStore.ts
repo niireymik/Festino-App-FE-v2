@@ -1,7 +1,7 @@
-import { api } from '@/utils/api';
-import { create } from 'zustand';
-import { BoothInfo } from '@/types/Booth.types';
-import { ReservationStore } from '@/types/Tabling.types';
+import { api } from "@/utils/api";
+import { create } from "zustand";
+import { BoothInfo } from "@/types/Booth.types";
+import { ReservationStore } from "@/types/Tabling.types";
 
 export const useReservationStore = create<ReservationStore>((set, get) => {
   return {

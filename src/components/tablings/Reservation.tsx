@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useReservationStore } from '@/stores/tablings/tablingStore';
-import { useBoothStore } from '@/stores/booths/boothStore';
-import NoBooth from './NoBooth';
-import { BoothInfo } from '@/types/Booth.types';
-import useBaseModal from '@/stores/baseModal';
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useReservationStore } from "@/stores/tablings/tablingStore";
+import { useBoothStore } from "@/stores/booths/boothStore";
+import NoBooth from "./NoBooth";
+import { BoothInfo } from "@/types/Booth.types";
+import useBaseModal from "@/stores/baseModal";
 
 const Reservation: React.FC = () => {
   const { getAllNightBooth, setSelectedNightBoothInfo, openNightBoothInfo, openNightBoothInfoLength } =
@@ -69,7 +69,7 @@ const Reservation: React.FC = () => {
   }, [getAllNightBooth, boothIdFromRoute]);
 
   return (
-    <div className="felx flex-col">
+    <div className="flex flex-col">
       <div className="w-screen max-w-[500px] min-w-[375px]">
         <div className="dynamic-padding w-full flex justify-start">
           <div
@@ -77,7 +77,6 @@ const Reservation: React.FC = () => {
             className={`pt-12 w-full flex ${openNightBoothInfoLength > 4 ? 'overflow-x-scroll scroll-smooth' : ''}`}
             onTouchStart={(e) => e.stopPropagation()}
           >
-            <div className=""></div>
             {!isLoading && (!openNightBoothInfo || openNightBoothInfoLength === 0) && <NoBooth />}{' '}
             <div
               className={`gap-2 ${
@@ -115,7 +114,6 @@ const Reservation: React.FC = () => {
               })}
             </div>
           </div>
-          <div className=""></div>
         </div>
       </div>
       <div className="flex flex-row dynamic-padding justify-between gap-[10px] text-white font-bold mt-5 mb-20">

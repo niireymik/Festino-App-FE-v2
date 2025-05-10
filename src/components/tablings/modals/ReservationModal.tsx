@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import InputName from '../InputName';
-import InputPersonNum from '../InputPersonNum';
-import InputPhoneNum from '../InputPhoneNum';
-import { useReservationStore } from '@/stores/tablings/tablingStore';
-import { formatPhoneNum } from '@/utils/utils';
-import PersonalInfo from '@/components/commons/PersonalInfo';
-import { usePersonalInfoStore } from '@/stores/personalInfoStore';
-import useBaseModal from '@/stores/baseModal';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import InputName from "../InputName";
+import InputPersonNum from "../InputPersonNum";
+import InputPhoneNum from "../InputPhoneNum";
+import { useReservationStore } from "@/stores/tablings/tablingStore";
+import { formatPhoneNum } from "@/utils/utils";
+import PersonalInfo from "@/components/commons/PersonalInfo";
+import { usePersonalInfoStore } from "@/stores/personalInfoStore";
+import useBaseModal from "@/stores/baseModal";
 
 const ReservationModal: React.FC = () => {
   const {
@@ -75,9 +75,7 @@ const ReservationModal: React.FC = () => {
     <>
       <div
         className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-[21px] py-7 gap-7"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
+        onClick={(e) => { e.stopPropagation(); }}
       >
         <div className="text-secondary-700 text-xl font-semibold">{newNightBooth?.adminName} 부스 예약</div>
         <div className="w-full flex flex-col justify-start px-4">
@@ -97,7 +95,7 @@ const ReservationModal: React.FC = () => {
         <div className="w-full flex flex-row justify-between gap-[10px] pt-[1px]">
           <button
             className="w-full h-[43px] bg-white text-primary-900 font-bold rounded-10xl border-1 border-primary-900-light-68"
-            onClick={closeModal}
+            onClick={() => closeModal()}
           >
             닫기
           </button>
@@ -107,7 +105,7 @@ const ReservationModal: React.FC = () => {
                 ? 'bg-primary-900'
                 : 'bg-gray-300'
             }`}
-            onClick={handleClickReserveButton}
+            onClick={() => handleClickReserveButton()}
           >
             예약하기
           </button>

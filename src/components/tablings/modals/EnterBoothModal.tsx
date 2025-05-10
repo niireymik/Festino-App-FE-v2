@@ -1,16 +1,15 @@
-import useBaseModal from '@/stores/baseModal';
-import { useReservationStore } from '@/stores/tablings/tablingStore';
+import useBaseModal from "@/stores/baseModal";
+import { useReservationStore } from "@/stores/tablings/tablingStore";
 
 const EnterBoothModal: React.FC = () => {
   const { closeModal } = useBaseModal();
   const { reservationInfo } = useReservationStore();
+
   return (
     <>
       <div
         className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-10 py-8 gap-5"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
+        onClick={(e) => { e.stopPropagation(); }}
       >
         <div className="w-12 h-12 bg-primary-900-light-16 rounded-full grid place-items-center">
           <img src="/icons/commons/info.svg" />
@@ -27,7 +26,7 @@ const EnterBoothModal: React.FC = () => {
         </div>
         <button
           className="w-full h-12 bg-primary-900 rounded-3xl text-white font-semibold text-xl"
-          onClick={closeModal}
+          onClick={() => closeModal()}
         >
           확인
         </button>

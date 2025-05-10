@@ -1,6 +1,6 @@
-import useBaseModal from '@/stores/baseModal';
-import { useReservationStore } from '@/stores/tablings/tablingStore';
-import { useNavigate } from 'react-router-dom';
+import useBaseModal from "@/stores/baseModal";
+import { useReservationStore } from "@/stores/tablings/tablingStore";
+import { useNavigate } from "react-router-dom";
 
 const DuplicateModal: React.FC = () => {
   const { saveReservation, reserveInfo, prevReserveBoothName } = useReservationStore();
@@ -19,9 +19,7 @@ const DuplicateModal: React.FC = () => {
     <>
       <div
         className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-10 py-8 gap-5"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
+        onClick={(e) => { e.stopPropagation(); }}
       >
         <div className="w-12 h-12 bg-primary-900-light-16 rounded-full grid place-items-center">
           <img src="/icons/commons/info.svg" />
@@ -39,13 +37,13 @@ const DuplicateModal: React.FC = () => {
         <div className="flex w-full gap-[10px] font-bold">
           <button
             className="w-full h-11 grow rounded-full border-2 border-primary-900-light-68 text-primary-900"
-            onClick={closeModal}
+            onClick={() => closeModal()}
           >
             취소
           </button>
           <button
             className="w-full h-11 grow rounded-full text-white bg-primary-900"
-            onClick={handleClickReserveButton}
+            onClick={() => handleClickReserveButton()}
           >
             확인
           </button>

@@ -1,5 +1,5 @@
-import { useReservationStore } from '@/stores/tablings/tablingStore';
-import useBaseModal from '@/stores/baseModal';
+import { useReservationStore } from "@/stores/tablings/tablingStore";
+import useBaseModal from "@/stores/baseModal";
 
 const SearchReservationModal: React.FC = () => {
   const { closeModal } = useBaseModal();
@@ -9,9 +9,7 @@ const SearchReservationModal: React.FC = () => {
     <>
       <div
         className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-[21px] py-7 gap-7"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
+        onClick={(e) => { e.stopPropagation(); }}
       >
         <div className="w-full h-[19px] text-secondary-700 font-semibold text-center">
           {reservationInfo?.adminName} 부스 예약
@@ -41,7 +39,7 @@ const SearchReservationModal: React.FC = () => {
         </div>
         <button
           className="w-full h-[43px] text-white font-bold rounded-10xl border-1 border-primary-900-light-68 shrink-0 bg-primary-900"
-          onClick={closeModal}
+          onClick={() => closeModal()}
         >
           확인
         </button>

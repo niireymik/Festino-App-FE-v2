@@ -5,7 +5,6 @@ const NoBooth: React.FC = () => {
         <p className="text-xl font-medium">예약 가능한 부스가 없습니다.</p>
         <div className="bg-error-full bg-cover bg-center bg-no-repeat w-full aspect-[35/31]"></div>
       </div>
-      ;
     </>
   );
 };

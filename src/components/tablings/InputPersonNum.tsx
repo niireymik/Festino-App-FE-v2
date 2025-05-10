@@ -1,9 +1,5 @@
-import { useState } from 'react';
-
-interface InputPersonNumberProps {
-  value: number | null;
-  onChange: (val: number) => void;
-}
+import { useState } from "react";
+import { InputPersonNumberProps } from "@/types/Tabling.types";
 
 const InputPersonNum: React.FC<InputPersonNumberProps> = ({ value, onChange }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);

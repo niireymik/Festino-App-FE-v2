@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useReservationStore } from '@/stores/tablings/tablingStore';
-import { formatPhoneNum } from '@/utils/utils';
-import PersonalInfo from '../commons/PersonalInfo';
-import { usePersonalInfoStore } from '@/stores/personalInfoStore';
-import useBaseModal from '@/stores/baseModal';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from "react";
+import { useReservationStore } from "@/stores/tablings/tablingStore";
+import { formatPhoneNum } from "@/utils/utils";
+import PersonalInfo from "../commons/PersonalInfo";
+import { usePersonalInfoStore } from "@/stores/personalInfoStore";
+import useBaseModal from "@/stores/baseModal";
+import { useNavigate } from "react-router-dom";
 
 const SearchReservation: React.FC = () => {
   const [isInputNameFocused, setIsInputNameFocused] = useState<boolean>(false);

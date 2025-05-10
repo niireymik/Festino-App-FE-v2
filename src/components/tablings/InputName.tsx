@@ -1,9 +1,5 @@
-import { useState } from 'react';
-
-interface InputNameProps {
-  value: string;
-  onChange: (val: string) => void;
-}
+import { useState } from "react";
+import { InputNameProps } from "@/types/Tabling.types";
 
 const InputName: React.FC<InputNameProps> = ({ value, onChange }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);

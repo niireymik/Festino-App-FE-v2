@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import Reservation from './Reservation';
-import SearchReservation from './SearchReservation';
-
-type TabType = '예약하기' | '예약조회';
+import Reservation from "./Reservation";
+import SearchReservation from "./SearchReservation";
+import { TabType } from "@/types/Tabling.types";
 
 const SLIDE_LIMIT = 100;
 

@@ -1,4 +1,4 @@
-import useBaseModal from '@/stores/baseModal';
+import useBaseModal from "@/stores/baseModal";
 
 const CompleteReserveModal: React.FC = () => {
   const { closeModal } = useBaseModal();
@@ -7,9 +7,7 @@ const CompleteReserveModal: React.FC = () => {
     <>
       <div
         className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-10 py-8 gap-5"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
+        onClick={(e) => { e.stopPropagation(); }}
       >
         <div className="w-12 h-12 rounded-full bg-primary-900-light-16 grid place-items-center">
           <img src="/icons/commons/info.svg" />
