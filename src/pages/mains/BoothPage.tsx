@@ -12,6 +12,16 @@ const BoothPage: React.FC = () => {
   const navigate = useNavigate();
   const { boothListAll, boothListNight, boothListDay, boothListFood, boothListFacility, getBoothList, getBoothDetail, selectBoothCategory, setSelectBoothCategory } = useBoothStore();
 
+  const boothLists = [
+    boothListAll,
+    boothListNight,
+    boothListDay,
+    boothListFood,
+    boothListFacility,
+  ];
+  
+  const currentBoothList = boothLists[selectBoothCategory];  
+
   const handleScrollToSelectedCategory = useCallback(() => {
     const container = document.getElementById('category-container');
     const targetItem = document.getElementById(`category-item-${selectBoothCategory}`);
@@ -29,7 +39,7 @@ const BoothPage: React.FC = () => {
       if(item.category === type) {
         return item.type;
       } else {
-        console.log('존재하지 않는 부스 유형입니다.');
+        return;
       }
     })
 
@@ -79,36 +89,22 @@ const BoothPage: React.FC = () => {
 
       {/* 부스 정보 목록 */}
       <div className="w-full pb-20 dynamic-padding">
-      {/* 현재 선택된 리스트 추출 */}
-      {(() => {
-        const boothLists = [
-          boothListAll,
-          boothListNight,
-          boothListDay,
-          boothListFood,
-          boothListFacility,
-        ];
-        const currentBoothList = boothLists[selectBoothCategory];
-
-        if (!currentBoothList || currentBoothList.length === 0) {
-          return (
-            <div className="w-full h-[160px] bg-white shadow-4xl flex flex-col justify-between items-center rounded-2.5xl border border-primary-900-light-16">
-              <div className="pt-5 font-semibold">부스 정보가 없습니다</div>
-              <div className="w-[220px] h-[100px] bg-error-half bg-cover" />
-            </div>
-          );
-        }
-
-        return currentBoothList.map((booth: Booth) => (
-          <BoothItem
-            key={booth.boothId}
-            booth={booth}
-            onClick={() => handleClickBoothItem(booth.adminCategory, booth.boothId)}
-            getImageProps={getBoothImageProps}
-          />
-        ));
-      })()}
-    </div>
+        {(!currentBoothList || currentBoothList.length === 0) ? (
+          <div className="w-full h-[160px] bg-white shadow-4xl flex flex-col justify-between items-center rounded-2.5xl border border-primary-900-light-16">
+            <div className="pt-5 font-semibold">부스 정보가 없습니다</div>
+            <div className="w-[220px] h-[100px] bg-error-half bg-cover" />
+          </div>
+        ) : (
+          currentBoothList.map((booth: Booth) => (
+            <BoothItem
+              key={booth.boothId}
+              booth={booth}
+              onClick={() => handleClickBoothItem(booth.adminCategory, booth.boothId)}
+              getImageProps={getBoothImageProps}
+            />
+          ))
+        )}
+      </div>
     </>
   );
 };
