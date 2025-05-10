@@ -49,6 +49,8 @@ export interface BoothStore {
   boothListFacility: Booth[];
   boothDetail: BoothInfo | null;
   selectBoothCategory: number;
+  isTicketBooth: boolean;
+  init: () => void;
   setSelectBoothCategory: (index: number | undefined) => void;
   getBoothList: () => Promise<void>
   getBoothDetail: (type: string, id: string) => Promise<BoothInfo | undefined>;
