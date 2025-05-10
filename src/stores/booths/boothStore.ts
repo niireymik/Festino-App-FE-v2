@@ -11,9 +11,27 @@ export const useBoothStore = create<BoothStore>((set) => ({
   boothListFacility:[],
   boothDetail: null,
   selectBoothCategory: 0,
+  isTicketBooth: false,
+
+  init: () => {
+    set({
+      selectBoothCategory: 0,
+      isTicketBooth: false
+    })
+  },
 
   setSelectBoothCategory: (index: number | undefined) => {
-    set({ selectBoothCategory: index });
+    if(index === undefined) {
+      set({ 
+        selectBoothCategory: 4,
+        isTicketBooth: true
+      })
+    } else {
+      set({ 
+        selectBoothCategory: index,
+        isTicketBooth: false
+      });
+    }
   },
 
   getBoothList: async () => {
