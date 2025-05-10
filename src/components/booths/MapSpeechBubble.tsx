@@ -1,9 +1,9 @@
 import React from 'react';
 import { openNewTap } from '@/utils/utils';
-import { BoothInfo } from '@/types/Booth.types';
+import { Booth, BoothInfo } from '@/types/Booth.types';
 
 interface Props {
-  booth: BoothInfo;
+  booth: Booth | BoothInfo;
 }
 
 export const MapSpeechBubble: React.FC<Props> = ({ booth }) => {
