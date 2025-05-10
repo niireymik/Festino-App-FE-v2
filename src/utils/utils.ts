@@ -8,6 +8,11 @@ export const priceToString = (price: number) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
+export const formatPhoneNum = (phoneNum: string) => {
+  if (phoneNum === '') return '';
+  return phoneNum.replace(/-/g, '');
+};
+
 export const openNewTap = (url: string) => {
   window.open(url, '_blank');
 };

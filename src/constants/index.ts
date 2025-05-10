@@ -44,3 +44,5 @@ export const TABS = {
 };
 
 export const MOCK_NOTICE_ID = 1;
+
+export const REGEX = /^010/;
