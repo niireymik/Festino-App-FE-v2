@@ -1,17 +1,17 @@
-import { useOrderStore } from '@/stores/orders/orderStore';
+// import { useOrderStore } from '@/stores/orders/useOrderStore';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const ErrorPage: React.FC = () => {
   const navigate = useNavigate();
   const { page } = useParams();
 
-  const { boothId, tableNum } = useOrderStore();
+  // const { boothId, tableNum } = useOrderStore();
 
   const handleClickGoMainButton = () => {
     if (page === 'main' || page === 'pathMismatch') {
       navigate('/');
     } else if (page === 'order') {
-      navigate(`/order/${boothId}/${tableNum}`);
+      // navigate(`/order/${boothId}/${tableNum}`);
     }
   };
 
