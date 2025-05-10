@@ -33,7 +33,7 @@ export const MapSpeechBubble: React.FC<MapSpeechBubbleProps> = ({ booth }) => {
           onClick={() => openNewTap("https://www.instagram.com/tukorea_drama/")}
         >
           <div className="text-[8px] text-secondary-500 rounded-full w-fit h-fit px-4 py-[1px] flex items-center justify-center bg-instagram-bg gap-1">
-            @tukorea_25_wind
+            @tukorea_drama
           </div>
         </div>
       ) : (
