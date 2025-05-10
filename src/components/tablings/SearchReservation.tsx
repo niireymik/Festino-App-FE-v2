@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useReservationStore } from "@/stores/tablings/tablingStore";
 import { formatPhoneNum } from "@/utils/utils";
-import PersonalInfo from "../commons/PersonalInfo";
 import { usePersonalInfoStore } from "@/stores/personalInfoStore";
-import useBaseModal from "@/stores/baseModal";
 import { useNavigate } from "react-router-dom";
+import { REGEX } from "@/constants";
+import PersonalInfo from "../commons/PersonalInfo";
+import useBaseModal from "@/stores/baseModal";
 
 const SearchReservation: React.FC = () => {
   const [isInputNameFocused, setIsInputNameFocused] = useState<boolean>(false);
@@ -27,8 +28,6 @@ const SearchReservation: React.FC = () => {
     setIsAgreed(false);
   };
 
-  const regex = useMemo(() => /^010/, []);
-
   const formatPhoneNumber = (input: string): string => {
     const digits = input.replace(/\D/g, '');
     if (digits.length < 4) return digits;
@@ -37,8 +36,8 @@ const SearchReservation: React.FC = () => {
   };
 
   useEffect(() => {
-    setIsInputFill(inputName.length >= 2 && inputPhoneNum.length === 13 && regex.test(inputPhoneNum));
-  }, [inputName.length, inputPhoneNum, regex]);
+    setIsInputFill(inputName.length >= 2 && inputPhoneNum.length === 13 && REGEX.test(inputPhoneNum));
+  }, [inputName.length, inputPhoneNum]);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;

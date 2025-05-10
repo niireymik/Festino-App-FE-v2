@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useReservationStore } from "@/stores/tablings/tablingStore";
+import { usePersonalInfoStore } from "@/stores/personalInfoStore";
+import { formatPhoneNum } from "@/utils/utils";
+import { REGEX } from "@/constants";
 import InputName from "../InputName";
 import InputPersonNum from "../InputPersonNum";
 import InputPhoneNum from "../InputPhoneNum";
-import { useReservationStore } from "@/stores/tablings/tablingStore";
-import { formatPhoneNum } from "@/utils/utils";
 import PersonalInfo from "@/components/commons/PersonalInfo";
-import { usePersonalInfoStore } from "@/stores/personalInfoStore";
 import useBaseModal from "@/stores/baseModal";
 
 const ReservationModal: React.FC = () => {
@@ -27,7 +28,6 @@ const ReservationModal: React.FC = () => {
 
   const [personNum, setPersonNum] = useState<number | null>(null);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const regex = /^010/;
 
   const newNightBooth = openNightBoothInfo?.find((info) => info.boothId === selectedNightBoothInfo?.boothId);
 
@@ -52,7 +52,7 @@ const ReservationModal: React.FC = () => {
       !personNum ||
       personNum <= 0 ||
       !isAgreed ||
-      !regex.test(formatPhoneNum(recentPhoneNum)) ||
+      !REGEX.test(formatPhoneNum(recentPhoneNum)) ||
       isSubmit
     ) {
       return;
