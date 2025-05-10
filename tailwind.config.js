@@ -117,9 +117,12 @@ export default {
         'reservation-status': "url('/images/booths/reserve.svg')",
         // timetable
         'timetable-banner': "url('/images/timetables/timetable-banner.svg')",
+        // tabling
+        'tabling-banner': "url('/images/tablings/tino-tabling.svg')"
       },
       borderRadius: {
         "2.5xl": "1.25rem", // 20px
+        "10xl": '3.125rem', // 50px
       },
       borderColor: (theme) => ({
         ...theme('colors'),
