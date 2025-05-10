@@ -98,7 +98,7 @@ export default {
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
-        //home
+        // home
         'home-banner': "url('/images/homes/home-banner.svg')",
         'slide-banner-1': "url('/images/homes/slide-banner-1.svg')",
         'slide-banner-2': "url('/images/homes/slide-banner-2.svg')",
@@ -115,6 +115,8 @@ export default {
         'arrow-back-white': "url('/icons/booths/arrow-back.svg')",
         'arrow-forward': "url('/icons/booths/arrow-forward.svg')",
         'reservation-status': "url('/images/booths/reserve.svg')",
+        // timetable
+        'timetable-banner': "url('/images/timetables/timetable-banner.svg')",
       },
       borderRadius: {
         "2.5xl": "1.25rem", // 20px

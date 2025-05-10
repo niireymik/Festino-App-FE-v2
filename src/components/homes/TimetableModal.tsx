@@ -44,7 +44,7 @@ const TimetableModal: React.FC = () => {
       </div>
       <div className="text-xs text-secondary-500 rounded-full w-[122px] h-[26px] flex items-center justify-center bg-tag gap-1 cursor-pointer">
         <div className="w-[16px] h-[16px] bg-instagram bg-center bg-no-repeat bg-[length:16px_16px]" />
-        <div onClick={handleClickInstagram}>@{selectedClub.instagram}</div>
+        <div onClick={() => handleClickInstagram()}>@{selectedClub.instagram}</div>
       </div>
       <div className="pb-7 w-full pt-4">
         <div className="px-4 xs:px-8 w-full flex flex-col gap-3 max-h-[224px] overflow-y-auto">

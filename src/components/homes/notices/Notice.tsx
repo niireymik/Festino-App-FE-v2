@@ -1,10 +1,6 @@
-import { NoticeDetail } from '@/types/Notice.types';
-import ImageSlider from '@/components/commons/ImageSlider';
-import { formatDateTime } from '@/utils/utils';
-
-type NoticeProps = {
-  notice: NoticeDetail;
-};
+import ImageSlider from "@/components/commons/ImageSlider";
+import { formatDateTime } from "@/utils/utils";
+import { NoticeProps } from "@/types/Notice.types";
 
 const Notice: React.FC<NoticeProps> = ({ notice }) => {
   return (

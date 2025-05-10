@@ -3,7 +3,7 @@ import SeeMore from "./SeeMore";
 import ShowPreview from "./ShowPreview";
 import SlideBanner from "./SlideBanner";
 import { useNavigate } from 'react-router-dom';
-import { TABS } from '@/constants';
+import { TABS } from "@/constants";
 import { useNoticeStore } from "@/stores/homes/noticeStore";
 import { useEffect } from "react";
 import { getRelativeTime } from "@/utils/utils";
@@ -32,7 +32,7 @@ const HomeTab: React.FC = () => {
         <div className="px-5">
           <div
             className="py-3 select-none px-4 rounded-2xl border-primary-900-light-16 border-1 shadow-4xl flex justify-between items-center cursor-pointer"
-            onClick={handleClickNotice}
+            onClick={() => handleClickNotice()}
           >
             <div className="flex">
               <div className="w-[57px] text-secondary-700 text-xs font-medium">Festino</div>

@@ -1,11 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Notice } from '@/types/Notice.types';
-import { getRelativeTime } from '@/utils/utils';
-
-interface NoticeListItemProps {
-  notice: Notice;
-}
+import { useNavigate } from "react-router-dom";
+import { getRelativeTime } from "@/utils/utils";
+import { NoticeListItemProps } from "@/types/Notice.types";
 
 const NoticeListItem: React.FC<NoticeListItemProps> = ({ notice }) => {
   const navigate = useNavigate();

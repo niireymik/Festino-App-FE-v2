@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { api } from '@/utils/api';
-import { Notice, NoticeStore } from '@/types/Notice.types';
+import { create } from "zustand";
+import { api } from "@/utils/api";
+import { Notice, NoticeStore } from "@/types/Notice.types";
 
 export const useNoticeStore = create<NoticeStore>((set) => ({
   mainNoticeData: null,

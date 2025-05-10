@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
-import { useNoticeStore } from '@/stores/homes/noticeStore';
-import NoticeListItem from '@/components/homes/notices/NoticeListItem';
-import NoticeHeader from '@/components/homes/notices/NoticeHeader';
-import Header from '@/components/headers/Header';
+import { useEffect } from "react";
+import { useNoticeStore } from "@/stores/homes/noticeStore";
+import NoticeListItem from "@/components/homes/notices/NoticeListItem";
+import NoticeHeader from "@/components/homes/notices/NoticeHeader";
+import Header from "@/components/headers/Header";
 
 const NoticePage: React.FC = () => {
   const { getAllNotice, pinNotices, notices } = useNoticeStore();

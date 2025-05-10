@@ -26,3 +26,11 @@ export interface NoticeDetail {
   isPin: boolean;
   imageUrl?: string[];
 }
+
+export interface NoticeProps {
+  notice: NoticeDetail;
+};
+
+export interface NoticeListItemProps {
+  notice: Notice;
+}

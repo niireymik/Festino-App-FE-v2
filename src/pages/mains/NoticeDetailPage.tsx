@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNoticeStore } from '@/stores/homes/noticeStore';
-import Notice from '@/components/homes/notices/Notice';
-import Header from '@/components/headers/Header';
-import NoticeHeader from '@/components/homes/notices/NoticeHeader';
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNoticeStore } from "@/stores/homes/noticeStore";
+import Notice from "@/components/homes/notices/Notice";
+import Header from "@/components/headers/Header";
+import NoticeHeader from "@/components/homes/notices/NoticeHeader";
 
 const NoticeDetailPage: React.FC = () => {
   const { noticeId } = useParams<{ noticeId: string }>();
@@ -11,7 +11,7 @@ const NoticeDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (noticeId) {
-      getNotice(noticeId); // noticeId를 숫자로 변환해서 요청
+      getNotice(noticeId);
     }
   }, [noticeId, getNotice]);
 
