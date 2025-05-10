@@ -1,32 +1,35 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { MOCK_NOTICE_ID } from "@/constants";
+import { useNavigate } from "react-router-dom";
+import { getRelativeTime } from "@/utils/utils";
+import { NoticeListItemProps } from "@/types/Notice.types";
 
-const NoticeListItem: React.FC = () => {
+const NoticeListItem: React.FC<NoticeListItemProps> = ({ notice }) => {
   const navigate = useNavigate();
-  const [isPinned] = useState(true);
 
   const handleClickNotice = () => {
-    navigate(`/notices/${MOCK_NOTICE_ID}`);
+    navigate(`/notices/${notice.noticeId}`);
   };
 
   return (
     <div
-      className="w-full h-auto flex flex-row bg-white rounded-3xl border-primary-900-light-16 border justify-between items-center cursor-pointer select-none mt-5 shadow-4xl"
+      className="w-full h-auto flex flex-row bg-white rounded-2xl border-primary-900-light-16 border justify-between items-center cursor-pointer select-none shadow-4xl"
       onClick={handleClickNotice}
     >
-      {isPinned ? (
+      {notice.isPin ? (
         <div className="flex pl-4 items-center py-3 gap-[12px]">
           <div className="w-[20px] h-[20px] bg-center bg-pin-icon bg-no-repeat bg-[length:20px_20px]" />
-          <div className="py-1 text-base text-primary-700 leading-tight">공지사항 제목</div>
+          <div className="py-1 text-base text-primary-700 leading-tight">
+            {notice.title}
+          </div>
         </div>
       ) : (
         <div className="flex flex-col pl-4 items-start py-3">
-          <div className="py-1 text-base text-secondary-500 leading-tight">공지사항 제목</div>
+          <div className="py-1 text-base text-secondary-500 leading-tight">
+            {notice.title}
+          </div>
         </div>
       )}
-      <div className="flex justify-end pr-4 text-xs text-secondary-500 w-[140px]">
-        3시간 전
+      <div className="flex justify-end pr-4 text-xs text-secondary-500 w-[90px]">
+        {getRelativeTime(notice.updateAt)}
       </div>
     </div>
   );
