@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TimeTableBanner: React.FC = () => {
   return (
     <div className="relative select-none">

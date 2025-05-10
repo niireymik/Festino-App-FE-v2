@@ -1,7 +1,17 @@
-import React from 'react';
+import { ClubProps, ClubData } from "@/types/ClubData.types";
+import { useTimetableStore } from "@/stores/homes/timetableStore";
+import useBaseModal from "@/stores/baseModal";
 
-const TimeTableDetail: React.FC = () => {
-  const isShowing = true
+const TimeTableDetail: React.FC<ClubProps> = ({ club }) => {
+  const { setSelectedClub } = useTimetableStore();
+  const { openModal } = useBaseModal();
+
+  const openTimetableModal = (club: ClubData) => {
+    setSelectedClub(club);
+    openModal("timetable");
+  };
+
+  const isShowing = club.isShowing
     ? 'border-primary text-primary-700'
     : 'bg-secondary-50 border-secondary-100 text-secondary-100';
 
@@ -11,12 +21,14 @@ const TimeTableDetail: React.FC = () => {
     >
       <div
         className="rounded-full bg-primary-700 w-9 h-9 border-2 border-primary bg-cover bg-center"
+        style={{backgroundImage: `url(${club.clubImage})`,}}
       />
       <div className="text-center leading-none">
         <div>교내 동아리 공연</div>
-        <div>' 공연자 '</div>
+        <div>' {club.performer} '</div>
       </div>
       <button
+        onClick={() => openTimetableModal(club)}
         className="text-white bg-primary-700 w-[120px] h-[30px] rounded-full text-xs"
       >
         공연 정보 상세보기
