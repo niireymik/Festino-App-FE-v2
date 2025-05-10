@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from "react";
 import Reservation from "./Reservation";
 import SearchReservation from "./SearchReservation";
 import { TabType } from "@/types/Tabling.types";
@@ -8,7 +8,8 @@ const SLIDE_LIMIT = 100;
 const TablingTabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('예약하기');
   const sliderContainer = useRef<HTMLDivElement>(null);
-  const [currentPosition, setCurrentPosition] = useState<number>(0);
+
+  const tabs: TabType[] = ['예약하기', '예약조회'];
 
   const toggleTab = (type: TabType) => {
     setActiveTab(type);
@@ -17,19 +18,17 @@ const TablingTabs: React.FC = () => {
   };
 
   const moveSlider = (percentage: number) => {
-    setCurrentPosition(percentage);
     if (sliderContainer.current) {
+      sliderContainer.current.style.transition = 'transform 0.5s ease';
       sliderContainer.current.style.transform = `translateX(${percentage}%)`;
     }
   };
-
-  useEffect(() => {}, [activeTab]);
 
   return (
     <div className="relative">
       <div className="dynamic-padding mt-[-30px] pt-[28px] h-auto w-full rounded-t-2.5xl bg-white z-10 absolute">
         <div className="flex gap-[30px]">
-          {(['예약하기', '예약조회'] as const).map((tab) => (
+          {tabs.map((tab) => (
             <div
               key={tab}
               className="w-[86px] h-[32px] flex flex-col items-center justify-between cursor-pointer relative"
@@ -43,10 +42,8 @@ const TablingTabs: React.FC = () => {
       </div>
 
       <div
-        className={`transition-transform duration-500 ease ${
-          currentPosition === 0 ? 'translate-x-0' : '-translate-x-full'
-        }`}
         ref={sliderContainer}
+        className="w-full"
       >
         <div className="flex flex-row w-[200%]">
           <Reservation />
