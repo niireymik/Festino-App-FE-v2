@@ -78,3 +78,17 @@ export interface MenuItemProps {
 export interface ImageSliderProps {
   images: string[];
 }
+
+export interface Marker {
+  markerNum?: number;
+  left: number;
+  bottom: number;
+  scrollLeft?: number;
+  scrollTop?: number;
+  count?: number;
+  tab?: number;
+}
+
+export interface MapSpeechBubbleProps {
+  booth: Booth | BoothInfo;
+}

@@ -4,18 +4,8 @@ import { MapSpeechBubble } from '@/components/booths/MapSpeechBubble';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBoothStore } from '@/stores/booths/boothStore';
 import 'primeicons/primeicons.css';
-import { Booth, BoothInfo } from '@/types/Booth.types';
+import { Booth, BoothInfo, Marker } from '@/types/Booth.types';
 import { BOOTH_TYPE_MAP } from '@/constants';
-
-interface Marker {
-  markerNum?: number;
-  left: number;
-  bottom: number;
-  scrollLeft?: number;
-  scrollTop?: number;
-  count?: number;
-  tab?: number;
-}
 
 const BoothMap: React.FC = () => {
   const markers: {

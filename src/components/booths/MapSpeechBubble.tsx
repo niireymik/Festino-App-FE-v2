@@ -1,12 +1,8 @@
 import React from 'react';
 import { openNewTap } from '@/utils/utils';
-import { Booth, BoothInfo } from '@/types/Booth.types';
+import { MapSpeechBubbleProps } from '@/types/Booth.types';
 
-interface Props {
-  booth: Booth | BoothInfo;
-}
-
-export const MapSpeechBubble: React.FC<Props> = ({ booth }) => {
+export const MapSpeechBubble: React.FC<MapSpeechBubbleProps> = ({ booth }) => {
   if (!booth?.boothId) {
     return (
       <div className="px-[18px] py-[11px] speech-bubble shadow-5xl flex flex-col justify-center items-center">
