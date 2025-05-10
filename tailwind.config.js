@@ -115,7 +115,6 @@ export default {
         'arrow-back-white': "url('/icons/booths/arrow-back.svg')",
         'arrow-forward': "url('/icons/booths/arrow-forward.svg')",
         'booth-map': "url('/images/booths/map.svg')",
-        'booth-map': "url('/images/booths/map.svg')",
         'reservation-status': "url('/images/booths/reserve.svg')",
         // timetable
         'timetable-banner': "url('/images/timetables/timetable-banner.svg')",
