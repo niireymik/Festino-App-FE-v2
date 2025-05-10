@@ -39,7 +39,7 @@ const BoothPage: React.FC = () => {
       if(item.category === type) {
         return item.type;
       } else {
-        console.log('존재하지 않는 부스 유형입니다.');
+        return;
       }
     })
 
