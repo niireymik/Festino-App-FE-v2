@@ -246,13 +246,14 @@ const BoothMap: React.FC = () => {
     }
   }, [selectBoothCategory]);  
 
-  // 확대 먼저 적용
+  // 부스 상세 페이지 확대 먼저 적용
   useEffect(() => {
     if (isBoothDetail && boothId) {
       setZoom(1.6);
     }
   }, [isBoothDetail, boothId]);
 
+  // 상세 페이지 해당 부스 마커 활성화
   useEffect(() => {
     if (isBoothDetail && boothDetail?.markerNum && zoom === 1.6) {
       const found = Object.entries(markers.detail)
