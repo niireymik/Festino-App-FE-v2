@@ -114,12 +114,16 @@ export default {
         'default': "url('/images/booths/default.svg')",
         'arrow-back-white': "url('/icons/booths/arrow-back.svg')",
         'arrow-forward': "url('/icons/booths/arrow-forward.svg')",
+        'booth-map': "url('/images/booths/map.svg')",
         'reservation-status': "url('/images/booths/reserve.svg')",
         // timetable
         'timetable-banner': "url('/images/timetables/timetable-banner.svg')",
+        // tabling
+        'tabling-banner': "url('/images/tablings/tino-tabling.svg')",
       },
       borderRadius: {
         "2.5xl": "1.25rem", // 20px
+        "10xl": '3.125rem', // 50px
       },
       borderColor: (theme) => ({
         ...theme('colors'),

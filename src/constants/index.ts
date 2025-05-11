@@ -44,3 +44,5 @@ export const TABS = {
 };
 
 export const COUNCIL_URL = 'https://www.instagram.com/tukorea_drama/';
+
+export const REGEX = /^010/;

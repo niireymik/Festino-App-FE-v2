@@ -16,7 +16,7 @@ const BoothDetailPage: React.FC = () => {
     if(item.type === type) {
       return item.category;
     } else {
-      console.log('부스 상세페이지: 부스 정보가 없습니다.')
+      return;
     }
   });
 

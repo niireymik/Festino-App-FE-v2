@@ -1,5 +1,5 @@
-import TablingBanner from '@/components/tabling/TablingBanner';
-import TablingTaps from '@/components/tabling/TablingTaps';
+import TablingBanner from "@/components/tablings/TablingBanner";
+import TablingTaps from "@/components/tablings/TablingTaps";
 
 const TablingPage: React.FC = () => {
   return (

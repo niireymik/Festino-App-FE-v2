@@ -11,9 +11,27 @@ export const useBoothStore = create<BoothStore>((set) => ({
   boothListFacility:[],
   boothDetail: null,
   selectBoothCategory: 0,
+  isTicketBooth: false,
 
-  setSelectBoothCategory: (index: number) => {
-    set({ selectBoothCategory: index });
+  init: () => {
+    set({
+      selectBoothCategory: 0,
+      isTicketBooth: false
+    })
+  },
+
+  setSelectBoothCategory: (index: number | undefined) => {
+    if(index === undefined) {
+      set({ 
+        selectBoothCategory: 4,
+        isTicketBooth: true
+      })
+    } else {
+      set({ 
+        selectBoothCategory: index,
+        isTicketBooth: false
+      });
+    }
   },
 
   getBoothList: async () => {
@@ -25,44 +43,54 @@ export const useBoothStore = create<BoothStore>((set) => ({
         '/main/booth/food/all',
         '/main/facility/all',
       ];
-
-      const [all, night, day, food, facility] = await Promise.all(
+  
+      const results = await Promise.allSettled(
         urls.map((url) => api.get(url))
       );
-
+  
+      const getData = (index: number, key: string) => {
+        const result = results[index];
+        return result.status === 'fulfilled' ? result.value.data[key] : [];
+      };
+  
       set({
-        boothListAll: all.data.boothList,
-        boothListNight: night.data.boothList,
-        boothListDay: day.data.boothList,
-        boothListFood: food.data.boothList,
-        boothListFacility: facility.data.facilityList,
+        boothListAll: getData(0, 'boothList'),
+        boothListNight: getData(1, 'boothList'),
+        boothListDay: getData(2, 'boothList'),
+        boothListFood: getData(3, 'boothList'),
+        boothListFacility: getData(4, 'facilityList'),
+      });
+  
+      results.forEach((result, idx) => {
+        if (result.status === 'rejected') {
+          console.warn(`Request failed at index ${idx}:`, result.reason);
+        }
       });
     } catch (error) {
-      console.error(`Error: ${error}, 부스 목록 받아오기 실패`, error);
+      console.error(`Unexpected error during booth list fetch:`, error);
     }
-  },
+  },  
 
   getBoothDetail: async (type: string, id: string) => {
     const urlType = BOOTH_TYPE_MAP[type];
-  
-    if (!urlType) {
-      console.log('부스 타입이 존재하지 않습니다:', type);
-      return;
-    }
-  
+
+    if (!urlType) return;
+
     try {
       const endpoint =
         urlType === 'facility'
           ? `/main/${urlType}/${id}`
           : `/main/booth/${urlType}/${id}`;
-  
+
       const res = await api.get(endpoint);
       const boothDetail: BoothInfo =
         urlType === 'facility' ? res.data.facility : res.data.boothInfo;
-  
+
       set({ boothDetail });
+      return boothDetail;
     } catch (err) {
       console.error(`부스 정보가 없습니다: ${type}`, err);
+      return;
     }
   },
 }));
