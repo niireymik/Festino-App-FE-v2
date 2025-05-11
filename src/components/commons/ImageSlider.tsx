@@ -95,7 +95,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
       )}
       <div
         ref={containerRef}
-        className="snap-x snap-mandatory overflow-x-hidden w-full min-h-[340px] flex rounded-3xl outline outline-gray-200 outline-1"
+        className="snap-x snap-mandatory overflow-x-hidden w-full flex rounded-3xl outline outline-gray-200 outline-1"
       >
         {imageList.map((image, index) => {
           const { className, style } = getBoothImageProps(image);
