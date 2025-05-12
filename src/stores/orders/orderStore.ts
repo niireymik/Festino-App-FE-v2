@@ -1,5 +1,4 @@
-import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { create } from 'zustand';
 import { api } from '@/utils/api';
 
 export type AccountInfo = {
@@ -22,146 +21,160 @@ export type MenuInfo = {
   menuDescription: string;
   menuImage: string;
   isSoldOut: boolean;
-  menuType: string;
+  menuType: number;
 };
 
 export type BoothDetailInfo = {
   adminName: string;
 };
 
-export const useOrderStore = () => {
-  const navigate = useNavigate();
+interface OrderState {
+  boothId: string;
+  tableNum: number;
+  customTableNum: string;
+  userOrderList: OrderItem[];
+  menuInfo: MenuInfo[];
+  totalPrice: number;
+  userName: string;
+  phoneNum: string;
+  note: string;
+  isCoupon: boolean;
+  accountInfo: AccountInfo;
+  recentPhoneNum: string;
+  recentName: string;
+  memberCount: number;
+  isTossPay: boolean;
+  tossPayUrl: string;
+  isKakaoPay: boolean;
+  kakaoPayUrl: string;
 
-  const [recentPhoneNum, setRecentPhoneNum] = useState('');
-  const [recentName, setRecentName] = useState('');
-  const [orderList, setOrderList] = useState<OrderItem[]>([]);
-  const [boothId, setBoothId] = useState('');
-  const [menuInfo, setMenuInfo] = useState<MenuInfo[]>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [userOrderList, setUserOrderList] = useState<OrderItem[]>([]);
-  const [userName, setUserName] = useState('');
-  const [phoneNum, setPhoneNum] = useState('');
-  const [tableNum, setTableNum] = useState(0);
-  const [customTableNum, setCustomTableNum] = useState('');
-  const [isCoupon, setIsCoupon] = useState(false);
-  const [note, setNote] = useState('');
-  const [accountInfo, setAccountInfo] = useState<AccountInfo>({
-    account: '',
-    accountHolder: '',
-    bankName: '',
-  });
+  setRecentPhoneNum: (num: string) => void;
+  setRecentName: (name: string) => void;
+  setUserOrderList: (list: OrderItem[]) => void;
+  setMenuInfo: (menus: MenuInfo[]) => void;
+  setBoothId: (id: string) => void;
+  setTableNum: (num: number) => void;
+  setCustomTableNum: (num: string) => void;
+  setTotalPrice: (price: number) => void;
+  setUserName: (name: string) => void;
+  setPhoneNum: (num: string) => void;
+  setNote: (note: string) => void;
+  setIsCoupon: (value: boolean) => void;
+  setAccountInfo: (info: AccountInfo) => void;
 
-  const resetOrderInfo = () => {
-    setOrderList([]);
-    setUserOrderList([]);
-    setTotalPrice(0);
-  };
+  resetOrderInfo: () => void;
+  handleTotalPrice: () => void;
+  addOrderItem: (order: OrderItem) => void;
+  setMemberCount: (count: number) => void;
+  getAccountInfo: () => Promise<void>;
+  fetchTossPay: () => Promise<void>; // ✅ 반드시 인터페이스에도 정의!
+  fetchKakaoPay: () => Promise<void>;
+}
 
-  const getMenuAll = async (boothId: string) => {
+export const useOrderStore = create<OrderState>((set, get) => ({
+  boothId: '',
+  tableNum: 0,
+  customTableNum: '',
+  userOrderList: [],
+  menuInfo: [],
+  totalPrice: 0,
+  userName: '',
+  phoneNum: '',
+  note: '',
+  isCoupon: false,
+  accountInfo: { account: '', accountHolder: '', bankName: '' },
+  recentPhoneNum: '',
+  recentName: '',
+  memberCount: 1,
+  isTossPay: false,
+  tossPayUrl: '',
+  isKakaoPay: false,
+  kakaoPayUrl: '',
+
+  setRecentPhoneNum: (num) => set({ recentPhoneNum: num }),
+  setRecentName: (name) => set({ recentName: name }),
+  setUserOrderList: (list) => set({ userOrderList: list }),
+  setMenuInfo: (menus) => set({ menuInfo: menus }),
+  setBoothId: (id) => set({ boothId: id }),
+  setTableNum: (num) => set({ tableNum: num }),
+  setCustomTableNum: (num) => set({ customTableNum: num }),
+  setTotalPrice: (price) => set({ totalPrice: price }),
+  setUserName: (name) => set({ userName: name }),
+  setPhoneNum: (num) => set({ phoneNum: num }),
+  setNote: (note) => set({ note }),
+  setIsCoupon: (value) => set({ isCoupon: value }),
+  setAccountInfo: (info) => set({ accountInfo: info }),
+  setMemberCount: (count) => set({ memberCount: count }),
+
+  resetOrderInfo: () => {
+    set({ userOrderList: [], totalPrice: 0 });
+  },
+
+  handleTotalPrice: () => {
+    const total = get().userOrderList.reduce((sum, item) => sum + item.menuCount * item.menuPrice, 0);
+    set({ totalPrice: total });
+    console.log(total);
+  },
+
+  addOrderItem: (order) => {
+    const list = get().userOrderList;
+    const exists = list.find((o) => o.menuId === order.menuId);
+    if (order.menuCount === 0) {
+      set({ userOrderList: list.filter((o) => o.menuId !== order.menuId) });
+    } else if (exists) {
+      set({
+        userOrderList: list.map((o) => (o.menuId === order.menuId ? order : o)),
+      });
+    } else {
+      set({ userOrderList: [...list, order] });
+    }
+  },
+  getAccountInfo: async () => {
+    const boothId = get().boothId;
     try {
-      const res = await api.get(`/main/menu/all/booth/${boothId}`);
-      if (res.data.success && Array.isArray(res.data.menuList)) {
-        const validMenus = res.data.menuList.filter(
-          (menu: MenuInfo) =>
-            menu &&
-            typeof menu.menuId === 'string' &&
-            typeof menu.menuName === 'string' &&
-            typeof menu.menuPrice === 'number' &&
-            typeof menu.menuType === 'string',
-        );
-        setMenuInfo(validMenus);
+      const res = await api.get('/main/booth/night/account', { params: { boothId } });
+
+      if (res.data.success) {
+        set({ accountInfo: res.data.accountInfo });
       } else {
-        navigate('/error/NotFound');
+        window.location.href = '/error/order';
       }
     } catch (error) {
-      console.error('Error get menu data:', error);
-      navigate('/error/NotFound');
+      console.error('Error fetching account info:', error);
+      window.location.href = '/error/order';
     }
-  };
-
-  const handleTotalPrice = useCallback(() => {
-    const total = userOrderList.reduce((sum, item) => sum + item.menuPrice, 0);
-    setTotalPrice(total);
-  }, [userOrderList]);
-
-  const addOrderItem = (order: OrderItem) => {
-    setUserOrderList((prev) => {
-      const exists = prev.find((o) => o.menuId === order.menuId);
-      if (exists) {
-        return prev.map((o) => (o.menuId === order.menuId ? order : o));
-      }
-      return [...prev, order];
-    });
-  };
-
-  const getCustomTableNum = async (tableNum: number, boothId: string): Promise<string> => {
+  },
+  fetchKakaoPay: async () => {
+    const boothId = get().boothId;
     try {
-      const res = await api.get('/main/order/table', {
-        params: { tableNumIndex: tableNum, boothId },
+      const res = await api.get('/main/booth/night/kakao', {
+        params: { boothId }, // ✅ isKakaoPay 제거, boothId만
       });
-      console.log(res.data);
-      if (res.data.success) return res.data.tableNum;
-      else navigate('/error/NotFound');
-    } catch {
-      navigate('/error/NotFound');
+      if (res.data.success) {
+        set({
+          isKakaoPay: res.data.kakaoPayInfo.isKakaoPay,
+          kakaoPayUrl: res.data.kakaoPayInfo.kakaoPay,
+        });
+      }
+    } catch (e) {
+      console.error('카카오페이 정보 조회 실패:', e);
     }
-    return '';
-  };
+  },
 
-  const setBoothInfo = async (id: string, num: number) => {
-    const table = await getCustomTableNum(num, id);
-    setBoothId(id);
-    setTableNum(num);
-    setCustomTableNum(table);
-  };
-
-  const isUUID = (uuid: string): boolean => {
-    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
-    return regex.test(uuid);
-  };
-
-  const getBoothDetail = async (id: string): Promise<BoothDetailInfo | undefined> => {
+  fetchTossPay: async () => {
+    const boothId = get().boothId;
     try {
-      const res = await api.get(`/main/booth/night/${id}`);
-      if (res.data.success) return res.data.boothInfo;
-      else navigate('/error/NotFound');
-    } catch {
-      navigate('/error/NotFound');
+      const res = await api.get('/main/booth/night/toss', {
+        params: { boothId }, // ✅ isTossPay 제거, boothId만
+      });
+      if (res.data.success) {
+        set({
+          isTossPay: res.data.tossPayInfo.isTossPay,
+          tossPayUrl: res.data.tossPayInfo.tossPay,
+        });
+      }
+    } catch (e) {
+      console.error('토스페이 정보 조회 실패:', e);
     }
-  };
-
-  return {
-    // states
-    recentPhoneNum,
-    setRecentPhoneNum,
-    recentName,
-    setRecentName,
-    orderList,
-    setOrderList,
-    boothId,
-    menuInfo,
-    setMenuInfo,
-    totalPrice,
-    userOrderList,
-    userName,
-    setUserName,
-    phoneNum,
-    setPhoneNum,
-    tableNum,
-    customTableNum,
-    isCoupon,
-    setIsCoupon,
-    note,
-    setNote,
-    accountInfo,
-
-    // methods
-    resetOrderInfo,
-    handleTotalPrice,
-    addOrderItem,
-    setBoothInfo,
-    isUUID,
-    getBoothDetail,
-    getMenuAll,
-  };
-};
+  },
+}));

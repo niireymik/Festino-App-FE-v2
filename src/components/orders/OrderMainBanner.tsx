@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useOrderStore } from '@/stores/orders/orderStore';
+import { useParams, useNavigate } from 'react-router-dom';
+import { api } from '@/utils/api';
 
 const OrderMainBanner: React.FC = () => {
   const { boothId } = useParams<{ boothId: string }>();
-  const { getBoothDetail } = useOrderStore();
+  const navigate = useNavigate();
   const [orderMajor, setOrderMajor] = useState('');
 
   useEffect(() => {
     const fetchBoothInfo = async () => {
       if (!boothId) return;
-      const boothInfo = await getBoothDetail(boothId);
-      setOrderMajor(boothInfo?.adminName ?? '');
+
+      try {
+        const res = await api.get(`/main/booth/night/${boothId}`);
+        if (res.data.success) {
+          setOrderMajor(res.data.boothInfo.adminName);
+        } else {
+          navigate('/error/NotFound');
+        }
+      } catch (err) {
+        console.error('부스 정보 가져오기 실패:', err);
+        navigate('/error/NotFound');
+      }
     };
 
     fetchBoothInfo();
