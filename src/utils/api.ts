@@ -27,7 +27,7 @@ export const api = {
   },
 };
 
-const tokenizedBaseApi = axios.create({
+export const tokenizedBaseApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
@@ -42,7 +42,7 @@ tokenizedBaseApi.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      // Promise Lock 로직...
+      // Promise Lock 로직
       if (!refreshTokenPromise) {
         refreshTokenPromise = useAuthStore.getState().getNewAccessToken();
       }
