@@ -22,11 +22,15 @@ const RegisterPage: React.FC = () => {
     }
 
     setShowCodeInput(true);
-    // 인증 API 호출은 여기에
+    // 인증 API 호출 예정
   };
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    let filtered = e.target.value.replace(/[^a-zA-Zㄱ-ㅎ가-힣]/g, '');
+    if (filtered.length > 5) {
+      filtered = filtered.slice(0, 5);
+    }
+    setName(filtered);
   };
 
   const handleChangePhoneNum = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +80,7 @@ const RegisterPage: React.FC = () => {
                 value={phone}
                 onChange={handleChangePhoneNum}
                 className="w-4/5 h-14 py-4 px-5 text-base placeholder-secondary-400 bg-white focus:bg-white border-1 border-secondary-400 focus:border-primary-900 rounded-10xl focus:outline-none"
+                maxLength={13}
               />
               <button
                 onClick={handleClickVerifyButton}
