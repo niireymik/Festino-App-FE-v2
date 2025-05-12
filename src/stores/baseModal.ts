@@ -1,19 +1,16 @@
-import { create } from 'zustand';
+import { create } from "zustand";
+import { IBaseModal } from "@/types/BaseModal.types";
 
-interface BaseModalState {
-  isModalOpen: boolean;
-  modalType: string;
-
-  openModal: (type: string) => void;
-  closeModal: () => void;
-  setModalType: (type: string) => void;
-}
-
-export const useBaseModal = create<BaseModalState>((set) => ({
+const useBaseModal = create<IBaseModal>((set) => ({
   isModalOpen: false,
-  modalType: '',
-
-  openModal: (type: string) => set({ isModalOpen: true, modalType: type }),
+  modalType: "",
+  setModalType: (type) => set({ modalType: type }),
+  openModal: (type) =>
+    set({
+      isModalOpen: true,
+      modalType: type,
+    }),
   closeModal: () => set({ isModalOpen: false }),
-  setModalType: (type: string) => set({ modalType: type }),
 }));
+
+export default useBaseModal;

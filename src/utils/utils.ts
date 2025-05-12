@@ -8,8 +8,39 @@ export const priceToString = (price: number) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-export const formatPrice = (price: number | string): string => {
-  if (price === '') return '';
-  const parsedPrice = typeof price === 'string' ? parseInt(price, 10) : price;
-  return parsedPrice.toLocaleString('ko-KR');
+export const formatPhoneNum = (phoneNum: string) => {
+  if (phoneNum === '') return '';
+  return phoneNum.replace(/-/g, '');
+};
+
+export const openNewTap = (url: string) => {
+  window.open(url, '_blank');
+};
+
+export const getRelativeTime = (timestamp: string): string => {
+  const now = new Date();
+  const past = new Date(timestamp);
+  const diffMs = now.getTime() - past.getTime();
+
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMinutes < 1) return '방금 전';
+  if (diffMinutes < 60) return `${diffMinutes}분 전`;
+  if (diffHours < 24) return `${diffHours}시간 전`;
+  return `${diffDays}일 전`;
+};
+
+export const formatDateTime = (timestamp: string): string => {
+  const date = new Date(timestamp);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}.${month}.${day} ${hours}:${minutes}`;
 };

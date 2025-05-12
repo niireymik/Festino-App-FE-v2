@@ -94,10 +94,11 @@ export default {
         'error-full': "url('/images/tinos/error.svg')",
         // common
         'instagram': "url('/icons/commons/instagram.png')",
+        'x-button': "url('/icons/commons/x.png')",
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
-        //home
+        // home
         'home-banner': "url('/images/homes/home-banner.svg')",
         'slide-banner-1': "url('/images/homes/slide-banner-1.svg')",
         'slide-banner-2': "url('/images/homes/slide-banner-2.svg')",
@@ -106,16 +107,23 @@ export default {
         'talent-icon': "url('/icons/homes/talent.svg')",
         'arrow-back-black': "url('/icons/homes/arrow-back.svg')",
         'pin-icon': "url('icons/homes/pin.svg')",
+        'tino-cd': "url('icons/homes/tino-cd.svg')",
         // booth
         'booth-banner': "url('/images/booths/banners/booth.svg')",
         'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')",
         'default': "url('/images/booths/default.svg')",
         'arrow-back-white': "url('/icons/booths/arrow-back.svg')",
         'arrow-forward': "url('/icons/booths/arrow-forward.svg')",
-        'reservation-status': "url('/images/booths/reserve.svg')"
+        'booth-map': "url('/images/booths/map.svg')",
+        'reservation-status': "url('/images/booths/reserve.svg')",
+        // timetable
+        'timetable-banner': "url('/images/timetables/timetable-banner.svg')",
+        // tabling
+        'tabling-banner': "url('/images/tablings/tino-tabling.svg')",
       },
       borderRadius: {
         "2.5xl": "1.25rem", // 20px
+        "10xl": '3.125rem', // 50px
       },
       borderColor: (theme) => ({
         ...theme('colors'),

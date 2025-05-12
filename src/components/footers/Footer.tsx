@@ -7,10 +7,10 @@ const Footer: React.FC = () => {
   const { pathname } = useLocation();
 
   const selectedFooterIndex = React.useMemo(() => {
-    if (pathname === '/notification' || pathname === '/notice') {
+    if (pathname.includes('/notices')) {
       return 0;
     } 
-    if (pathname.includes('/booth')) {
+    if (pathname.includes('/booths')) {
       return 2;
     }
 
