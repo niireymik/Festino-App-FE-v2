@@ -9,6 +9,7 @@ const initializeApp = async () => {
   try {
     const response = await baseApi.post('/main/auth/init');
 
+    // init API로 대체
     const isLoggedIn = response.data?.isLoggedIn || false;
 
     const { setIsLoggedIn } = useAuthStore.getState();
