@@ -11,11 +11,14 @@ import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
 import OrderMainPage from './pages/orders/OrderMainPage';
 import OrderPaymentPage from './pages/orders/OrderPaymentPage';
+import ModalRenderer from './components/orders/modals/ModalRenderer';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+
+      <ModalRenderer />
       <Routes>
         {/* Main */}
         <Route path="/" element={<MainLayout />}>

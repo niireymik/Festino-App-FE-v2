@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useOrderStore } from '@/stores/orders/orderStore';
 import OrderMainBanner from '@/components/orders/OrderMainBanner';
+import { api } from '@/utils/api';
 
 const OrderMainPage: React.FC = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { boothId, tableNum } = useParams<{ boothId: string; tableNum: string }>();
-  const { customTableNum, resetOrderInfo, setBoothInfo, isUUID } = useOrderStore();
+  const { customTableNum, setBoothId, setTableNum, setCustomTableNum, resetOrderInfo } = useOrderStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -17,9 +19,15 @@ const OrderMainPage: React.FC = () => {
       return;
     }
 
-    setBoothInfo(boothId, tableIndex);
+    setBoothId(boothId);
+    setTableNum(tableIndex);
+
+    getCustomTableNum(tableIndex, boothId)
+      .then((tableNumStr) => setCustomTableNum(tableNumStr))
+      .catch(() => navigate('/error/NotFound'));
+
     resetOrderInfo();
-  }, [boothId, tableNum]);
+  }, [pathname]);
 
   const handleClickFestinoButton = () => navigate('/main');
   const handleClickOrderSearchButton = () => navigate(`/order/${boothId}/${tableNum}`);
@@ -73,3 +81,17 @@ const OrderMainPage: React.FC = () => {
 };
 
 export default OrderMainPage;
+
+// ✅ helpers
+const isUUID = (uuid: string): boolean => {
+  const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+  return regex.test(uuid);
+};
+
+const getCustomTableNum = async (tableNum: number, boothId: string): Promise<string> => {
+  const res = await api.get('/main/order/table', {
+    params: { tableNumIndex: tableNum, boothId },
+  });
+  if (res.data.success) return res.data.tableNum;
+  throw new Error('Table number fetch failed');
+};

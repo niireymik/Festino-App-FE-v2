@@ -1,95 +1,84 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { api } from '@/utils/api';
 import { formatPrice } from '@/utils/utils';
-import { useOrderStore } from '@/stores/orders/orderStore';
+import type { MenuInfo } from '@/stores/orders/orderStore';
 
-interface Menu {
-  menuId: string;
-  menuName: string;
-  menuPrice: number;
-  menuDescription: string;
-  menuImage: string;
-  menuType: number;
-}
+const MENU_CATEGORIES = [
+  { label: '전체 메뉴', value: 'ALL' },
+  { label: '메인 메뉴', value: 0 },
+  { label: '서브 메뉴', value: 1 },
+  { label: '기타 메뉴', value: 2 },
+] as const;
 
-interface MenuItemProps {
-  menu: Menu;
-}
+const MenuPage: React.FC = () => {
+  const { boothId } = useParams<{ boothId: string }>();
+  const [menus, setMenus] = useState<MenuInfo[]>([]);
+  const [selectedTab, setSelectedTab] = useState<(typeof MENU_CATEGORIES)[number]['value']>('ALL');
 
-const MenuItem: React.FC<MenuItemProps> = ({ menu }) => {
-  const [menuNum, setMenuNum] = useState(0);
-  const menuUnitPrice = menu.menuPrice;
-  const menuType = menu.menuType === 0 ? '메인 메뉴' : '서브 메뉴';
+  useEffect(() => {
+    if (!boothId) return;
+    fetchMenus(selectedTab);
+  }, [boothId, selectedTab]);
 
-  const { addOrderItem, handleTotalPrice } = useOrderStore();
-
-  const updateOrder = (count: number) => {
-    addOrderItem({
-      menuId: menu.menuId,
-      menuName: menu.menuName,
-      menuCount: count,
-      menuPrice: menuUnitPrice * count,
-    });
-    handleTotalPrice();
+  const fetchMenus = async (category: 'ALL' | 0 | 1 | 2) => {
+    try {
+      const endpoint =
+        category === 'ALL' ? `/main/menu/all/booth/${boothId}` : `/main/menu/all/booth/${boothId}?menuType=${category}`;
+      const res = await api.get(endpoint);
+      if (res.data.success && Array.isArray(res.data.MenuInfo)) {
+        setMenus(res.data.MenuInfo);
+      } else {
+        setMenus([]);
+      }
+    } catch (error) {
+      console.error('메뉴 가져오기 오류:', error);
+      setMenus([]);
+    }
   };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    const numValue = Math.min(99, Math.max(0, Number(value)));
-    setMenuNum(numValue);
-    updateOrder(numValue);
-  };
-
-  const handleClick = (type: 'plus' | 'minus') => {
-    setMenuNum((prev) => {
-      const newValue = type === 'plus' ? Math.min(prev + 1, 99) : Math.max(prev - 1, 0);
-      updateOrder(newValue);
-      return newValue;
-    });
-  };
-
-  const getMenuImageStyle = (menuImage?: string): React.CSSProperties => ({
-    backgroundImage: `url(${menuImage || '/images/booth/booth-default-image.png'})`,
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-  });
 
   return (
-    <div className="flex gap-5 py-4 items-center w-full border-b border-[#999999ad]">
-      <div
-        className="min-w-[120px] w-[120px] h-[120px] rounded-3xl border-2 border-secondary-100"
-        style={getMenuImageStyle(menu.menuImage)}
-      />
-      <div className="flex flex-col w-full">
-        <div className="flex justify-between items-center">
-          <div className="font-semibold text-secondary-700">{menu.menuName}</div>
-          <div className="text-3xs text-secondary-500 bg-secondary-50 rounded-full w-[46px] h-[18px] flex items-center justify-center shrink-0">
-            {menuType}
+    <div className="flex flex-col min-h-screen bg-white">
+      <div className="sticky top-0 bg-white z-10 p-4 border-b border-gray-200">
+        <h1 className="text-lg font-bold text-center">주문하기</h1>
+      </div>
+
+      <div className="flex justify-around px-4 py-2 border-b">
+        {MENU_CATEGORIES.map((cat) => (
+          <button
+            key={cat.value}
+            className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+              selectedTab === cat.value ? 'bg-blue-500 text-white' : 'bg-white text-gray-500 border-gray-300'
+            }`}
+            onClick={() => setSelectedTab(cat.value)}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-4 py-4">
+        {menus.map((menu) => (
+          <div key={menu.menuId} className="flex gap-4 mb-6 border-b pb-4">
+            <div
+              className="w-24 h-24 rounded-xl bg-center bg-cover border"
+              style={{
+                backgroundImage: `url(${menu.menuImage || '/images/booth/booth-default-image.png'})`,
+              }}
+            ></div>
+            <div className="flex flex-col justify-between flex-1">
+              <div>
+                <div className="font-semibold text-gray-800">{menu.menuName}</div>
+                <div className="text-sm text-gray-500 mt-1">{menu.menuDescription}</div>
+                <div className="text-sm text-gray-500 mt-1">가격: {formatPrice(menu.menuPrice)}원</div>
+              </div>
+              <div className="mt-2 text-base font-bold text-blue-600">{formatPrice(menu.menuPrice)}원</div>
+            </div>
           </div>
-        </div>
-        <div className="font-light text-secondary-300 text-sm">{menu.menuDescription}</div>
-        <div className="font-light text-secondary-300 text-sm">가격: {formatPrice(menuUnitPrice)}원</div>
-        <div className="flex pt-3 justify-between items-center">
-          <div className={`font-semibold ${menuNum ? 'text-secondary-700' : 'text-secondary-100'}`}>
-            {formatPrice(menuUnitPrice * menuNum)}원
-          </div>
-          <div className="w-[118px] flex flex-row gap-[10px]">
-            <img src="/icons/orders/minus.svg" className="cursor-pointer" onClick={() => handleClick('minus')} />
-            <input
-              className="w-[62px] h-7 rounded-[1.75rem] border border-secondary-500 text-center focus:outline-none"
-              type="text"
-              value={menuNum}
-              inputMode="numeric"
-              maxLength={2}
-              onChange={handleInputChange}
-              placeholder="0"
-            />
-            <img src="/icons/orders/plus.svg" className="cursor-pointer" onClick={() => handleClick('plus')} />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default MenuItem;
+export default MenuPage;
