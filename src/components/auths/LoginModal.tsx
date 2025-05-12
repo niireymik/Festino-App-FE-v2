@@ -20,17 +20,17 @@ const LoginModal: React.FC = () => {
 
   return (
     <div
-      className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-8 py-8 gap-6"
+      className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-6 py-6 gap-6"
       onClick={(e) => e.stopPropagation()}
     >
-      <button className="absolute top-9 right-8 w-[32px] h-[32px]" onClick={closeModal}>
+      <button className="absolute top-[30px] right-8 w-[32px] h-[32px]" onClick={closeModal}>
         <img src="/icons/commons/x.png" />
       </button>
 
       <div className="w-full flex flex-col gap-6">
-        <h2 className="text-primary-900 text-4xl font-bold text-center">Login</h2>
+        <h2 className="text-primary-900 text-3xl font-bold text-center">Login</h2>
 
-        <div className="flex w-full h-[60px] items-center border border-primary-900 rounded-full px-4 py-3 gap-3">
+        <div className="flex w-full h-14 items-center border border-primary-900 rounded-full px-4 py-3 gap-3">
           <img src="/icons/tablings/person.svg" alt="user" className="w-6 h-6 opacity-50" />
           <input
             type="text"
@@ -41,7 +41,7 @@ const LoginModal: React.FC = () => {
           />
         </div>
 
-        <div className="flex w-full h-[60px] items-center border border-primary-900 rounded-full px-4 py-3 gap-3">
+        <div className="flex w-full h-14 items-center border border-primary-900 rounded-full px-4 py-3 gap-3">
           <img src="/icons/tablings/phone.svg" className="w-6 h-6 opacity-50" />
           <input
             type="text"
@@ -53,13 +53,13 @@ const LoginModal: React.FC = () => {
         </div>
 
         <button
-          className="w-full h-[60px] bg-primary-900 rounded-full text-white font-semibold text-lg hover:bg-blue-600"
+          className="w-full h-14 bg-primary-900 rounded-full text-white font-semibold text-lg hover:bg-blue-600"
           onClick={handleLogin}
         >
           로그인하기
         </button>
 
-        <p className="text-sm text-secondary-400 text-right">
+        <p className="text-sm text-secondary-400 text-center">
           계정이 존재하지 않나요?{' '}
           <span className="text-primary-900 font-medium cursor-pointer" onClick={() => handleClickRegist()}>
             회원가입
