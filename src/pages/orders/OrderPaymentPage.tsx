@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useOrderStore } from '@/stores/orders/orderStore';
 import { formatPrice } from '@/utils/utils';
-import { useBaseModal } from '@/stores/baseModal';
 import MenuCard from '@/components/orders/MenuCard';
 import { api } from '@/utils/api';
 import { disconnectOrderSocket, connectOrderSocket } from '@/utils/orderSocket';
+import useBaseModal from '@/stores/baseModal';
 
 const CATEGORIES = [
   { label: '전체 메뉴', value: 'ALL' },

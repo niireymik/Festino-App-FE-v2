@@ -1,7 +1,7 @@
 import React from 'react';
-import { useBaseModal } from '@/stores/baseModal';
 import { useNavigate } from 'react-router-dom';
 import { useOrderStore } from '@/stores/orders/orderStore';
+import useBaseModal from '@/stores/baseModal';
 
 const OrderCompleteModal: React.FC = () => {
   const { closeModal } = useBaseModal();

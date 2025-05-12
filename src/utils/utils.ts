@@ -44,3 +44,5 @@ export const formatDateTime = (timestamp: string): string => {
 
   return `${year}.${month}.${day} ${hours}:${minutes}`;
 };
+
+export const formatPrice = (price: number) => price.toLocaleString();

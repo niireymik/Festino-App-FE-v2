@@ -29,7 +29,7 @@ const OrderMainPage: React.FC = () => {
     resetOrderInfo();
   }, [pathname]);
 
-  const handleClickFestinoButton = () => navigate('/main');
+  const handleClickFestinoButton = () => navigate('/');
   const handleClickOrderSearchButton = () => navigate(`/order/${boothId}/${tableNum}`);
   const handleClickPayment = () => navigate(`/order/${boothId}/${tableNum}/payment`);
 

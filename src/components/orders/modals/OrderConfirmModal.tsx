@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useBaseModal } from '@/stores/baseModal';
 import { useOrderStore } from '@/stores/orders/orderStore';
 import { api } from '@/utils/api';
+import useBaseModal from '@/stores/baseModal';
 
 const prettyPhoneNum = (num: string) => {
   const digits = num.replace(/\D/g, '');

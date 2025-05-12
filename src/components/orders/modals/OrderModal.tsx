@@ -1,13 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { useBaseModal } from '@/stores/baseModal';
+import useBaseModal from '@/stores/baseModal';
 import { useOrderStore } from '@/stores/orders/orderStore';
-import InputName from '@/components/tablings/InputName';
-import InputPhoneNum from '@/components/tablings/InputPhoneNum';
+import InputName from '@/components/tablings/InputName';
+import InputPhoneNum from '@/components/tablings/InputPhoneNum';
+import { formatPrice } from '@/utils/utils';
 
 const MAX_MESSAGE_LENGTH = 50;
 const phoneRegex = /^010/;
-
-const formatPrice = (price: number) => price.toLocaleString();
 
 const OrderModal: React.FC = () => {
   const {

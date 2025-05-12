@@ -1,8 +1,8 @@
 import React from 'react';
-import { useBaseModal } from '@/stores/baseModal';
 import OrderConfirmModal from './OrderConfirmModal';
 import OrderCompleteModal from './OrderCompletemodal';
 import OrderModal from './OrderModal';
+import useBaseModal from '@/stores/baseModal';
 
 const ModalRenderer: React.FC = () => {
   const { isModalOpen, modalType, closeModal } = useBaseModal();
