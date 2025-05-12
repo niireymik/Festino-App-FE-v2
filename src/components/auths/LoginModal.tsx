@@ -1,16 +1,33 @@
 import useBaseModal from '@/stores/baseModal';
-import { useState } from 'react';
+import { useAuthStore } from '@/stores/auths/authStore';
 import { useNavigate } from 'react-router-dom';
 
 const LoginModal: React.FC = () => {
   const { closeModal } = useBaseModal();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const { userId, password, setUserId, setPassword, login } = useAuthStore();
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    console.log('로그인 시도:', { username, password });
+  const handleClickClose = () => {
+    closeModal();
+    setUserId('');
+    setPassword('');
+  };
+
+  const handleLogin = async () => {
+    if (!userId.trim() || !password.trim()) {
+      alert('아이디와 전화번호를 입력해주세요.');
+      return;
+    }
+
+    const success = await login();
+    if (success) {
+      setUserId('');
+      setPassword('');
+      closeModal();
+    } else {
+      alert('로그인에 실패했습니다. 정보를 다시 확인해주세요.');
+    }
   };
 
   const handleClickRegist = () => {
@@ -18,12 +35,31 @@ const LoginModal: React.FC = () => {
     closeModal();
   };
 
+  const handleChangeUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let filtered = e.target.value.replace(/[^a-zA-Zㄱ-ㅎ가-힣]/g, '');
+    if (filtered.length > 5) filtered = filtered.slice(0, 5);
+    setUserId(filtered);
+  };
+
+  const formatPhoneNumber = (input: string): string => {
+    const digits = input.replace(/\D/g, '');
+    if (digits.length < 4) return digits;
+    if (digits.length < 8) return digits.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+    return digits.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+  };
+
+  const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputPhoneNum = e.target.value;
+    const formatted = formatPhoneNumber(inputPhoneNum);
+    setPassword(formatted);
+  };
+
   return (
     <div
       className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-6 py-6 gap-6"
       onClick={(e) => e.stopPropagation()}
     >
-      <button className="absolute top-[30px] right-8 w-[32px] h-[32px]" onClick={closeModal}>
+      <button className="absolute top-[30px] right-8 w-[32px] h-[32px]" onClick={() => handleClickClose()}>
         <img src="/icons/commons/x.png" />
       </button>
 
@@ -35,8 +71,8 @@ const LoginModal: React.FC = () => {
           <input
             type="text"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={userId}
+            onChange={handleChangeUserId}
             className="flex-1 text-m placeholder-secondary-400 focus:outline-none"
           />
         </div>
@@ -47,8 +83,9 @@ const LoginModal: React.FC = () => {
             type="text"
             placeholder="Phonenum"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleChangePhone}
             className="flex-1 text-m placeholder-secondary-400 focus:outline-none"
+            maxLength={13}
           />
         </div>
 
