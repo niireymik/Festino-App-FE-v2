@@ -67,7 +67,7 @@ interface OrderState {
   addOrderItem: (order: OrderItem) => void;
   setMemberCount: (count: number) => void;
   getAccountInfo: () => Promise<void>;
-  fetchTossPay: () => Promise<void>; // ✅ 반드시 인터페이스에도 정의!
+  fetchTossPay: () => Promise<void>;
   fetchKakaoPay: () => Promise<void>;
 }
 
@@ -148,7 +148,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     const boothId = get().boothId;
     try {
       const res = await api.get('/main/booth/night/kakao', {
-        params: { boothId }, // ✅ isKakaoPay 제거, boothId만
+        params: { boothId },
       });
       if (res.data.success) {
         set({
@@ -165,7 +165,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     const boothId = get().boothId;
     try {
       const res = await api.get('/main/booth/night/toss', {
-        params: { boothId }, // ✅ isTossPay 제거, boothId만
+        params: { boothId },
       });
       if (res.data.success) {
         set({

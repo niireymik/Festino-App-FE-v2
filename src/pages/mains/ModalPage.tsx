@@ -10,6 +10,7 @@ import DuplicateModal from '@/components/tablings/modals/DuplicateModal';
 import ReservationModal from '@/components/tablings/modals/ReservationModal';
 import CompleteReserveModal from '@/components/tablings/modals/CompleteReserveModal';
 import MessageFailModal from '@/components/tablings/modals/MessageFailModal';
+import OrderModal from '@/components/orders/modals/OrderModal';
 
 const ModalPage = () => {
   const { isModalOpen, modalType } = useBaseModal();
@@ -28,6 +29,7 @@ const ModalPage = () => {
       {modalType === 'failReservationModal' && <FailReservationModal />}
       {modalType === 'completeReserveModal' && <CompleteReserveModal />}
       {modalType === 'messageFailModal' && <MessageFailModal />}
+      {modalType === 'orderModal' && <OrderModal />}
     </ModalBackground>
   );
 };

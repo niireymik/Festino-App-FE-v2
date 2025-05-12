@@ -64,7 +64,7 @@ const OrderPaymentPage: React.FC = () => {
   useEffect(() => {
     if (!boothId || !isUUID(boothId)) return;
     const tableIndex = Number(tableNum);
-    connectOrderSocket(boothId, tableIndex); // ✅ 웹소켓 연결
+    connectOrderSocket(boothId, tableIndex);
   }, [boothId, tableNum]);
 
   useEffect(() => {
@@ -115,8 +115,6 @@ const OrderPaymentPage: React.FC = () => {
     openModal('orderModal');
   };
 
-  console.log(totalPrice);
-
   return (
     <div className="flex flex-col h-full pt-[60px]">
       <div className="fixed max-w-[500px] top-0 w-full bg-white z-10 p-4 flex items-center justify-between border-b border-gray-200">
@@ -139,11 +137,7 @@ const OrderPaymentPage: React.FC = () => {
               fetchMenuByCategory(cat.value);
             }}
             className={`flex-1 min-w-0 basis-0 px-4 py-3 rounded-full border text-sm transition-colors
-        ${
-          selectedCategory === cat.value
-            ? 'bg-primary-700 text-white ㅊ' // ✅ 선택된 탭: 파란 배경, 흰색 글씨, 파란 테두리
-            : 'bg-white text-blue-300 border-blue-200' // ✅ 선택 안 된 탭: 흰 배경, 연한 파란 글씨, 연한 테두리
-        }
+        ${selectedCategory === cat.value ? 'bg-primary-700 text-white ' : 'bg-white text-blue-300 border-blue-200'}
       `}
           >
             {cat.label}
@@ -161,7 +155,7 @@ const OrderPaymentPage: React.FC = () => {
                 boothId={boothId!}
                 tableNum={parseInt(tableNum!, 10)}
                 totalPrice={totalPrice}
-                totalCount={userOrderList.reduce((acc, cur) => acc + cur.menuCount, 0)} // ✅ 수량 총합 계산
+                totalCount={userOrderList.reduce((acc, cur) => acc + cur.menuCount, 0)}
                 onCountChange={(count) => {
                   const order = {
                     menuId: menu.menuId,
@@ -192,7 +186,6 @@ const OrderPaymentPage: React.FC = () => {
 
 export default OrderPaymentPage;
 
-// ✅ helpers
 const isUUID = (uuid: string): boolean => {
   const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
   return regex.test(uuid);

@@ -53,13 +53,10 @@ const OrderModal: React.FC = () => {
     >
       <div className="font-semibold text-xl text-secondary-700 text-center mb-3">주문하기</div>
       <div className="flex flex-col gap-3 w-full flex-grow overflow-y-auto overflow-x-hidden">
-        {/* 이름 & 전화번호 */}
         <div className="px-4 w-full">
           <InputName value={recentName} onChange={setRecentName} />
           <InputPhoneNum value={recentPhoneNum} onChange={setRecentPhoneNum} />
         </div>
-
-        {/* 주문 내역 */}
         <div className="w-full gap-1 flex flex-col">
           <div className="font-semibold text-secondary-700">주문하기</div>
           <div className="w-full rounded-xl  p-4" style={{ backgroundColor: '#f0f6ff' }}>
@@ -77,8 +74,6 @@ const OrderModal: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* 메모 */}
         <div className="relative w-full flex flex-col gap-1">
           <div className="font-semibold text-secondary-700">메모</div>
           <textarea
@@ -90,8 +85,6 @@ const OrderModal: React.FC = () => {
           />
           <div className="absolute bottom-4 right-5 text-sm text-secondary-100"></div>
         </div>
-
-        {/* 동의 체크 */}
         <div className="text-xs text-secondary-500 flex flex-col items-start w-full">
           <label htmlFor="agree-checkbox" className="flex mb-4">
             <input
@@ -104,8 +97,6 @@ const OrderModal: React.FC = () => {
             개인정보 수집 이용 동의 <span className="text-red-500">&nbsp;(필수)</span>
           </label>
         </div>
-
-        {/* 버튼 */}
         <div className="gap-5 flex w-full font-bold">
           <button
             className="w-full h-[42px] flex justify-center items-center border-2 border-primary-700 rounded-3xl text-primary-700"

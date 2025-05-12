@@ -20,6 +20,9 @@ const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, tot
     setCount(newCount);
     onCountChange(newCount);
 
+
+
+
     sendWebSocketMessage({
       type: 'MENUSUB',
       boothId,
