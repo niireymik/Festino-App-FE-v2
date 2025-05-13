@@ -98,6 +98,7 @@ export default {
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
+        'header-navigation-bar': "url('/icons/headers/nav.svg')",
         //home
         'home-banner': "url('/images/homes/home-banner.svg')",
         'slide-banner-1': "url('/images/homes/slide-banner-1.svg')",
