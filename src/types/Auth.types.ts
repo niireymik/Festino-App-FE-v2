@@ -16,7 +16,4 @@ export interface AuthStore {
   login: () => Promise<boolean>;
   saveUserInfo: () => Promise<{ success: boolean; message: string }>;
   sendAuthorizationCode: () => Promise<{ success: boolean; message: string }>;
-  // getNewAccessToken: () => Promise<void>;
-  setAccessToken: (token: string) => void;
-  setRefreshToken: (token: string) => void;
 }
