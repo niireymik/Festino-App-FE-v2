@@ -29,8 +29,6 @@ const LoginModal: React.FC = () => {
 
     const success = await login();
     if (success) {
-      setUserName('');
-      setUserPhoneNum('');
       closeModal();
 
       alert('로그인에 성공했습니다.');
