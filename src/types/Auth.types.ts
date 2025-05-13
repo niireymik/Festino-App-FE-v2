@@ -1,11 +1,22 @@
 export interface AuthStore {
-  userId: string;
-  password: string;
+  userName: string;
+  userPhoneNum: string;
+  userStudentNum: string;
+  verifyCode: string;
+  mainUserId: string;
   isLoggedIn: boolean;
-  setUserId: (id: string) => void;
-  setPassword: (pw: string) => void;
+  accessToken: string;
+  refreshToken: string;
+  setUserName: (id: string) => void;
+  setUserPhoneNum: (pw: string) => void;
+  setUserStudentNum: (stnum: string) => void;
+  setMainUserId: (uuid: string) => void;
+  setVerifyCode: (code: string) => void;
   setIsLoggedIn: (value: boolean) => void;
   login: () => Promise<boolean>;
-  logout: () => void;
-  getNewAccessToken: () => Promise<void>;
+  saveUserInfo: () => Promise<{ success: boolean; message: string }>;
+  sendAuthorizationCode: () => Promise<{ success: boolean; message: string }>;
+  // getNewAccessToken: () => Promise<void>;
+  setAccessToken: (token: string) => void;
+  setRefreshToken: (token: string) => void;
 }

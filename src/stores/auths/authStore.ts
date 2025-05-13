@@ -1,26 +1,48 @@
 import { create } from 'zustand';
-import { api, tokenizedBaseApi, tokenizedApi } from '@/utils/api';
+import { api, baseApi } from '@/utils/api';
 import { AuthStore } from '@/types/Auth.types';
-import useBaseModal from '../baseModal';
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
-  userId: '',
-  password: '',
+  userName: '',
+  userPhoneNum: '',
+  userStudentNum: '',
+  mainUserId: '',
+  verifyCode: '',
   isLoggedIn: false,
+  accessToken: '',
+  refreshToken: '',
 
-  setUserId: (id) => set({ userId: id }),
-  setPassword: (pw) => set({ password: pw }),
+  setUserName: (id) => set({ userName: id }),
+  setUserPhoneNum: (pw) => set({ userPhoneNum: pw }),
+  setUserStudentNum: (stnum) => set({ userStudentNum: stnum }),
+  setVerifyCode: (code) => set({ verifyCode: code }),
   setIsLoggedIn: (value) => set({ isLoggedIn: value }),
+  setMainUserId: (uuid) => set({ mainUserId: uuid }),
+  setAccessToken: (token) => set({ accessToken: token }),
+  setRefreshToken: (token) => set({ refreshToken: token }),
 
   login: async () => {
+    const { userName, userPhoneNum, setAccessToken, setRefreshToken } = get();
+
     try {
-      const { userId, password } = get();
-      await api.post('/main/auth/login', {
-        userId,
-        password,
+      const response = await api.get('/main/user', {
+        params: {
+          'main-user-name': userName,
+          'phone-num': userPhoneNum,
+        },
       });
 
-      set({ isLoggedIn: true });
+      const isSuccess = response.data.success;
+      const mainUserId = response.data.mainUserId;
+
+      const accessToken = response.headers['access-token'];
+      const refreshToken = response.headers['refresh-token'];
+
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+
+      set({ mainUserId: mainUserId, isLoggedIn: isSuccess });
+
       return true;
     } catch (e) {
       console.error('Login failed', e);
@@ -29,34 +51,51 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     }
   },
 
-  getNewAccessToken: async () => {
-    await (async () => {
-      try {
-        const response = await api.post('/main/auth/refresh'); // refresh 토큰은 쿠키로 보내는 게 일반적
-        const newAccessToken = response.data.accessToken;
+  saveUserInfo: async () => {
+    const { userName, userPhoneNum, userStudentNum, verifyCode } = get();
 
-        tokenizedBaseApi.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-        set({ isLoggedIn: true });
+    try {
+      const response = await baseApi.post('main/user', {
+        mainUserName: userName,
+        phoneNum: userPhoneNum,
+        studentNum: userStudentNum,
+        authorizationCode: verifyCode,
+      });
 
-        console.log('Access token 갱신 성공');
-      } catch (error) {
-        console.error('Access token 갱신 실패', error);
-        alert('로그인 정보가 만료되었습니다. 다시 로그인을 진행해주세요.');
+      const { success, message, mainUserId } = response.data;
 
-        const { openModal } = useBaseModal.getState();
-        openModal('loginModal');
-        set({ userId: '', password: '', isLoggedIn: false });
+      if (success) {
+        set({ mainUserId, isLoggedIn: true });
       }
-    });
+
+      return { success, message };
+    } catch (e) {
+      console.error('Register failed', e);
+      return { success: false, message: '회원가입 중 오류가 발생했습니다.' };
+    }
   },
 
-  logout: async () => {
+  sendAuthorizationCode: async () => {
+    const { userName, userPhoneNum, userStudentNum, verifyCode } = get();
+
     try {
-      await tokenizedApi.post('/main/auth/logout');
+      const response = await baseApi.post('/main/user/authorization', {
+        mainUserName: userName,
+        phoneNum: userPhoneNum,
+        studentNum: userStudentNum,
+        authorizationCode: verifyCode,
+      });
+
+      const { success, message, mainUserId } = response.data;
+
+      if (success && mainUserId) {
+        set({ mainUserId });
+      }
+
+      return { success, message };
     } catch (e) {
-      console.error(e);
-    } finally {
-      set({ userId: '', password: '', isLoggedIn: false });
+      console.error('Authorization code send failed', e);
+      return { success: false, message: '인증번호 전송 중 오류가 발생했습니다.' };
     }
   },
 }));
