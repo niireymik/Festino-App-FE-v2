@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores/auths/authStore';
+import useBaseModal from '@/stores/baseModal';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export const baseApi = axios.create({
@@ -32,7 +33,21 @@ export const tokenizedBaseApi = axios.create({
   withCredentials: true,
 });
 
-let refreshTokenPromise: Promise<void>;
+// let refreshTokenPromise: Promise<void>;
+
+// 토큰이 필요한 요청 헤더에 AccessToken, RefreshToken을 포함하는 로직
+tokenizedBaseApi.interceptors.request.use((config) => {
+  const { accessToken, refreshToken } = useAuthStore.getState();
+
+  if (accessToken) {
+    config.headers['access-token'] = accessToken;
+  }
+  if (refreshToken) {
+    config.headers['refresh-token'] = refreshToken;
+  }
+
+  return config;
+});
 
 tokenizedBaseApi.interceptors.response.use(
   (response) => response,
@@ -42,24 +57,44 @@ tokenizedBaseApi.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      // Promise Lock 로직
-      if (!refreshTokenPromise) {
-        refreshTokenPromise = useAuthStore.getState().getNewAccessToken();
-      }
+      const { openModal } = useBaseModal.getState();
 
-      try {
-        await refreshTokenPromise;
-        return baseApi(originalRequest);
-      } catch (e) {
-        alert('Session is expired. Please login again.');
-        window.location.href = '/login';
-        return Promise.reject(e);
-      }
+      alert('로그인 세션이 만료되었습니다.');
+
+      openModal('login');
+
+      return Promise.reject(error);
     }
-
     return Promise.reject(error);
   },
 );
+
+// tokenizedBaseApi.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
+
+//     if (error.response?.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
+
+//       // Promise Lock 로직
+//       if (!refreshTokenPromise) {
+//         refreshTokenPromise = useAuthStore.getState().getNewAccessToken();
+//       }
+
+//       try {
+//         await refreshTokenPromise;
+//         return baseApi(originalRequest);
+//       } catch (e) {
+//         alert('Session is expired. Please login again.');
+//         window.location.href = '/login';
+//         return Promise.reject(e);
+//       }
+//     }
+
+//     return Promise.reject(error);
+//   },
+// );
 
 export const tokenizedApi = {
   get: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
