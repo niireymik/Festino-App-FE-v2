@@ -5,6 +5,12 @@ export interface CategoryItemProps {
   isSelected?: boolean;
 }
 
+export interface AccountInfo {
+  account: string;
+  accountHolder: string;
+  bankName: string;
+}
+
 export interface Booth {
   boothId: string;
   boothName: string;
@@ -15,15 +21,18 @@ export interface Booth {
   isOpen: boolean;
   openTime: string;
   closeTime: string;
+  markerNum: number;
+  location: string;
+  accountInfo: AccountInfo;
 }
 
 export interface BoothInfo extends Omit<Booth, 'boothImage'> {
   boothImage: string[];
   instagram?: string;
-  location?: string;
   menuList?: Menu[];
   isReservation?: boolean;
   totalReservationNum?: number;
+  markerNum: number;
 }
 
 export interface BoothItemProps {
@@ -40,9 +49,11 @@ export interface BoothStore {
   boothListFacility: Booth[];
   boothDetail: BoothInfo | null;
   selectBoothCategory: number;
-  setSelectBoothCategory: (index: number) => void;
+  isTicketBooth: boolean;
+  init: () => void;
+  setSelectBoothCategory: (index: number | undefined) => void;
   getBoothList: () => Promise<void>
-  getBoothDetail: (type: string, id: string) => Promise<void>;
+  getBoothDetail: (type: string, id: string) => Promise<BoothInfo | undefined>;
 }
 
 export interface BoothStateLabelProps {
@@ -66,4 +77,18 @@ export interface MenuItemProps {
 
 export interface ImageSliderProps {
   images: string[];
+}
+
+export interface Marker {
+  markerNum?: number;
+  left: number;
+  bottom: number;
+  scrollLeft?: number;
+  scrollTop?: number;
+  count?: number;
+  tab?: number;
+}
+
+export interface MapSpeechBubbleProps {
+  booth: Booth | BoothInfo;
 }

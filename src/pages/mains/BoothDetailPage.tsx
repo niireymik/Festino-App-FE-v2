@@ -16,7 +16,7 @@ const BoothDetailPage: React.FC = () => {
     if(item.type === type) {
       return item.category;
     } else {
-      console.log('부스 상세페이지: 부스 정보가 없습니다.')
+      return;
     }
   });
 
@@ -142,13 +142,13 @@ const BoothDetailPage: React.FC = () => {
           <div className="w-full h-3 bg-tag" />
 
         {/* 이미지 슬라이더 */}
-          <div className="relative pt-[2.33%] px-[4.65%] pb-9">
+          <div className="relative pt-[4.65%] px-[4.65%] pb-9">
             <ImageSlider images={boothDetail?.boothImage} />
 
             {/* 인스타그램 버튼 */}
             {boothDetail.instagram && (
               <div
-                onClick={handleClickInstagram}
+                onClick={() => handleClickInstagram()}
                 className="text-xs text-secondary-500 rounded-full w-fit h-[26px] flex items-center justify-center bg-tag gap-1 mt-6 px-3 cursor-pointer"
               >
                 <div className="min-w-[16px] h-[16px] bg-instagram bg-center bg-no-repeat bg-[length:16px_16px]" />
