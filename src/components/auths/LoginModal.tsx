@@ -1,30 +1,39 @@
 import useBaseModal from '@/stores/baseModal';
 import { useAuthStore } from '@/stores/auths/authStore';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const LoginModal: React.FC = () => {
   const { closeModal } = useBaseModal();
-  const { userId, password, setUserId, setPassword, login } = useAuthStore();
+  const { setUserName, setUserPhoneNum, login } = useAuthStore();
 
   const navigate = useNavigate();
 
   const handleClickClose = () => {
     closeModal();
-    setUserId('');
-    setPassword('');
+    setUserName('');
+    setUserPhoneNum('');
   };
 
+  const [inputName, setInputName] = useState('');
+  const [inputPhoneNum, setInputPhoneNum] = useState('');
+
   const handleLogin = async () => {
-    if (!userId.trim() || !password.trim()) {
+    if (!inputName.trim() || !inputPhoneNum.trim()) {
       alert('아이디와 전화번호를 입력해주세요.');
       return;
     }
 
+    setUserName(inputName);
+    setUserPhoneNum(inputPhoneNum);
+
     const success = await login();
     if (success) {
-      setUserId('');
-      setPassword('');
+      setUserName('');
+      setUserPhoneNum('');
       closeModal();
+
+      alert('로그인에 성공했습니다.');
     } else {
       alert('로그인에 실패했습니다. 정보를 다시 확인해주세요.');
     }
@@ -38,7 +47,7 @@ const LoginModal: React.FC = () => {
   const handleChangeUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
     let filtered = e.target.value.replace(/[^a-zA-Zㄱ-ㅎ가-힣]/g, '');
     if (filtered.length > 5) filtered = filtered.slice(0, 5);
-    setUserId(filtered);
+    setInputName(filtered);
   };
 
   const formatPhoneNumber = (input: string): string => {
@@ -51,7 +60,7 @@ const LoginModal: React.FC = () => {
   const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputPhoneNum = e.target.value;
     const formatted = formatPhoneNumber(inputPhoneNum);
-    setPassword(formatted);
+    setInputPhoneNum(formatted);
   };
 
   return (
@@ -71,7 +80,7 @@ const LoginModal: React.FC = () => {
           <input
             type="text"
             placeholder="Username"
-            value={userId}
+            value={inputName}
             onChange={handleChangeUserId}
             className="flex-1 text-m placeholder-secondary-400 focus:outline-none"
           />
@@ -82,7 +91,7 @@ const LoginModal: React.FC = () => {
           <input
             type="text"
             placeholder="Phonenum"
-            value={password}
+            value={inputPhoneNum}
             onChange={handleChangePhone}
             className="flex-1 text-m placeholder-secondary-400 focus:outline-none"
             maxLength={13}
