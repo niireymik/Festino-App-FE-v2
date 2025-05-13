@@ -33,8 +33,6 @@ export const tokenizedBaseApi = axios.create({
   withCredentials: true,
 });
 
-// let refreshTokenPromise: Promise<void>;
-
 // 토큰이 필요한 요청 헤더에 AccessToken, RefreshToken을 포함하는 로직
 tokenizedBaseApi.interceptors.request.use((config) => {
   const { accessToken, refreshToken } = useAuthStore.getState();
@@ -68,33 +66,6 @@ tokenizedBaseApi.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-// tokenizedBaseApi.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
-
-//     if (error.response?.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-
-//       // Promise Lock 로직
-//       if (!refreshTokenPromise) {
-//         refreshTokenPromise = useAuthStore.getState().getNewAccessToken();
-//       }
-
-//       try {
-//         await refreshTokenPromise;
-//         return baseApi(originalRequest);
-//       } catch (e) {
-//         alert('Session is expired. Please login again.');
-//         window.location.href = '/login';
-//         return Promise.reject(e);
-//       }
-//     }
-
-//     return Promise.reject(error);
-//   },
-// );
 
 export const tokenizedApi = {
   get: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
