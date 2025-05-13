@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { api, baseApi } from '@/utils/api';
 import { AuthStore } from '@/types/Auth.types';
+import { formatPhoneNum } from '@/utils/utils';
 
 export const useAuthStore = create<AuthStore>()(
   persist(
@@ -29,7 +30,7 @@ export const useAuthStore = create<AuthStore>()(
           const response = await api.get('/main/user', {
             params: {
               'main-user-name': userName,
-              'phone-num': userPhoneNum,
+              'phone-num': formatPhoneNum(userPhoneNum),
             },
           });
 
@@ -58,7 +59,7 @@ export const useAuthStore = create<AuthStore>()(
         try {
           const response = await baseApi.post('main/user', {
             mainUserName: userName,
-            phoneNum: userPhoneNum,
+            phoneNum: formatPhoneNum(userPhoneNum),
             studentNum: userStudentNum,
             authorizationCode: verifyCode,
           });
@@ -82,7 +83,7 @@ export const useAuthStore = create<AuthStore>()(
         try {
           const response = await baseApi.post('/main/user/authorization', {
             mainUserName: userName,
-            phoneNum: userPhoneNum,
+            phoneNum: formatPhoneNum(userPhoneNum),
             studentNum: userStudentNum,
             authorizationCode: verifyCode,
           });
