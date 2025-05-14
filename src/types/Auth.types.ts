@@ -4,7 +4,7 @@ export interface AuthStore {
   userStudentNum: string;
   verifyCode: string;
   mainUserId: string;
-  isLoggedIn: boolean;
+  isLogin: boolean;
   accessToken: string;
   refreshToken: string;
   setUserName: (id: string) => void;
@@ -12,7 +12,7 @@ export interface AuthStore {
   setUserStudentNum: (stnum: string) => void;
   setMainUserId: (uuid: string) => void;
   setVerifyCode: (code: string) => void;
-  setIsLoggedIn: (value: boolean) => void;
+  setIsLogin: (value: boolean) => void;
   login: () => Promise<boolean>;
   saveUserInfo: () => Promise<{ success: boolean; message: string }>;
   sendAuthorizationCode: () => Promise<{ success: boolean; message: string }>;

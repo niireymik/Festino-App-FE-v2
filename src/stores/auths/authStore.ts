@@ -12,7 +12,7 @@ export const useAuthStore = create<AuthStore>()(
       userStudentNum: '',
       mainUserId: '',
       verifyCode: '',
-      isLoggedIn: false,
+      isLogin: false,
       accessToken: '',
       refreshToken: '',
 
@@ -20,7 +20,7 @@ export const useAuthStore = create<AuthStore>()(
       setUserPhoneNum: (pw) => set({ userPhoneNum: pw }),
       setUserStudentNum: (stnum) => set({ userStudentNum: stnum }),
       setVerifyCode: (code) => set({ verifyCode: code }),
-      setIsLoggedIn: (value) => set({ isLoggedIn: value }),
+      setIsLogin: (value) => set({ isLogin: value }),
       setMainUserId: (uuid) => set({ mainUserId: uuid }),
 
       login: async () => {
@@ -43,12 +43,12 @@ export const useAuthStore = create<AuthStore>()(
           console.log('헤더 access-token:', response.headers['access-token']);
           console.log('헤더 refresh-token:', response.headers['refresh-token']);
 
-          set({ accessToken, refreshToken, mainUserId, isLoggedIn: isSuccess });
+          set({ accessToken, refreshToken, mainUserId, isLogin: isSuccess });
 
           return true;
         } catch (e) {
           console.error('Login failed', e);
-          set({ isLoggedIn: false });
+          set({ isLogin: false });
           return false;
         }
       },
@@ -67,7 +67,7 @@ export const useAuthStore = create<AuthStore>()(
           const { success, message, mainUserId } = response.data;
 
           if (success) {
-            set({ mainUserId, isLoggedIn: true });
+            set({ mainUserId, isLogin: true });
           }
 
           return { success, message };
