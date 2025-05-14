@@ -8,11 +8,18 @@ export const connectOrderSocket = (boothId: string, tableNum: number) => {
 
   if (client && client.connected) return;
 
+
   const newClient = new Client({
     brokerURL: 'ws://localhost:8080/ws',
     reconnectDelay: 5000,
-    onConnect: () => {
+    onConnect: (frame) => {
+      const sessionId = frame.headers['session-id'];
+      useSocketStore.getState().setSessionId(sessionId); 
+      console.log('[WebSocket 연결됨] 내 세션 ID:', sessionId);
+
       newClient.subscribe(`/topic/${boothId}/${tableNum}`, onMessage);
+      newClient.subscribe(`/user/topic/${boothId}/${tableNum}`, onMessage);
+
       newClient.publish({
         destination: '/app/order',
         body: JSON.stringify({ type: 'SUBSCRIBE', boothId, tableNum }),
@@ -66,41 +73,62 @@ const onMessage = (message: IMessage) => {
 
       set.setMemberCount(payload.memberCount);
       set.setTotalPrice(payload.totalPrice);
+      set.setRemainingMinutes(payload.remainingMinutes);
       break;
     }
+
     case 'MEMBERUPDATE': {
       set.setMemberCount(data.payload.memberCount);
       break;
     }
     case 'MENUUPDATE': {
       const { menuId, menuCount, totalPrice } = data.payload;
-      const existing = set.userOrderList.find((item) => item.menuId === menuId);
-      const updated = {
+
+      const { userOrderList, addOrderItem, setTotalPrice } = useOrderStore.getState();
+      const existing = userOrderList.find((item) => item.menuId === menuId);
+
+      addOrderItem({
         menuId,
         menuName: existing?.menuName || '',
         menuPrice: existing?.menuPrice || 0,
         menuCount,
-      };
-      set.addOrderItem(updated);
-      if (typeof totalPrice === 'number') set.setTotalPrice(totalPrice);
+      });
+
+      if (typeof totalPrice === 'number') {
+        setTotalPrice(totalPrice);
+      }
+
       break;
     }
+
     case 'STARTORDER': {
-      // 주문 시작 시 다른 클라이언트 처리 로직 추가 가능
+      const senderSessionId = message.headers['sender-session-id'];
+      const mySessionId = useSocketStore.getState().sessionId;
+
+      if (mySessionId !== senderSessionId) {
+        disconnectOrderSocket(data.boothId, data.tableNum);
+        alert('다른 사용자가 주문을 진행하고 있습니다. 메인화면으로 이동합니다.');
+        window.location.href = `/order/${data.boothId}/${data.tableNum}`;
+      } else {
+        console.log('[내가 보낸 STARTORDER 메시지: 이동하지 않음]');
+      }
       break;
     }
-    case 'SESSIONEND': {
-      // 세션 종료 시 로직
+
+    case 'TIMEUPDATE': {
+      set.setRemainingMinutes(data.payload.remainingMinutes);
       break;
     }
     case 'PRESESSIONEND': {
-      // 세션 종료 1분 전 알림
+      alert('⚠️ 세션이 1분 후 종료됩니다.');
       break;
     }
-    case 'TIMEUPDATE': {
-      // 시간 업데이트 (옵션)
+    case 'SESSIONEND': {
+      alert('❌ 세션이 종료되었습니다. 처음 화면으로 돌아갑니다.');
+      window.location.href = `/order/${data.boothId}/${data.tableNum}`; 
       break;
     }
+
     case 'ERROR': {
       console.error('서버 오류:', data.payload);
       break;
@@ -112,7 +140,7 @@ const onMessage = (message: IMessage) => {
 };
 
 type WebSocketPayload = {
-  type: 'MENUADD' | 'MENUSUB' | 'STARTORDER' | 'UNSUB';
+  type: 'MENUADD' | 'MENUSUB' | 'STARTORDER' | 'UNSUB' | 'INIT';
   boothId: string;
   tableNum: number;
   payload?: {
@@ -125,6 +153,8 @@ type WebSocketPayload = {
 
 export const sendWebSocketMessage = (payload: WebSocketPayload) => {
   const { client } = useSocketStore.getState();
+
+  console.log('payload', payload);
 
   client?.publish({
     destination: '/app/order',

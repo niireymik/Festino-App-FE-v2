@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+
 import { useOrderStore } from '@/stores/orders/orderStore';
 import { api } from '@/utils/api';
+
 import useBaseModal from '@/stores/baseModal';
 
 const prettyPhoneNum = (num: string) => {
@@ -20,7 +22,6 @@ const OrderConfirmModal: React.FC = () => {
     accountInfo,
     totalPrice,
     userOrderList,
-    isCoupon,
     note,
     resetOrderInfo,
     getAccountInfo,
@@ -31,6 +32,13 @@ const OrderConfirmModal: React.FC = () => {
     isKakaoPay,
     kakaoPayUrl,
   } = useOrderStore();
+  useEffect(() => {
+    console.log('[OrderConfirmModal] 마운트됨');
+    return () => {
+      console.log('[OrderConfirmModal] 언마운트됨');
+    };
+  }, []);
+  
 
   const [isSameChecked, setIsSameChecked] = useState(false);
   const [isDoneChecked, setIsDoneChecked] = useState(false);
@@ -39,9 +47,17 @@ const OrderConfirmModal: React.FC = () => {
 
   useEffect(() => {
     if (!boothId) return;
-    getAccountInfo();
-    fetchTossPay();
-    fetchKakaoPay();
+    const init = async () => {
+      try {
+        await getAccountInfo();
+        await fetchTossPay();
+        await fetchKakaoPay();
+      } catch (error) {
+        console.error('결제 관련 API 실패', error);
+      }
+    };
+
+    init();
   }, []);
 
   const copyAccount = () => {
@@ -49,37 +65,49 @@ const OrderConfirmModal: React.FC = () => {
     alert('계좌번호가 복사되었습니다.');
   };
 
-  const handleComplete = async () => {
-    if (!isSameChecked || !isDoneChecked || isSubmitting) return;
+const handleComplete = async () => {
+  console.log('✔ 버튼 클릭됨');
 
-    setIsSubmitting(true);
-    try {
-      const payload = {
-        boothId,
-        tableNum,
-        userName,
-        phoneNum,
-        menuInfo: orderMenus,
-        totalPrice,
-        isCoupon,
-        note,
-      };
+  if (!isSameChecked || !isDoneChecked || isSubmitting) {
+    console.log(' 조건 미충족: 저장되지 않음');
+    return;
+  }
 
-      const res = await api.post('/main/order', payload);
-      if (res.data.success) {
-        resetOrderInfo();
-        closeModal();
-        openModal('orderCompleteModal');
-        console.log('📦 주문 응답 데이터', res.data);
-      } else {
-        alert(`주문 실패: ${res.data.message}`);
-      }
-    } catch (err) {
-      console.error(err);
-      alert('주문 저장 중 오류가 발생했습니다.');
+  setIsSubmitting(true);
+  console.log(' 주문 저장 요청 시작');
+
+  try {
+    const payload = {
+      boothId,
+      tableNum,
+      userName,
+      phoneNum: phoneNum.replace(/-/g, ''),
+      menuInfo: orderMenus,
+      totalPrice,
+      note,
+    };
+    console.log('📦 Payload:', payload);
+
+    const res = await api.post('/main/order', payload);
+    console.log('응답:', res.data);
+
+    if (res.data.success) {
+      console.log(' 주문 성공');
+      resetOrderInfo();
+      closeModal();
+      openModal('orderCompleteModal');
+    } else {
+      console.warn(' 주문 실패:', res.data.message);
+      alert(`주문 실패: ${res.data.message}`);
     }
-    setIsSubmitting(false);
-  };
+  } catch (err) {
+    console.error('요청 중 오류:', err);
+    alert('주문 저장 중 오류가 발생했습니다.');
+  }
+
+  setIsSubmitting(false);
+};
+
 
   return (
     <div
@@ -88,7 +116,6 @@ const OrderConfirmModal: React.FC = () => {
     >
       <div className="font-semibold text-xl text-secondary-700">주문 확인서</div>
 
-      {/* 주문자 정보 */}
       <div className="w-full gap-1">
         <div className="font-semibold text-secondary-700 mb-1">주문자 정보</div>
         <div
@@ -106,7 +133,6 @@ const OrderConfirmModal: React.FC = () => {
         </div>
       </div>
 
-      {/* 결제 정보 확인 */}
       <div className="w-full gap-1">
         <div className="font-semibold text-secondary-700 mb-1">결제 정보 확인</div>
         <div className="w-full rounded-xl p-4" style={{ backgroundColor: '#f0f6ff' }}>
@@ -156,7 +182,6 @@ const OrderConfirmModal: React.FC = () => {
         </div>
       )}
 
-      {/* 체크박스 */}
       <div className="text-xs text-secondary-500 flex flex-col items-start w-full">
         <label htmlFor="same-checkbox" className="flex mb-2">
           <input
@@ -181,7 +206,6 @@ const OrderConfirmModal: React.FC = () => {
         <div className="text-red-500 text-center w-full text-xs">입금 미확인 시 주문이 취소될 수 있습니다.</div>
       </div>
 
-      {/* 버튼 */}
       <div className="gap-5 w-full flex font-bold">
         <button
           className="w-full h-[42px] flex justify-center items-center border-2 border-primary-700 rounded-3xl text-primary-700"

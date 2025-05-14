@@ -1,7 +1,7 @@
 import React from 'react';
+import OrderModal from './OrderModal';
 import OrderConfirmModal from './OrderConfirmModal';
 import OrderCompleteModal from './OrderCompletemodal';
-import OrderModal from './OrderModal';
 import useBaseModal from '@/stores/baseModal';
 
 const ModalRenderer: React.FC = () => {
@@ -10,10 +10,21 @@ const ModalRenderer: React.FC = () => {
   if (!isModalOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={closeModal}>
-      <div onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-black bg-opacity-50"
+      onClick={() => {
+        console.log('[ModalRenderer] 배경 클릭됨 → closeModal 실행');
+        closeModal();
+      }}
+    >
+      <div
+        className="relative z-[1000] w-fit"
+        onClick={(e) => {
+          console.log('[ModalRenderer] 내부 모달 클릭됨 → 전파 막음');
+          e.stopPropagation();
+        }}
+      >
         {modalType === 'orderModal' && <OrderModal />}
-
         {modalType === 'orderConfirmModal' && <OrderConfirmModal />}
         {modalType === 'orderCompleteModal' && <OrderCompleteModal />}
       </div>

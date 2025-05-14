@@ -15,6 +15,7 @@ import OrderPaymentPage from './pages/orders/OrderPaymentPage';
 import ModalRenderer from './components/orders/modals/ModalRenderer';
 import ModalPage from './pages/mains/ModalPage';
 import ErrorPage from './pages/mains/ErrorPage';
+import OrderSearchPage from './pages/orders/OrderSearchPage';
 
 const App: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ const App: React.FC = () => {
         <Route path="/order" element={<OrderLayout />}>
           <Route path=":boothId/:tableNum" element={<OrderMainPage />} />
           <Route path=":boothId/:tableNum/payment" element={<OrderPaymentPage />} />
+          <Route path=":boothId/:tableNum/search" element={<OrderSearchPage />} />
         </Route>
 
         {/* Error */}

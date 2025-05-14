@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { api } from '@/utils/api';
 
+
 export type AccountInfo = {
   account: string;
   accountHolder: string;
@@ -28,6 +29,19 @@ export type BoothDetailInfo = {
   adminName: string;
 };
 
+export type OrderType = {
+  adminName: string;
+  tableNum: number;
+  createAt: string;
+  totalPrice: number;
+  orderType: number;
+  menuInfo: {
+    menuName: string;
+    menuCount: number;
+    menuPrice: number;
+  }[];
+};
+
 interface OrderState {
   boothId: string;
   tableNum: number;
@@ -47,6 +61,8 @@ interface OrderState {
   tossPayUrl: string;
   isKakaoPay: boolean;
   kakaoPayUrl: string;
+  selectedOrder: OrderType;
+  remainingMinutes: number;
 
   setRecentPhoneNum: (num: string) => void;
   setRecentName: (name: string) => void;
@@ -69,6 +85,7 @@ interface OrderState {
   getAccountInfo: () => Promise<void>;
   fetchTossPay: () => Promise<void>;
   fetchKakaoPay: () => Promise<void>;
+  setRemainingMinutes: (min: number) => void;
 }
 
 export const useOrderStore = create<OrderState>((set, get) => ({
@@ -90,6 +107,16 @@ export const useOrderStore = create<OrderState>((set, get) => ({
   tossPayUrl: '',
   isKakaoPay: false,
   kakaoPayUrl: '',
+  selectedOrder: {
+    adminName: '',
+    tableNum: 0,
+    createAt: '',
+    totalPrice: 0,
+    orderType: 0,
+    menuInfo: [],
+    remainingMinutes: 10,
+  },
+  remainingMinutes: 10,
 
   setRecentPhoneNum: (num) => set({ recentPhoneNum: num }),
   setRecentName: (name) => set({ recentName: name }),
@@ -105,6 +132,8 @@ export const useOrderStore = create<OrderState>((set, get) => ({
   setIsCoupon: (value) => set({ isCoupon: value }),
   setAccountInfo: (info) => set({ accountInfo: info }),
   setMemberCount: (count) => set({ memberCount: count }),
+  setSelectedOrder: (order: OrderType) => set({ selectedOrder: order }),
+  setRemainingMinutes: (min: number) => set({ remainingMinutes: min }),
 
   resetOrderInfo: () => {
     set({ userOrderList: [], totalPrice: 0 });
@@ -117,6 +146,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
   },
 
   addOrderItem: (order) => {
+    console.log('asdfdsa');
     const list = get().userOrderList;
     const exists = list.find((o) => o.menuId === order.menuId);
     if (order.menuCount === 0) {
@@ -134,18 +164,23 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     try {
       const res = await api.get('/main/booth/night/account', { params: { boothId } });
 
+      console.log('API 응답:', res.data);
+
       if (res.data.success) {
+        console.log('저장될 계좌 정보:', res.data.accountInfo);
         set({ accountInfo: res.data.accountInfo });
       } else {
+        console.error('실패:', res.data.message);
         window.location.href = '/error/order';
       }
     } catch (error) {
-      console.error('Error fetching account info:', error);
+      console.error('네트워크 오류:', error);
       window.location.href = '/error/order';
     }
   },
   fetchKakaoPay: async () => {
     const boothId = get().boothId;
+    console.log('[카카오페이] boothId:', boothId);
     try {
       const res = await api.get('/main/booth/night/kakao', {
         params: { boothId },
@@ -163,6 +198,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
 
   fetchTossPay: async () => {
     const boothId = get().boothId;
+    console.log('[토스페이] boothId:', boothId);
     try {
       const res = await api.get('/main/booth/night/toss', {
         params: { boothId },

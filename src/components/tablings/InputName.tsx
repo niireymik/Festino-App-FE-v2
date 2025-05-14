@@ -10,8 +10,8 @@ const InputName: React.FC<Props> = ({ value, onChange }) => {
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     let filteredInput = e.target.value.replace(/[^a-zA-Z0-9ㄱ-ㅎ가-힣 ]/g, '');
-    if (filteredInput.length > 5) {
-      filteredInput = filteredInput.slice(0, 5);
+    if (filteredInput.length > 8) {
+      filteredInput = filteredInput.slice(0, 8);
     }
     onChange(filteredInput);
   };
@@ -29,7 +29,7 @@ const InputName: React.FC<Props> = ({ value, onChange }) => {
           onBlur={() => setIsFocused(false)}
           className="flex-1 focus:outline-none bg-inherit"
           placeholder="티노"
-          maxLength={5}
+          maxLength={8}
         />
       </div>
       <hr className={`border-0 h-[1px] ${isFocused ? 'bg-primary-900' : 'bg-secondary-300'}`} />

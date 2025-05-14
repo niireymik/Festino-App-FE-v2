@@ -10,20 +10,12 @@ export const api = {
     return baseApi.get<T>(url, config);
   },
 
-  post: async <T = any, D = any>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> => {
+  post: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
     await baseApi.post('/main/auth/token');
     return baseApi.post<T, AxiosResponse<T>, D>(url, data, config);
   },
 
-  put: async <T = any, D = any>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<T>> => {
+  put: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
     await baseApi.post('/main/auth/token');
     return baseApi.put<T, AxiosResponse<T>, D>(url, data, config);
   },

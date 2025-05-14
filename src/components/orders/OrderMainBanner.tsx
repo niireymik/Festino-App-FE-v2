@@ -16,11 +16,11 @@ const OrderMainBanner: React.FC = () => {
         if (res.data.success) {
           setOrderMajor(res.data.boothInfo.adminName);
         } else {
-          navigate('/error/NotFound');
+          navigate('/error/order');
         }
       } catch (err) {
         console.error('부스 정보 가져오기 실패:', err);
-        navigate('/error/NotFound');
+        navigate('/error/order');
       }
     };
 

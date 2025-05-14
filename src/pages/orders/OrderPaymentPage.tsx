@@ -4,7 +4,7 @@ import { useOrderStore } from '@/stores/orders/orderStore';
 import { formatPrice } from '@/utils/utils';
 import MenuCard from '@/components/orders/MenuCard';
 import { api } from '@/utils/api';
-import { disconnectOrderSocket, connectOrderSocket } from '@/utils/orderSocket';
+import { disconnectOrderSocket, connectOrderSocket, sendWebSocketMessage } from '@/utils/orderSocket';
 import useBaseModal from '@/stores/baseModal';
 
 const CATEGORIES = [
@@ -18,12 +18,15 @@ type CategoryValue = (typeof CATEGORIES)[number]['value'];
 
 const CATEGORY_ENDPOINT_MAP: Record<CategoryValue, string> = {
   ALL: 'all',
-  0: 'main',
+  0: 'menu',
   1: 'sub',
-  2: 'service',
+  2: 'call',
 };
 
 const OrderPaymentPage: React.FC = () => {
+  useEffect(() => {
+    alert('제한시간은 10분입니다');
+  }, []);
   const navigate = useNavigate();
   const { boothId, tableNum } = useParams<{ boothId: string; tableNum: string }>();
 
@@ -33,11 +36,13 @@ const OrderPaymentPage: React.FC = () => {
     setTableNum,
     setMenuInfo,
     menuInfo,
-    handleTotalPrice,
     addOrderItem,
     userOrderList,
     totalPrice,
+    remainingMinutes,
   } = useOrderStore();
+
+  const [orderTotalPrice, setOrderTotalPrice] = useState<number>(totalPrice);
 
   const { openModal } = useBaseModal();
   const [selectedCategory, setSelectedCategory] = useState<CategoryValue>('ALL');
@@ -51,21 +56,40 @@ const OrderPaymentPage: React.FC = () => {
       return;
     }
 
+    try {
+      connectOrderSocket(boothId, tableIndex);
+      // .then(() => {
+      //   if (boothId && tableIndex) {
+      //     sendWebSocketMessage({
+      //       type: 'INIT',
+      //       boothId,
+      //       tableNum: tableIndex,
+      //     });
+      //   }
+      // })
+      // .catch((e) => {
+      //   console.error(e);
+      // });
+    } catch (e) {
+      console.error(e);
+    }
+
     setBoothId(boothId);
     setTableNum(tableIndex);
+
     fetchMenuByCategory('ALL');
   }, [boothId, tableNum]);
 
   useEffect(() => {
-    handleTotalPrice();
+    // handleTotalPrice();
     console.log('현재 주문한 메뉴:', userOrderList);
   }, [userOrderList]);
 
-  useEffect(() => {
-    if (!boothId || !isUUID(boothId)) return;
-    const tableIndex = Number(tableNum);
-    connectOrderSocket(boothId, tableIndex);
-  }, [boothId, tableNum]);
+  // useEffect(() => {
+  //   if (!boothId || !isUUID(boothId)) return;
+  //   const tableIndex = Number(tableNum);
+  //   connectOrderSocket(boothId, tableIndex);
+  // }, [boothId, tableNum]);
 
   useEffect(() => {
     const tableIndex = Number(tableNum);
@@ -96,8 +120,16 @@ const OrderPaymentPage: React.FC = () => {
 
     try {
       const res = await api.get(endpoint);
+      console.log('[메뉴 조회 응답]', res.data);
       if (res.data.success && Array.isArray(res.data.menuList)) {
+        console.log('[로딩된 메뉴 수]', res.data.menuList.length);
         setMenuInfo(res.data.menuList);
+
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        
       } else {
         navigate('/error/NotFound');
       }
@@ -112,8 +144,20 @@ const OrderPaymentPage: React.FC = () => {
       alert('메뉴를 선택해주세요.');
       return;
     }
+    sendWebSocketMessage({
+      type: 'STARTORDER',
+      boothId,
+      tableNum: Number(tableNum),
+    });
+
     openModal('orderModal');
   };
+
+  useEffect(() => {
+    if (totalPrice) {
+      setOrderTotalPrice(Number(totalPrice));
+    }
+  }, [totalPrice]);
 
   return (
     <div className="flex flex-col h-full pt-[60px]">
@@ -124,28 +168,33 @@ const OrderPaymentPage: React.FC = () => {
         <h1 className="text-lg font-bold">주문하기</h1>
         <div className="w-6" />
       </div>
-      <div className="w-full bg-primary-700 text-white text-center py-3 flex justify-between px-3">
-        {memberCount}명이 주문에 참여하고 있어요.
-      </div>
-
-      <div className="flex gap-2 px-4 pt-2 mt-6 overflow-x-auto">
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat.value}
-            onClick={() => {
-              setSelectedCategory(cat.value);
-              fetchMenuByCategory(cat.value);
-            }}
-            className={`flex-1 min-w-0 basis-0 px-4 py-3 rounded-full border text-sm transition-colors
+      <div className="fixed top-[60px] w-full max-w-[500px] z-10 bg-white">
+        <div className="w-full max-w-[500px] fixed bg-primary-700 text-white text-center py-3 flex justify-between px-3">
+          <span>{memberCount}명이 주문에 참여하고 있어요.</span>
+          <span className="flex items-center gap-1">
+            <img src="/icons/orders/10Clock.svg" /> {remainingMinutes}분
+          </span>
+        </div>
+        <div className="fixed w-full max-w-[500px] bg-white ">
+          <div className="flex w-full flex-grow max-w-[500px] justify-between fixed bg-white top-[84px] gap-2 px-4 pt-2 pb-2 mt-6 overflow-x-auto">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.value}
+                onClick={() => {
+                  setSelectedCategory(cat.value);
+                  fetchMenuByCategory(cat.value);
+                }}
+                className={`flex-1 min-w-0 basis-0 px-4 py-3 rounded-full border text-sm transition-colors
         ${selectedCategory === cat.value ? 'bg-primary-700 text-white ' : 'bg-white text-blue-300 border-blue-200'}
       `}
-          >
-            {cat.label}
-          </button>
-        ))}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
-
-      <div className="p-5 mt-4 mb-5 overflow-scroll pb-[120px]">
+      <div className="p-5 mt-28 mb-5 overflow-scroll pb-[120px]">
         {menuInfo.map(
           (menu) =>
             !menu.isSoldOut && (
@@ -163,6 +212,7 @@ const OrderPaymentPage: React.FC = () => {
                     menuPrice: menu.menuPrice,
                     menuCount: count,
                   };
+
                   addOrderItem(order);
                 }}
               />

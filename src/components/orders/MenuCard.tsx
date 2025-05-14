@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { formatPrice } from '@/utils/utils';
-import type { MenuInfo } from '@/stores/orders/orderStore';
+import { useOrderStore, type MenuInfo } from '@/stores/orders/orderStore';
 import { sendWebSocketMessage } from '@/utils/orderSocket';
 
 type Props = {
@@ -13,15 +13,32 @@ type Props = {
 };
 
 const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, totalPrice, totalCount }) => {
+  const { handleTotalPrice } = useOrderStore();
+
   const [count, setCount] = useState(0);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+
+  const temporarilyDisableButton = () => {
+    setIsDisabled(true);
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 400);
+  };
+  const { userOrderList } = useOrderStore();
+
+  useEffect(() => {
+    const existing = userOrderList.find((item) => item.menuId === menu.menuId);
+    if (existing) {
+      setCount(existing.menuCount);
+    }
+  }, [userOrderList, menu.menuId]);
 
   const handleMinus = () => {
+    temporarilyDisableButton();
+
     const newCount = Math.max(count - 1, 0);
     setCount(newCount);
-    onCountChange(newCount);
-
-
-
+    // onCountChange(newCount);
 
     sendWebSocketMessage({
       type: 'MENUSUB',
@@ -29,7 +46,7 @@ const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, tot
       tableNum,
       payload: {
         menuId: menu.menuId,
-        menuCount: newCount,
+        menuCount: count,
         totalPrice,
         totalCount,
       },
@@ -37,17 +54,19 @@ const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, tot
   };
 
   const handlePlus = () => {
+    temporarilyDisableButton();
+
     const newCount = count + 1;
     setCount(newCount);
-    onCountChange(newCount);
+    // onCountChange(newCount);
 
     sendWebSocketMessage({
-      type: 'MENUSUB',
+      type: 'MENUADD',
       boothId,
       tableNum,
       payload: {
         menuId: menu.menuId,
-        menuCount: newCount,
+        menuCount: count,
         totalPrice,
         totalCount,
       },
@@ -59,8 +78,15 @@ const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, tot
     let numericValue = Number(inputValue);
     if (numericValue > 99) numericValue = 99;
     setCount(numericValue);
-    onCountChange(numericValue);
+    // onCountChange(numericValue);
   };
+
+  useEffect(() => {
+    if (count) {
+      onCountChange(count);
+      handleTotalPrice();
+    }
+  }, [count]);
 
   return (
     <div className="flex gap-4 mb-6 border-b pb-4">
@@ -81,7 +107,11 @@ const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, tot
             {formatPrice(menu.menuPrice * count)}원
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={handleMinus} className="w-6 h-6 flex items-center justify-center rounded-full">
+            <button
+              onClick={handleMinus}
+              disabled={isDisabled}
+              className="w-6 h-6 flex items-center justify-center rounded-full"
+            >
               <img src="/icons/orders/minus.svg" alt="minus" className="w-5 h-5" />
             </button>
             <input
@@ -96,7 +126,11 @@ const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, tot
               inputMode="numeric"
               pattern="\d*"
             />
-            <button onClick={handlePlus} className="w-6 h-6 flex items-center justify-center rounded-full">
+            <button
+              onClick={handlePlus}
+              disabled={isDisabled}
+              className="w-6 h-6 flex items-center justify-center rounded-full"
+            >
               <img src="/icons/orders/plus.svg" alt="plus" className="w-5 h-5" />
             </button>
           </div>
