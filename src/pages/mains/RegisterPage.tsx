@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/auths/authStore';
 import PersonalInfo from '@/components/commons/PersonalInfo';
@@ -121,6 +121,14 @@ const RegisterPage: React.FC = () => {
       alert(`회원가입 실패: ${result.message}`);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (timerId) {
+        clearInterval(timerId);
+      }
+    };
+  }, [timerId]);
 
   return (
     <>
