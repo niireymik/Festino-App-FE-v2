@@ -14,12 +14,14 @@ import ScrollToTop from './components/commons/ScrollToTop';
 import ModalPage from './pages/mains/ModalPage';
 import RegisterPage from './pages/mains/RegisterPage';
 import ErrorPage from './pages/mains/ErrorPage';
+import FloatingButton from './components/events/FloatingButton';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <ModalPage />
+      <FloatingButton />
       <Routes>
         {/* Main */}
         <Route path="/" element={<MainLayout />}>
