@@ -137,9 +137,9 @@ export default {
         '4xl': '0px 0px 16px rgba(0, 0, 0, 0.04)',
       },
       translate: {
-        'sub-btn-1': '-60px',
-        'sub-btn-2': '-120px',
-        'sub-btn-3': '-180px',
+        'sub-btn-1': '-65px',
+        'sub-btn-2': '-130px',
+        'sub-btn-3': '-195px',
       },
     },
     screens: {
