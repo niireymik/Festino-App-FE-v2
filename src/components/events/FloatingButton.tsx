@@ -1,44 +1,60 @@
 import useBaseModal from '@/stores/baseModal';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 type Corner = 'bottom-left' | 'bottom-right';
 
 const FloatingButton: React.FC = () => {
-  const hidePaths = ['/register', '/order', '/reserve'];
+  const hidePaths = ['/register', '/order', '/reserve', '/team-review', '/photo-board'];
   const translateHeights = ['translate-y-sub-btn-1', 'translate-y-sub-btn-2', 'translate-y-sub-btn-3'];
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [drag, setDrag] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const navigate = useNavigate();
   const location = useLocation();
   const offset = useRef({ x: 0, y: 0 });
 
-  const { isModalOpen } = useBaseModal();
+  const { isModalOpen, openModal } = useBaseModal();
+
+  const handleClickReviewEvent = () => {
+    setIsOpen(false);
+    navigate('/team-review');
+  };
+
+  const handleClickUploadEvent = () => {
+    setIsOpen(false);
+    navigate('/photo-board');
+  };
+
+  const handleClickQuizEvent = () => {
+    setIsOpen(false);
+    openModal('quizModal');
+  };
 
   const subButtons = [
     {
       label: '리뷰\n이벤트',
-      onClick: () => console.log('실시간 이벤트 클릭됨'),
+      onClick: () => handleClickReviewEvent(),
     },
     {
       label: '사진 업로드\n이벤트',
-      onClick: () => console.log('게시판 이벤트 클릭됨'),
+      onClick: () => handleClickUploadEvent(),
     },
     {
       label: '실시간 퀴즈\n이벤트',
-      onClick: () => console.log('리뷰 이벤트 클릭됨'),
+      onClick: () => handleClickQuizEvent,
     },
   ];
-
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
 
   const BUTTON_SIZE = 60;
   const H_MARGIN = 70;
   const W_MARGIN = 20;
+
+  const toggleMenu = () => {
+    setIsOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     const screenWidth = window.innerWidth;
