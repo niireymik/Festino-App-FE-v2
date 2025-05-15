@@ -7,6 +7,7 @@ import { baseApi } from './utils/api';
 const initializeApp = async () => {
   try {
     const response = await baseApi.post('/main/auth/init');
+
     console.log('Auth init success:', response.data);
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -21,7 +22,7 @@ const initializeApp = async () => {
     createRoot(rootElement).render(
       <StrictMode>
         <App />
-      </StrictMode>
+      </StrictMode>,
     );
   }
 };

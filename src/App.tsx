@@ -12,6 +12,7 @@ import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
 import ModalPage from './pages/mains/ModalPage';
+import RegisterPage from './pages/mains/RegisterPage';
 import ErrorPage from './pages/mains/ErrorPage';
 
 const App: React.FC = () => {
@@ -30,6 +31,7 @@ const App: React.FC = () => {
           <Route path="team-review" element={<TeamReviewPage />} />
           <Route path="notices" element={<NoticePage />} />
           <Route path="notices/:noticeId" element={<NoticeDetailPage />} />
+          <Route path="register" element={<RegisterPage />} />
         </Route>
 
         {/* Order */}
