@@ -8,13 +8,13 @@ export const connectOrderSocket = (boothId: string, tableNum: number) => {
 
   if (client && client.connected) return;
 
-
   const newClient = new Client({
     brokerURL: 'ws://localhost:8080/ws',
     reconnectDelay: 5000,
     onConnect: (frame) => {
-      const sessionId = frame.headers['session-id'];
-      useSocketStore.getState().setSessionId(sessionId); 
+      console.log(frame);
+      const sessionId = frame.headers['user-name'];
+      useSocketStore.getState().setSessionId(sessionId);
       console.log('[WebSocket 연결됨] 내 세션 ID:', sessionId);
 
       newClient.subscribe(`/topic/${boothId}/${tableNum}`, onMessage);
@@ -47,6 +47,7 @@ export const disconnectOrderSocket = (boothId: string, tableNum: number) => {
 const onMessage = (message: IMessage) => {
   const data = JSON.parse(message.body);
   const set = useOrderStore.getState();
+  console.log('[Message]: ', data);
 
   switch (data.type) {
     case 'INIT': {
@@ -102,18 +103,29 @@ const onMessage = (message: IMessage) => {
     }
 
     case 'STARTORDER': {
-      const senderSessionId = message.headers['sender-session-id'];
+      console.log('');
+      const senderSessionId = message.headers['excludeSessionId'];
       const mySessionId = useSocketStore.getState().sessionId;
 
-      if (mySessionId !== senderSessionId) {
+      if (!senderSessionId) {
+        alert('세션 아이디 없음');
+      } else if (!mySessionId) {
+        alert('나의 세션 아이디가 없습니다. 다시 접속해주세요');
+        window.location.reload();
+      } else if (mySessionId !== senderSessionId) {
         disconnectOrderSocket(data.boothId, data.tableNum);
         alert('다른 사용자가 주문을 진행하고 있습니다. 메인화면으로 이동합니다.');
-        window.location.href = `/order/${data.boothId}/${data.tableNum}`;
+        // window.location.href = `/order/${data.boothId}/${data.tableNum}`;
       } else {
         console.log('[내가 보낸 STARTORDER 메시지: 이동하지 않음]');
       }
       break;
     }
+
+    case 'ORDERINPROGRESS': {
+      useOrderStore.getState().setIsOrderInProgress(true);
+      break
+      }
 
     case 'TIMEUPDATE': {
       set.setRemainingMinutes(data.payload.remainingMinutes);
@@ -125,7 +137,7 @@ const onMessage = (message: IMessage) => {
     }
     case 'SESSIONEND': {
       alert('❌ 세션이 종료되었습니다. 처음 화면으로 돌아갑니다.');
-      window.location.href = `/order/${data.boothId}/${data.tableNum}`; 
+      window.location.href = `/order/${data.boothId}/${data.tableNum}`;
       break;
     }
 
@@ -140,7 +152,7 @@ const onMessage = (message: IMessage) => {
 };
 
 type WebSocketPayload = {
-  type: 'MENUADD' | 'MENUSUB' | 'STARTORDER' | 'UNSUB' | 'INIT';
+  type: 'MENUADD' | 'MENUSUB' | 'STARTORDER' | 'UNSUB' | 'INIT' | 'ORDERINPROGRESS' | 'ORDERDONE';
   boothId: string;
   tableNum: number;
   payload?: {

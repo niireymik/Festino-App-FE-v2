@@ -149,6 +149,12 @@ const OrderPaymentPage: React.FC = () => {
       tableNum: Number(tableNum),
     });
 
+    sendWebSocketMessage({
+      type: 'ORDERINPROGRESS',
+      boothId: boothId!,
+      tableNum: Number(tableNum),
+    });
+
     openModal('orderModal');
   };
 
