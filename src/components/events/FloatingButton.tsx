@@ -9,12 +9,13 @@ const FloatingButton: React.FC = () => {
   const translateHeights = ['translate-y-sub-btn-1', 'translate-y-sub-btn-2', 'translate-y-sub-btn-3'];
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [drag, setDrag] = useState(false);
+  const [isDrag, setIsDrag] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const offset = useRef({ x: 0, y: 0 });
+  const dragHistory = useRef(false);
 
   const { isModalOpen, openModal } = useBaseModal();
 
@@ -44,7 +45,7 @@ const FloatingButton: React.FC = () => {
     },
     {
       label: '실시간 퀴즈\n이벤트',
-      onClick: () => handleClickQuizEvent,
+      onClick: () => handleClickQuizEvent(),
     },
   ];
 
@@ -52,7 +53,8 @@ const FloatingButton: React.FC = () => {
   const H_MARGIN = 70;
   const W_MARGIN = 20;
 
-  const toggleMenu = () => {
+  const handleClick = () => {
+    if (dragHistory.current) return; // 드래그로 판단되면 클릭 무시
     setIsOpen((prev) => !prev);
   };
 
@@ -67,7 +69,8 @@ const FloatingButton: React.FC = () => {
 
   const handleStart = useCallback(
     (clientX: number, clientY: number) => {
-      setDrag(true);
+      setIsDrag(true);
+      dragHistory.current = false;
       offset.current = {
         x: clientX - position.x,
         y: clientY - position.y,
@@ -78,16 +81,20 @@ const FloatingButton: React.FC = () => {
 
   const handleMove = useCallback(
     (clientX: number, clientY: number) => {
-      if (!drag) return;
-      const newX = clientX - offset.current.x;
-      const newY = clientY - offset.current.y;
-      setPosition({ x: newX, y: newY });
+      if (!isDrag) return;
+      const dx = clientX - offset.current.x;
+      const dy = clientY - offset.current.y;
+      const distance = Math.hypot(dx - position.x, dy - position.y);
+      if (distance > 5) {
+        dragHistory.current = true; // 실제로 움직였다고 판단
+      }
+      setPosition({ x: dx, y: dy });
     },
-    [drag],
+    [isDrag, position],
   );
 
   const handleEnd = useCallback(() => {
-    setDrag(false);
+    setIsDrag(false);
 
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
@@ -141,7 +148,7 @@ const FloatingButton: React.FC = () => {
   if (hidePaths.some((path) => location.pathname.startsWith(path))) return null;
 
   return (
-    <div className={`fixed ${isModalOpen ? 'z-40' : 'z-50'}`} style={{ left: position.x, top: position.y }}>
+    <div className={`absolute ${isModalOpen ? 'z-30' : 'z-40'}`} style={{ left: position.x, top: position.y }}>
       {subButtons.map((btn, idx) => (
         <button
           key={idx}
@@ -160,7 +167,7 @@ const FloatingButton: React.FC = () => {
       ))}
 
       <div
-        onClick={toggleMenu}
+        onClick={handleClick}
         onMouseDown={(e) => handleStart(e.clientX, e.clientY)}
         onTouchStart={(e) => handleStart(e.touches[0].clientX, e.touches[0].clientY)}
         className={`
