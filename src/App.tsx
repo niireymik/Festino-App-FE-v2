@@ -16,6 +16,7 @@ import RegisterPage from './pages/mains/RegisterPage';
 import ErrorPage from './pages/mains/ErrorPage';
 import FloatingButton from './components/events/FloatingButton';
 import NavTap from './components/headers/NavTap';
+import PhotoBoardPage from './pages/mains/PhotoBoardPage';
 
 const App: React.FC = () => {
   return (
@@ -36,6 +37,7 @@ const App: React.FC = () => {
           <Route path="notices" element={<NoticePage />} />
           <Route path="notices/:noticeId" element={<NoticeDetailPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="photo-board" element={<PhotoBoardPage />} />
         </Route>
 
         {/* Order */}
