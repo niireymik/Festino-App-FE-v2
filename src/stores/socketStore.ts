@@ -1,7 +1,6 @@
 import { Client } from '@stomp/stompjs';
 import { create } from 'zustand';
 
-// socketStore.ts
 interface SocketStore {
   client: Client | null;
   sessionId: string | null;

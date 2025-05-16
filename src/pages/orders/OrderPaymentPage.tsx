@@ -129,7 +129,6 @@ const OrderPaymentPage: React.FC = () => {
           top: 0,
           behavior: 'smooth',
         });
-        
       } else {
         navigate('/error/NotFound');
       }
@@ -146,7 +145,7 @@ const OrderPaymentPage: React.FC = () => {
     }
     sendWebSocketMessage({
       type: 'STARTORDER',
-      boothId,
+      boothId: boothId!,
       tableNum: Number(tableNum),
     });
 
