@@ -1,10 +1,12 @@
-import Footer from "@/components/footers/Footer";
-import { Outlet } from "react-router-dom";
+import Footer from '@/components/footers/Footer';
+import NavTap from '@/components/headers/NavTap';
+import { Outlet } from 'react-router-dom';
 
-const MainLayout : React.FC = () => {
+const MainLayout: React.FC = () => {
   return (
     <>
       <Outlet />
+      <NavTap />
       <Footer />
     </>
   );
