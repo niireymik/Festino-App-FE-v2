@@ -54,7 +54,7 @@ const FloatingButton: React.FC = () => {
   const W_MARGIN = 20;
 
   const handleClick = () => {
-    if (dragHistory.current) return; // 드래그로 판단되면 클릭 무시
+    if (dragHistory.current) return;
     setIsOpen((prev) => !prev);
   };
 
@@ -86,7 +86,7 @@ const FloatingButton: React.FC = () => {
       const dy = clientY - offset.current.y;
       const distance = Math.hypot(dx - position.x, dy - position.y);
       if (distance > 5) {
-        dragHistory.current = true; // 실제로 움직였다고 판단
+        dragHistory.current = true;
       }
       setPosition({ x: dx, y: dy });
     },
