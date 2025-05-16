@@ -1,10 +1,10 @@
-import { useAuthStore } from '@/stores/auths/authStore';
 import useBaseModal from '@/stores/baseModal';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { getCookie } from './utils';
 
 export const baseApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
+  withCredentials: false,
 });
 
 export const api = {
@@ -33,9 +33,9 @@ export const tokenizedBaseApi = axios.create({
   withCredentials: true,
 });
 
-// 토큰이 필요한 요청 헤더에 AccessToken, RefreshToken을 포함하는 로직
 tokenizedBaseApi.interceptors.request.use((config) => {
-  const { accessToken, refreshToken } = useAuthStore.getState();
+  const accessToken = getCookie('accessToken');
+  const refreshToken = getCookie('refreshToken');
 
   if (accessToken) {
     config.headers['access-token'] = accessToken;

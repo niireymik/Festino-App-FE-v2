@@ -1,18 +1,24 @@
 import { useNavigate } from 'react-router-dom';
 import useBaseModal from '@/stores/baseModal';
 import useNavTapStore from '@/stores/headers/navTapStore';
+import { useAuthStore } from '@/stores/auths/authStore';
 
 const Header: React.FC = () => {
   const { openModal } = useBaseModal();
   const navigate = useNavigate();
   const { toggle } = useNavTapStore();
+  const { isLogin } = useAuthStore();
 
   const handleClickMainSymbol = () => {
     navigate('/', { replace: true });
   };
 
   const handleClickTinoSymbol = () => {
-    openModal('loginModal');
+    if (isLogin()) {
+      openModal('logoutModal');
+    } else {
+      openModal('loginModal');
+    }
   };
 
   return (

@@ -1,15 +1,20 @@
-import useNavTapStore from "@/stores/headers/navTapStore";
-import useBaseModal from "@/stores/baseModal";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useAuthStore } from "@/stores/auths/authStore";
+import useNavTapStore from '@/stores/headers/navTapStore';
+import useBaseModal from '@/stores/baseModal';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useAuthStore } from '@/stores/auths/authStore';
+import { getCookie } from '@/utils/utils';
 
 const NavTap = () => {
   const navigate = useNavigate();
 
   const { isOpen, close } = useNavTapStore();
   const { openModal } = useBaseModal();
-  const { isLogin, userName } = useAuthStore();
+  const { isLogin } = useAuthStore();
+
+  const userName = getCookie('userName');
+
+  const login = isLogin();
 
   const [isEventOpen, setIsEventOpen] = useState(false);
   const toggleEvent = () => setIsEventOpen((prev) => !prev);
@@ -23,12 +28,12 @@ const NavTap = () => {
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black/60 z-40 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'} transition-opacity duration-300`}
+        className={`absolute inset-0 bg-black/60 z-40 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'} transition-opacity duration-300`}
         onClick={close}
       />
 
       <div
-        className={`fixed top-0 left-0 h-full w-5/6 bg-white z-50 shadow-md transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`absolute top-0 left-0 h-full w-5/6 bg-white z-50 shadow-md transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="flex flex-col gap-12">
           <div className="flex h-[60px] w-full items-center justify-end px-5">
@@ -41,7 +46,7 @@ const NavTap = () => {
 
           <div className="flex flex-col items-center justify-center gap-4">
             <div
-              className={`w-[80px] h-[80px] ${isLogin ? 'bg-header-team-introduction' : 'bg-header-navigation-person'} bg-center bg-no-repeat bg-[length:80px_80px]
+              className={`w-[80px] h-[80px] ${login ? 'bg-header-team-introduction' : 'bg-header-navigation-person'} bg-center bg-no-repeat bg-[length:80px_80px]
             cursor-pointer`}
               onClick={() => {
                 if (!isLogin) {
@@ -59,11 +64,10 @@ const NavTap = () => {
                 }
               }}
             >
-              {isLogin && userName ? `${userName}님 환영합니다!` : '로그인'}
+              {login && userName ? `${userName}님 환영합니다!` : '로그인'}
             </div>
           </div>
 
-          {/* 메뉴 리스트 */}
           <ul className="space-y-6 text-sm text-secondary-700">
             <li
               onClick={() => {

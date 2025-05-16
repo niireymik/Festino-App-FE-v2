@@ -19,6 +19,9 @@ const FloatingButton: React.FC = () => {
 
   const { isModalOpen, openModal } = useBaseModal();
 
+  const screenWidth = document.body.clientWidth;
+  const screenHeight = document.body.clientHeight;
+
   const handleClickReviewEvent = () => {
     setIsOpen(false);
     navigate('/team-review');
@@ -59,21 +62,19 @@ const FloatingButton: React.FC = () => {
   };
 
   useEffect(() => {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
     setPosition({
       x: screenWidth - BUTTON_SIZE - W_MARGIN,
-      y: screenHeight - BUTTON_SIZE - H_MARGIN,
+      y: 0,
     });
   }, []);
 
   const handleStart = useCallback(
-    (clientX: number, clientY: number) => {
+    (clientX: number) => {
       setIsDrag(true);
       dragHistory.current = false;
       offset.current = {
         x: clientX - position.x,
-        y: clientY - position.y,
+        y: 0,
       };
     },
     [position],
@@ -95,9 +96,6 @@ const FloatingButton: React.FC = () => {
 
   const handleEnd = useCallback(() => {
     setIsDrag(false);
-
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
 
     const corners: Record<Corner, { x: number; y: number }> = {
       'bottom-left': { x: W_MARGIN, y: screenHeight - BUTTON_SIZE - H_MARGIN },
@@ -145,22 +143,36 @@ const FloatingButton: React.FC = () => {
     };
   }, [handleMove, handleEnd]);
 
+  useEffect(() => {
+    const handleReposition = () => {
+      handleEnd();
+    };
+
+    window.addEventListener('resize', handleReposition);
+    window.addEventListener('scroll', handleReposition);
+
+    return () => {
+      window.removeEventListener('resize', handleReposition);
+      window.removeEventListener('scroll', handleReposition);
+    };
+  }, [handleEnd]);
+
   if (hidePaths.some((path) => location.pathname.startsWith(path))) return null;
 
   return (
-    <div className={`absolute ${isModalOpen ? 'z-30' : 'z-40'}`} style={{ left: position.x, top: position.y }}>
+    <div className={`absolute ${isModalOpen ? 'z-30' : 'z-40'}`} style={{ left: position.x, bottom: 80 }}>
       {subButtons.map((btn, idx) => (
         <button
           key={idx}
           onClick={btn.onClick}
           className={`
-      absolute left-1/2 -translate-x-1/2
-      w-[58px] h-[58px] rounded-full bg-primary-900 text-white text-2xs font-bold
-      flex items-center justify-center shadow-md
-      transition-all duration-300 whitespace-pre-line
-      ${isOpen ? `opacity-100 ${translateHeights[idx]}` : 'opacity-0 translate-y-0'}
-      ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}
-    `}
+            absolute left-1/2 -translate-x-1/2
+            w-[58px] h-[58px] rounded-full bg-primary-700 text-white text-2xs font-bold
+            flex items-center justify-center shadow-white-md
+            transition-all duration-300 whitespace-pre-line
+            ${isOpen ? `opacity-100 ${translateHeights[idx]}` : 'opacity-0 translate-y-0'}
+            ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}
+          `}
         >
           {btn.label}
         </button>
@@ -168,8 +180,8 @@ const FloatingButton: React.FC = () => {
 
       <div
         onClick={handleClick}
-        onMouseDown={(e) => handleStart(e.clientX, e.clientY)}
-        onTouchStart={(e) => handleStart(e.touches[0].clientX, e.touches[0].clientY)}
+        onMouseDown={(e) => handleStart(e.clientX)}
+        onTouchStart={(e) => handleStart(e.touches[0].clientX)}
         className={`
           relative
           flex items-center justify-center

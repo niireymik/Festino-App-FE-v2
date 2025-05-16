@@ -14,8 +14,6 @@ import ScrollToTop from './components/commons/ScrollToTop';
 import ModalPage from './pages/mains/ModalPage';
 import RegisterPage from './pages/mains/RegisterPage';
 import ErrorPage from './pages/mains/ErrorPage';
-import FloatingButton from './components/events/FloatingButton';
-import NavTap from './components/headers/NavTap';
 import PhotoBoardPage from './pages/mains/PhotoBoardPage';
 
 const App: React.FC = () => {
@@ -23,8 +21,6 @@ const App: React.FC = () => {
     <BrowserRouter>
       <ScrollToTop />
       <ModalPage />
-      <FloatingButton />
-      <NavTap />
       <Routes>
         {/* Main */}
         <Route path="/" element={<MainLayout />}>

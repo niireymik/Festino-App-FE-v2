@@ -142,6 +142,7 @@ export default {
       },
       boxShadow: {
         '4xl': '0px 0px 16px rgba(0, 0, 0, 0.04)',
+        'white-md': '0px 0px 2px rgba(255, 255, 255, 1)',
       },
       translate: {
         'sub-btn-1': '-65px',
