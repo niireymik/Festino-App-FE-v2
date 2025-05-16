@@ -99,6 +99,13 @@ export default {
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
         'header-navigation-bar': "url('/icons/headers/nav.svg')",
+        'header-navigation-person': "url('icons/headers/navtaps/circle-person.svg')",
+        'header-navigation-booth': "url('icons/headers/navtaps/booth-icon.svg')",
+        'header-navigation-tabling': "url('icons/headers/navtaps/tabling-icon.svg')",
+        'header-navigation-timetable': "url('icons/headers/navtaps/timetable-icon.svg')",
+        'header-navigation-notice': "url('icons/headers/navtaps/notice-icon.svg')",
+        'header-navigation-event': "url('icons/headers/navtaps/event-icon.svg')",
+        'header-navigation-event-open': "url('icons/headers/navtaps/under-arrow.svg')",
         //home
         'home-banner': "url('/images/homes/home-banner.svg')",
         'slide-banner-1': "url('/images/homes/slide-banner-1.svg')",
