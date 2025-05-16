@@ -1,8 +1,8 @@
-import useNavTapStore from "@/stores/headers/navTapStore";
-import useBaseModal from "@/stores/baseModal";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useAuthStore } from "@/stores/auths/authStore";
+import useNavTapStore from '@/stores/headers/navTapStore';
+import useBaseModal from '@/stores/baseModal';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useAuthStore } from '@/stores/auths/authStore';
 
 const NavTap = () => {
   const navigate = useNavigate();
@@ -23,12 +23,12 @@ const NavTap = () => {
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black/60 z-40 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'} transition-opacity duration-300`}
+        className={`absolute inset-0 bg-black/60 z-40 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'} transition-opacity duration-300`}
         onClick={close}
       />
 
       <div
-        className={`fixed top-0 left-0 h-full w-5/6 bg-white z-50 shadow-md transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`absolute top-0 left-0 h-full w-5/6 bg-white z-50 shadow-md transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="flex flex-col gap-12">
           <div className="flex h-[60px] w-full items-center justify-end px-5">
