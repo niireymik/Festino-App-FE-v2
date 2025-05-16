@@ -52,18 +52,6 @@ const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, tot
       },
     });
   };
-  sendWebSocketMessage({
-    type: 'MENUSUB',
-    boothId,
-    tableNum,
-    payload: {
-      menuId: menu.menuId,
-      menuCount: count,
-      totalPrice,
-      totalCount,
-    },
-  });
-
   const handlePlus = () => {
     temporarilyDisableButton();
 
