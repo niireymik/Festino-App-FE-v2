@@ -11,6 +11,7 @@ import ReservationModal from '@/components/tablings/modals/ReservationModal';
 import CompleteReserveModal from '@/components/tablings/modals/CompleteReserveModal';
 import MessageFailModal from '@/components/tablings/modals/MessageFailModal';
 import OrderModal from '@/components/orders/modals/OrderModal';
+import LoginModal from '@/components/auths/LoginModal';
 
 const ModalPage = () => {
   const { isModalOpen, modalType } = useBaseModal();
@@ -30,6 +31,7 @@ const ModalPage = () => {
       {modalType === 'completeReserveModal' && <CompleteReserveModal />}
       {modalType === 'messageFailModal' && <MessageFailModal />}
       {modalType === 'orderModal' && <OrderModal />}
+      {modalType === 'loginModal' && <LoginModal />}
     </ModalBackground>
   );
 };

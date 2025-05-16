@@ -14,6 +14,7 @@ import OrderMainPage from './pages/orders/OrderMainPage';
 import OrderPaymentPage from './pages/orders/OrderPaymentPage';
 import ModalRenderer from './components/orders/modals/ModalRenderer';
 import ModalPage from './pages/mains/ModalPage';
+import RegisterPage from './pages/mains/RegisterPage';
 import ErrorPage from './pages/mains/ErrorPage';
 import OrderSearchPage from './pages/orders/OrderSearchPage';
 
@@ -35,6 +36,7 @@ const App: React.FC = () => {
           <Route path="team-review" element={<TeamReviewPage />} />
           <Route path="notices" element={<NoticePage />} />
           <Route path="notices/:noticeId" element={<NoticeDetailPage />} />
+          <Route path="register" element={<RegisterPage />} />
         </Route>
 
         {/* Order */}
