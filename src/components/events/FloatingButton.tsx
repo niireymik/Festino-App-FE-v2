@@ -167,8 +167,8 @@ const FloatingButton: React.FC = () => {
           onClick={btn.onClick}
           className={`
             absolute left-1/2 -translate-x-1/2
-            w-[58px] h-[58px] rounded-full bg-primary-900 text-white text-2xs font-bold
-            flex items-center justify-center shadow-md
+            w-[58px] h-[58px] rounded-full bg-primary-700 text-white text-2xs font-bold
+            flex items-center justify-center shadow-white-md
             transition-all duration-300 whitespace-pre-line
             ${isOpen ? `opacity-100 ${translateHeights[idx]}` : 'opacity-0 translate-y-0'}
             ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}
