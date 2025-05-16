@@ -2,13 +2,15 @@ import useNavTapStore from '@/stores/headers/navTapStore';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useBaseModal from '@/stores/baseModal';
+import { useAuthStore } from '@/stores/auths/authStore';
 
 const NavTap = () => {
   // 전역 상태에서 네비게이션 탭 열림 여부 및 닫기 함수 가져오기
-  const { isOpen, close } = useNavTapStore();
   const navigate = useNavigate();
 
+  const { isOpen, close } = useNavTapStore();
   const { openModal } = useBaseModal();
+  const { isLogin, userName } = useAuthStore(); // ✅ 상태 추출
 
   // 이벤트 메뉴(아코디언)의 열림 상태
   const [isEventOpen, setIsEventOpen] = useState(false);
@@ -46,21 +48,25 @@ const NavTap = () => {
           {/* 로그인 아이콘 및 텍스트 */}
           <div className="flex flex-col items-center justify-center gap-4">
             <div
-              className="w-[80px] h-[80px] bg-header-navigation-person bg-center bg-no-repeat bg-[length:80px_80px]
-            cursor-pointer"
+              className={`w-[80px] h-[80px] ${isLogin ? 'bg-header-team-introduction' : 'bg-header-navigation-person'} bg-center bg-no-repeat bg-[length:80px_80px]
+            cursor-pointer`}
               onClick={() => {
-                close();
-                openModal('loginModal');
+                if (!isLogin) {
+                  close();
+                  openModal('loginModal');
+                }
               }}
             ></div>
             <div
               className="text-center font-bold text-lg cursor-pointer"
               onClick={() => {
-                close();
-                openModal('loginModal');
+                if (!isLogin) {
+                  close();
+                  openModal('loginModal');
+                }
               }}
             >
-              로그인
+              {isLogin && userName ? `${userName}님 환영합니다!` : '로그인'}
             </div>
           </div>
 
