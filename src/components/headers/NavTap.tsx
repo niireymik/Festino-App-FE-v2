@@ -3,13 +3,18 @@ import useBaseModal from '@/stores/baseModal';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/stores/auths/authStore';
+import { getCookie } from '@/utils/utils';
 
 const NavTap = () => {
   const navigate = useNavigate();
 
   const { isOpen, close } = useNavTapStore();
   const { openModal } = useBaseModal();
-  const { isLogin, userName } = useAuthStore();
+  const { isLogin } = useAuthStore();
+
+  const userName = getCookie('userName');
+
+  const login = isLogin();
 
   const [isEventOpen, setIsEventOpen] = useState(false);
   const toggleEvent = () => setIsEventOpen((prev) => !prev);
@@ -41,7 +46,7 @@ const NavTap = () => {
 
           <div className="flex flex-col items-center justify-center gap-4">
             <div
-              className={`w-[80px] h-[80px] ${isLogin ? 'bg-header-team-introduction' : 'bg-header-navigation-person'} bg-center bg-no-repeat bg-[length:80px_80px]
+              className={`w-[80px] h-[80px] ${login ? 'bg-header-team-introduction' : 'bg-header-navigation-person'} bg-center bg-no-repeat bg-[length:80px_80px]
             cursor-pointer`}
               onClick={() => {
                 if (!isLogin) {
@@ -59,11 +64,10 @@ const NavTap = () => {
                 }
               }}
             >
-              {isLogin && userName ? `${userName}님 환영합니다!` : '로그인'}
+              {login && userName ? `${userName}님 환영합니다!` : '로그인'}
             </div>
           </div>
 
-          {/* 메뉴 리스트 */}
           <ul className="space-y-6 text-sm text-secondary-700">
             <li
               onClick={() => {
