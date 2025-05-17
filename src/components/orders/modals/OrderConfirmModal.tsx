@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
+import { sendWebSocketMessage } from '@/utils/orderSocket';
 import { useOrderStore } from '@/stores/orders/orderStore';
-import { api } from '@/utils/api';
+import { api } from '@/utils/api'; 
 
 import useBaseModal from '@/stores/baseModal';
 
@@ -38,12 +38,22 @@ const OrderConfirmModal: React.FC = () => {
       console.log('[OrderConfirmModal] 언마운트됨');
     };
   }, []);
-  
 
   const [isSameChecked, setIsSameChecked] = useState(false);
   const [isDoneChecked, setIsDoneChecked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const orderMenus = userOrderList.filter((order) => order.menuCount > 0);
+
+  const handleCancel = () => {
+    // ORDERCANCEL 메시지 전송
+    sendWebSocketMessage({
+      type: 'ORDERCANCEL',
+      boothId,
+      tableNum,
+    });
+
+    closeModal(); // 모달 닫기
+  };
 
   useEffect(() => {
     if (!boothId) return;
@@ -65,49 +75,48 @@ const OrderConfirmModal: React.FC = () => {
     alert('계좌번호가 복사되었습니다.');
   };
 
-const handleComplete = async () => {
-  console.log('✔ 버튼 클릭됨');
+  const handleComplete = async () => {
+    console.log('✔ 버튼 클릭됨');
 
-  if (!isSameChecked || !isDoneChecked || isSubmitting) {
-    console.log(' 조건 미충족: 저장되지 않음');
-    return;
-  }
-
-  setIsSubmitting(true);
-  console.log(' 주문 저장 요청 시작');
-
-  try {
-    const payload = {
-      boothId,
-      tableNum,
-      userName,
-      phoneNum: phoneNum.replace(/-/g, ''),
-      menuInfo: orderMenus,
-      totalPrice,
-      note,
-    };
-    console.log('📦 Payload:', payload);
-
-    const res = await api.post('/main/order', payload);
-    console.log('응답:', res.data);
-
-    if (res.data.success) {
-      console.log(' 주문 성공');
-      resetOrderInfo();
-      closeModal();
-      openModal('orderCompleteModal');
-    } else {
-      console.warn(' 주문 실패:', res.data.message);
-      alert(`주문 실패: ${res.data.message}`);
+    if (!isSameChecked || !isDoneChecked || isSubmitting) {
+      console.log(' 조건 미충족: 저장되지 않음');
+      return;
     }
-  } catch (err) {
-    console.error('요청 중 오류:', err);
-    alert('주문 저장 중 오류가 발생했습니다.');
-  }
 
-  setIsSubmitting(false);
-};
+    setIsSubmitting(true);
+    console.log(' 주문 저장 요청 시작');
 
+    try {
+      const payload = {
+        boothId,
+        tableNum,
+        userName,
+        phoneNum: phoneNum.replace(/-/g, ''),
+        menuInfo: orderMenus,
+        totalPrice,
+        note,
+      };
+      console.log('📦 Payload:', payload);
+
+      const res = await api.post('/main/order', payload);
+      console.log('응답:', res.data);
+
+      if (res.data.success) {
+        console.log(' 주문 성공');
+        resetOrderInfo();
+        closeModal();
+        openModal('orderCompleteModal');
+      } else {
+        console.warn(' 주문 실패:', res.data.message);
+        alert(`주문 실패: ${res.data.message}`);
+      }
+    } catch (err) {
+      console.error('요청 중 오류:', err);
+      alert('주문 저장 중 오류가 발생했습니다.');
+    }
+
+    setIsSubmitting(false);
+  };
 
   return (
     <div
@@ -208,8 +217,8 @@ const handleComplete = async () => {
 
       <div className="gap-5 w-full flex font-bold">
         <button
+          onClick={handleCancel}
           className="w-full h-[42px] flex justify-center items-center border-2 border-primary-700 rounded-3xl text-primary-700"
-          onClick={closeModal}
         >
           취소
         </button>

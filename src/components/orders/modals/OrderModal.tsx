@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import useBaseModal from '@/stores/baseModal';
 import { useOrderStore } from '@/stores/orders/orderStore';
+import { sendWebSocketMessage } from '@/utils/orderSocket';
 import InputName from '@/components/tablings/InputName';
 import InputPhoneNum from '@/components/tablings/InputPhoneNum';
 import { formatPrice } from '@/utils/utils';
@@ -10,6 +11,8 @@ const phoneRegex = /^010/;
 
 const OrderModal: React.FC = () => {
   const {
+    boothId,
+    tableNum,
     totalPrice,
     userOrderList,
     setUserName,
@@ -32,6 +35,16 @@ const OrderModal: React.FC = () => {
   const handleInputNote = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value.slice(0, MAX_MESSAGE_LENGTH);
     setCurrentNote(value);
+  };
+  const handleCancel = () => {
+    // ORDERCANCEL 메시지 전송
+    sendWebSocketMessage({
+      type: 'ORDERCANCEL',
+      boothId,
+      tableNum,
+    });
+
+    closeModal(); // 모달 닫기
   };
 
   const handleClickOrderButton = () => {
@@ -100,7 +113,7 @@ const OrderModal: React.FC = () => {
         <div className="gap-5 flex w-full font-bold">
           <button
             className="w-full h-[42px] flex justify-center items-center border-2 border-primary-700 rounded-3xl text-primary-700"
-            onClick={closeModal}
+             onClick={handleCancel}
           >
             취소
           </button>
