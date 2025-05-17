@@ -42,9 +42,11 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
 
       if (accessToken) setCookie('accessToken', accessToken);
       if (refreshToken) setCookie('refreshToken', refreshToken);
-      if (userName) setCookie('userName', userName);
 
       set({ accessToken, refreshToken, mainUserId });
+
+      localStorage.setItem('mainUserId', mainUserId);
+      localStorage.setItem('userName', userName);
 
       return isSuccess;
     } catch (e) {
@@ -104,6 +106,8 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
   logout: () => {
     removeCookie('accessToken');
     removeCookie('refreshToken');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('mainUserId');
 
     set({
       userName: '',
