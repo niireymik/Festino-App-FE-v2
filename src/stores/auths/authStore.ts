@@ -43,6 +43,7 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
       if (accessToken) setCookie('accessToken', accessToken);
       if (refreshToken) setCookie('refreshToken', refreshToken);
       if (userName) setCookie('userName', userName);
+      if (mainUserId) setCookie('mainUserId', mainUserId);
 
       set({ accessToken, refreshToken, mainUserId });
 
