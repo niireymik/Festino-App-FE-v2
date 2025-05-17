@@ -50,7 +50,7 @@ export const useBoothStore = create<BoothStore>((set) => ({
   
       const getData = (index: number, key: string) => {
         const result = results[index];
-        return result.status === 'fulfilled' ? result.value.data[key] : [];
+        return result.status === 'fulfilled' ? result.value.data.data : [];
       };
   
       set({
@@ -83,8 +83,7 @@ export const useBoothStore = create<BoothStore>((set) => ({
           : `/main/booth/${urlType}/${id}`;
 
       const res = await api.get(endpoint);
-      const boothDetail: BoothInfo =
-        urlType === 'facility' ? res.data.facility : res.data.boothInfo;
+      const boothDetail: BoothInfo = res.data.data;
 
       set({ boothDetail });
       return boothDetail;

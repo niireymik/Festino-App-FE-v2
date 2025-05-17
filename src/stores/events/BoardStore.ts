@@ -40,7 +40,7 @@ export const getAllPhotos = async (type: 'new' | 'heart') => {
 
   if (!response.data.success) throw new Error('사진 게시물 조회 실패');
 
-  return response.data.photoInfo;
+  return response.data.data;
 };
 
 export const getMyPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo> => {
@@ -50,7 +50,7 @@ export const getMyPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo> => 
 
   if (!response.data.success) throw new Error('사진 게시물 조회 실패');
 
-  return response.data.photoInfo;
+  return response.data.data;
 };
 
 export const deletePhoto = async (photoId: string, mainUserId: string) => {

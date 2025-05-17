@@ -35,7 +35,7 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
       });
 
       const isSuccess = response.data.success;
-      const mainUserId = response.data.mainUserId;
+      const mainUserId = response.data.data;
 
       const accessToken = response.headers['access-token'];
       const refreshToken = response.headers['refresh-token'];
