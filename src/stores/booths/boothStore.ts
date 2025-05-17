@@ -48,17 +48,17 @@ export const useBoothStore = create<BoothStore>((set) => ({
         urls.map((url) => api.get(url))
       );
   
-      const getData = (index: number, key: string) => {
+      const getData = (index: number) => {
         const result = results[index];
         return result.status === 'fulfilled' ? result.value.data.data : [];
       };
   
       set({
-        boothListAll: getData(0, 'boothList'),
-        boothListNight: getData(1, 'boothList'),
-        boothListDay: getData(2, 'boothList'),
-        boothListFood: getData(3, 'boothList'),
-        boothListFacility: getData(4, 'facilityList'),
+        boothListAll: getData(0),
+        boothListNight: getData(1),
+        boothListDay: getData(2),
+        boothListFood: getData(3),
+        boothListFacility: getData(4),
       });
   
       results.forEach((result, idx) => {
