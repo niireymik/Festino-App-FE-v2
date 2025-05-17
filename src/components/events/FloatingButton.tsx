@@ -1,3 +1,4 @@
+import { FLOATING_SIZE, HIDE_PATHS } from '@/constants';
 import useBaseModal from '@/stores/baseModal';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -5,7 +6,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 type Corner = 'bottom-left' | 'bottom-right';
 
 const FloatingButton: React.FC = () => {
-  const hidePaths = ['/register', '/order', '/reserve', '/team-review', '/photo-board'];
   const translateHeights = ['translate-y-sub-btn-1', 'translate-y-sub-btn-2', 'translate-y-sub-btn-3'];
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -23,17 +23,14 @@ const FloatingButton: React.FC = () => {
   const screenHeight = document.body.clientHeight;
 
   const handleClickReviewEvent = () => {
-    setIsOpen(false);
     navigate('/team-review');
   };
 
   const handleClickUploadEvent = () => {
-    setIsOpen(false);
     navigate('/photo-board');
   };
 
   const handleClickQuizEvent = () => {
-    setIsOpen(false);
     openModal('quizModal');
   };
 
@@ -52,7 +49,6 @@ const FloatingButton: React.FC = () => {
     },
   ];
 
-  const BUTTON_SIZE = 60;
   const H_MARGIN = 70;
   const W_MARGIN = 20;
 
@@ -63,7 +59,7 @@ const FloatingButton: React.FC = () => {
 
   useEffect(() => {
     setPosition({
-      x: screenWidth - BUTTON_SIZE - W_MARGIN,
+      x: screenWidth - FLOATING_SIZE - W_MARGIN,
       y: 0,
     });
   }, []);
@@ -98,20 +94,19 @@ const FloatingButton: React.FC = () => {
     setIsDrag(false);
 
     const corners: Record<Corner, { x: number; y: number }> = {
-      'bottom-left': { x: W_MARGIN, y: screenHeight - BUTTON_SIZE - H_MARGIN },
-      'bottom-right': { x: screenWidth - BUTTON_SIZE - W_MARGIN, y: screenHeight - BUTTON_SIZE - H_MARGIN },
+      'bottom-left': { x: W_MARGIN, y: screenHeight - FLOATING_SIZE - H_MARGIN },
+      'bottom-right': { x: screenWidth - FLOATING_SIZE - W_MARGIN, y: screenHeight - FLOATING_SIZE - H_MARGIN },
     };
 
-    let closestCornerKey: Corner = 'bottom-right';
-    let minDist = Infinity;
-
-    for (const [key, pos] of Object.entries(corners) as [Corner, { x: number; y: number }][]) {
-      const dist = Math.hypot(position.x - pos.x, position.y - pos.y);
-      if (dist < minDist) {
-        minDist = dist;
-        closestCornerKey = key;
-      }
-    }
+    const closestCornerKey = (Object.entries(corners) as [Corner, { x: number; y: number }][]).reduce(
+      (closestKey, [key, pos]) => {
+        const currentDist = Math.hypot(position.x - pos.x, position.y - pos.y);
+        const closestPos = corners[closestKey];
+        const closestDist = Math.hypot(position.x - closestPos.x, position.y - closestPos.y);
+        return currentDist < closestDist ? key : closestKey;
+      },
+      'bottom-right' as Corner,
+    );
 
     setPosition(corners[closestCornerKey]);
   }, [position]);
@@ -157,10 +152,32 @@ const FloatingButton: React.FC = () => {
     };
   }, [handleEnd]);
 
-  if (hidePaths.some((path) => location.pathname.startsWith(path))) return null;
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const floatingRoot = document.getElementById('floating-button-wrapper');
+
+      if (floatingRoot && !floatingRoot.contains(target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  if (HIDE_PATHS.some((path) => location.pathname.startsWith(path))) return null;
 
   return (
-    <div className={`absolute ${isModalOpen ? 'z-30' : 'z-40'}`} style={{ left: position.x, bottom: 80 }}>
+    <div
+      id="floating-button-wrapper"
+      className={`absolute ${isModalOpen ? 'z-30' : 'z-40'}`}
+      style={{ left: position.x, bottom: 80 }}
+    >
       {subButtons.map((btn, idx) => (
         <button
           key={idx}
