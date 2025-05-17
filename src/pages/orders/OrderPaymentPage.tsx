@@ -30,8 +30,9 @@ const OrderPaymentPage: React.FC = () => {
   const navigate = useNavigate();
   const { boothId, tableNum } = useParams<{ boothId: string; tableNum: string }>();
 
+
+  
   const {
-    memberCount,
     setBoothId,
     setTableNum,
     setMenuInfo,
@@ -39,17 +40,30 @@ const OrderPaymentPage: React.FC = () => {
     addOrderItem,
     userOrderList,
     totalPrice,
-    remainingMinutes,
+    isOrderInProgress
   } = useOrderStore();
+
+  const remainingMinutes = useOrderStore((state) => state.remainingMinutes);
+  const memberCount = useOrderStore((state) => state.memberCount);
+
+  useEffect(() => {
+    console.log('⏱️ 타이머 값 변경됨:', remainingMinutes);
+  }, [remainingMinutes]);
+
+
 
   const [orderTotalPrice, setOrderTotalPrice] = useState<number>(totalPrice);
 
   const { openModal } = useBaseModal();
   const [selectedCategory, setSelectedCategory] = useState<CategoryValue>('ALL');
 
+  
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const tableIndex = Number(tableNum);
+
+    
 
     if (!boothId || !isUUID(boothId) || isNaN(tableIndex)) {
       navigate('/error/NotFound');
@@ -93,6 +107,8 @@ const OrderPaymentPage: React.FC = () => {
 
   useEffect(() => {
     const tableIndex = Number(tableNum);
+    
+    
 
     const handleBeforeUnload = () => {
       if (boothId && !isNaN(tableIndex)) {
@@ -167,9 +183,14 @@ const OrderPaymentPage: React.FC = () => {
   return (
     <div className="flex flex-col h-full pt-[60px]">
       <div className="fixed max-w-[500px] top-0 w-full bg-white z-10 p-4 flex items-center justify-between border-b border-gray-200">
-        <button onClick={() => navigate(`/order/${boothId}/${tableNum}`)}>
+        <button
+          onClick={() => {
+            openModal('exitPaymentModal');
+          }}
+        >
           <img src="/icons/header-arrow-back.svg" alt="Back" />
         </button>
+
         <h1 className="text-lg font-bold">주문하기</h1>
         <div className="w-6" />
       </div>
@@ -230,7 +251,10 @@ const OrderPaymentPage: React.FC = () => {
           className={`flex items-center justify-center w-full h-[60px] rounded-full text-white font-extrabold cursor-pointer ${
             totalPrice === 0 ? 'bg-secondary-100' : 'bg-primary-700'
           }`}
-          onClick={handleClickReserveButton}
+          onClick={() => {
+            if (isOrderInProgress) return; // 클릭 막기
+            handleClickReserveButton();
+          }}
         >
           {formatPrice(totalPrice)}원 • 주문하기
         </div>

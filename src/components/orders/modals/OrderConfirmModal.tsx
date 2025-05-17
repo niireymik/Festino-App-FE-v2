@@ -104,6 +104,12 @@ const OrderConfirmModal: React.FC = () => {
       if (res.data.success) {
         console.log(' 주문 성공');
         resetOrderInfo();
+        sendWebSocketMessage({
+          type: 'ORDERDONE',
+          boothId,
+          tableNum,
+        });
+
         closeModal();
         openModal('orderCompleteModal');
       } else {

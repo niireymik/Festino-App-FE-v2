@@ -3,6 +3,11 @@ import OrderModal from './OrderModal';
 import OrderConfirmModal from './OrderConfirmModal';
 import OrderCompleteModal from './OrderCompletemodal';
 import useBaseModal from '@/stores/baseModal';
+import OneMinuteModal from './OneMinuteModal';
+import TimeOverModal from './TimeOverModal';
+import OrderInprocessModal from './OrderInprocessModal';
+import ExitPaymentModal from './ExitPayment';
+
 
 const ModalRenderer: React.FC = () => {
   const { isModalOpen, modalType, closeModal } = useBaseModal();
@@ -27,6 +32,10 @@ const ModalRenderer: React.FC = () => {
         {modalType === 'orderModal' && <OrderModal />}
         {modalType === 'orderConfirmModal' && <OrderConfirmModal />}
         {modalType === 'orderCompleteModal' && <OrderCompleteModal />}
+        {modalType === 'oneMinuteModal' && <OneMinuteModal />}
+        {modalType === 'timeOverModal' && <TimeOverModal />}
+        {modalType === 'orderInProgressModal' && <OrderInprocessModal />}
+        {modalType === 'exitPaymentModal' && <ExitPaymentModal/>}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { Client, IMessage } from '@stomp/stompjs';
 import { useOrderStore } from '@/stores/orders/orderStore';
 import type { MenuListItem } from '@/types/WebSocket.types';
 import { useSocketStore } from '@/stores/socketStore';
+import useBaseModal from '@/stores/baseModal';
 
 export const connectOrderSocket = (boothId: string, tableNum: number) => {
   const { client, setClient } = useSocketStore.getState();
@@ -77,12 +78,12 @@ const onMessage = (message: IMessage) => {
       set.setTotalPrice(payload.totalPrice);
       set.setRemainingMinutes(payload.remainingMinutes);
 
-      
       break;
     }
 
     case 'MEMBERUPDATE': {
-      set.setMemberCount(data.payload.memberCount);
+      const { memberCount } = data.payload;
+      useOrderStore.getState().setMemberCount(memberCount);
       break;
     }
     case 'MENUUPDATE': {
@@ -120,7 +121,7 @@ const onMessage = (message: IMessage) => {
       if (isNotOrderingUser) {
         useOrderStore.getState().setIsOrderInProgress(true);
         useOrderStore.getState().setOrderingSessionId(senderSessionId);
-        alert('다른 사용자가 주문을 시작했습니다. 메뉴를 수정할 수 없습니다.');
+        useBaseModal.getState().openModal('orderInProgressModal');
       }
 
       break;
@@ -133,28 +134,29 @@ const onMessage = (message: IMessage) => {
     case 'ORDERDONE': {
       useOrderStore.getState().setIsOrderInProgress(false);
       useOrderStore.getState().setOrderingSessionId(null);
-      alert(' 주문이 완료되었습니다.');
+      useBaseModal.getState().openModal('orderCompleteModal');
       break;
     }
 
     case 'ORDERCANCEL': {
       useOrderStore.getState().setIsOrderInProgress(false);
       useOrderStore.getState().setOrderingSessionId(null);
-      alert(' 주문이 취소되었습니다. 다시 주문해주세요.');
       break;
     }
 
     case 'TIMEUPDATE': {
-      set.setRemainingMinutes(data.payload.remainingMinutes);
+      useOrderStore.getState().setRemainingMinutes(data.payload.remainingMinutes);
       break;
     }
     case 'PRESESSIONEND': {
-      alert('⚠️ 세션이 1분 후 종료됩니다.');
+      const minutes = data.payload?.remainingMinutes;
+      if (minutes === 1) {
+        useBaseModal.getState().openModal('oneMinuteModal');
+      }
       break;
     }
     case 'SESSIONEND': {
-      alert('❌ 세션이 종료되었습니다. 처음 화면으로 돌아갑니다.');
-      window.location.href = `/order/${data.boothId}/${data.tableNum}`;
+      useBaseModal.getState().openModal('timeOverModal');
       break;
     }
 

@@ -108,7 +108,7 @@ const MenuCard: React.FC<Props> = ({ menu, onCountChange, boothId, tableNum, tot
           <div className="flex items-center gap-2">
             <button
               onClick={handleMinus}
-              disabled={isOrderInProgress}
+              disabled={isOrderInProgress || count===0}
               className="w-6 h-6 flex items-center justify-center rounded-full"
             >
               <img src="/icons/orders/minus.svg" alt="minus" className="w-5 h-5" />

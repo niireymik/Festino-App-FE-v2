@@ -14,7 +14,7 @@ const OrderInprocessModal: React.FC = () => {
         <div className="w-12 h-12 bg-error rounded-full grid place-items-center">
           <img src="/icons/commons/error.svg" />
         </div>
-        <div className="w-full flex flex-col gap-3 items-center break-keep text-center">
+        <div className="w-full flex flex-col gap-3 items-center break-keep text-center whitespace-nowrap">
           <p className="text-secondary-700 text-xl font-bold">주문 진행 중</p>
           <p className="text-secondary-500">
             다른 사용자가 주문 진행 중입니다.

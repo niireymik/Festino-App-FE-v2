@@ -17,6 +17,7 @@ import ModalPage from './pages/mains/ModalPage';
 import RegisterPage from './pages/mains/RegisterPage';
 import ErrorPage from './pages/mains/ErrorPage';
 import OrderSearchPage from './pages/orders/OrderSearchPage';
+import RetryQRPage from './pages/orders/ReTryQRPage';
 
 const App: React.FC = () => {
   return (
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           <Route path=":boothId/:tableNum" element={<OrderMainPage />} />
           <Route path=":boothId/:tableNum/payment" element={<OrderPaymentPage />} />
           <Route path=":boothId/:tableNum/search" element={<OrderSearchPage />} />
+          <Route path="retry-qr" element={<RetryQRPage />} />
         </Route>
 
         {/* Error */}
