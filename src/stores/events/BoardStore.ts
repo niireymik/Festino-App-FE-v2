@@ -43,14 +43,29 @@ export const getAllPhotos = async (type: 'new' | 'heart') => {
   return response.data.data;
 };
 
+// export const getMyPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo> => {
+//   const mainUserId = localStorage.getItem('mainUserId');
+
+//   const response = await tokenizedApi.get(`/main/event/photo/my/${type}/user/${mainUserId}`);
+//   console.log(response)
+//   if (!response.data.success) throw new Error('사진 게시물 조회 실패');
+
+//   return response.data.data;
+// };
+
 export const getMyPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo> => {
   const mainUserId = localStorage.getItem('mainUserId');
+  if (!mainUserId) throw new Error('mainUserId가 없습니다');
 
   const response = await tokenizedApi.get(`/main/event/photo/my/${type}/user/${mainUserId}`);
-
   if (!response.data.success) throw new Error('사진 게시물 조회 실패');
 
-  return response.data.data;
+  // 기존 코드:
+  // return response.data.data;
+
+  // 수정: 구조 분해
+  const { photoList, photoTotalCount } = response.data.data;
+  return { photoList, photoTotalCount };
 };
 
 export const deletePhoto = async (photoId: string, mainUserId: string) => {

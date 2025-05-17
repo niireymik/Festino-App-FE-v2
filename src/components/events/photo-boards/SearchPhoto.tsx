@@ -13,7 +13,6 @@ const SearchPhoto: React.FC = () => {
       try {
         const { photoList, photoTotalCount } = await getMyPhotos('new');
         setMyPhotos(photoList, photoTotalCount);
-        console.log(myPhotos)
       } catch (e) {
         console.error(e);
       }

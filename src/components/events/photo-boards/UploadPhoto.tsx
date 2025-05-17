@@ -1,5 +1,6 @@
 import useBaseModal from '@/stores/baseModal';
 import { uploadPhotoPost } from '@/stores/events/BoardStore';
+import { tokenizedApi } from '@/utils/api';
 import { useRef, useState } from 'react';
 
 const UploadPhoto: React.FC = () => {
@@ -7,21 +8,38 @@ const UploadPhoto: React.FC = () => {
   const { openModal } = useBaseModal();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const uploadImageToServer = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    const res = await tokenizedApi.post('/main/image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    
+    return res.data.imageUrl;
+  };
+  
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
+  
     try {
       setUploading(true);
-      await uploadPhotoPost('');
+  
+      const imageUrl = await uploadImageToServer(file);
+      await uploadPhotoPost(imageUrl); // URL을 사용
+  
       openModal('uploadCompleteModal');
-    } catch {
+    } catch (err) {
+      console.error("업로드 실패:", err);
       openModal('uploadFailModal');
     } finally {
       setUploading(false);
     }
   };
-
+  
   return (
     <div className="w-screen max-w-[500px] min-w-[375px] mx-auto">
       <div className="w-full flex flex-col pt-20 px-4">
@@ -41,7 +59,7 @@ const UploadPhoto: React.FC = () => {
           </div>
         </div>
 
-        <input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} className="hidden" />
+        <input type="file" accept="image/*" ref={inputRef} onChange={(e) => handleFileChange(e)} className="hidden" />
       </div>
     </div>
   );
