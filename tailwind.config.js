@@ -42,28 +42,28 @@ export default {
             light: '#E1E1E1',
           },
         },
-        'prepared': {
+        prepared: {
           DEFAULT: '#66CF55',
-          light:'#E2F4E1'
+          light: '#E2F4E1',
         },
-        'cooking': {
+        cooking: {
           DEFAULT: '#3082F6',
-          light: '#DAE8FA'
+          light: '#DAE8FA',
         },
-        'cancel': {
+        cancel: {
           DEFAULT: '#888888',
         },
-        'waiting': {
+        waiting: {
           DEFAULT: '#FF6D6D',
-          light: '#FBE4E4'
+          light: '#FBE4E4',
         },
-        'close': {
-          DEFAULT: "#F00E00",
-          light: 'rgba(240, 14, 0, 0.12)'
+        close: {
+          DEFAULT: '#F00E00',
+          light: 'rgba(240, 14, 0, 0.12)',
         },
-        'open': {
-          DEFAULT: "#0073F0",
-          light: 'rgba(0, 115, 240, 0.12)'
+        open: {
+          DEFAULT: '#0073F0',
+          light: 'rgba(0, 115, 240, 0.12)',
         },
       },
       textColor: (theme) => ({
@@ -74,8 +74,8 @@ export default {
       backgroundColor: (theme) => ({
         ...theme('colors'),
         'map-color': 'rgba(211, 211, 211, 0.1)',
-        'tag': '#F5F6F8',
-        'error': 'rgba(255, 109, 109, 0.16)',
+        tag: '#F5F6F8',
+        error: 'rgba(255, 109, 109, 0.16)',
       }),
       fontSize: {
         '3xs': '0.5rem', // 8px
@@ -93,12 +93,19 @@ export default {
         'error-half': "url('/images/tinos/error-half.svg')",
         'error-full': "url('/images/tinos/error.svg')",
         // common
-        'instagram': "url('/icons/commons/instagram.png')",
+        instagram: "url('/icons/commons/instagram.png')",
         'x-button': "url('/icons/commons/x.png')",
         // header
         'header-festino-logo': "url('/icons/headers/festino-logo.svg')",
         'header-team-introduction': "url('/icons/headers/festino-icon.svg')",
         'header-navigation-bar': "url('/icons/headers/nav.svg')",
+        'header-navigation-person': "url('icons/headers/navtaps/circle-person.svg')",
+        'header-navigation-booth': "url('icons/headers/navtaps/booth-icon.svg')",
+        'header-navigation-tabling': "url('icons/headers/navtaps/tabling-icon.svg')",
+        'header-navigation-timetable': "url('icons/headers/navtaps/timetable-icon.svg')",
+        'header-navigation-notice': "url('icons/headers/navtaps/notice-icon.svg')",
+        'header-navigation-event': "url('icons/headers/navtaps/event-icon.svg')",
+        'header-navigation-event-open': "url('icons/headers/navtaps/under-arrow.svg')",
         //home
         'home-banner': "url('/images/homes/home-banner.svg')",
         'slide-banner-1': "url('/images/homes/slide-banner-1.svg')",
@@ -112,7 +119,7 @@ export default {
         // booth
         'booth-banner': "url('/images/booths/banners/booth.svg')",
         'booth-detail-banner': "url('/images/booths/banners/booth-detail.svg')",
-        'default': "url('/images/booths/default.svg')",
+        default: "url('/images/booths/default.svg')",
         'arrow-back-white': "url('/icons/booths/arrow-back.svg')",
         'arrow-forward': "url('/icons/booths/arrow-forward.svg')",
         'booth-map': "url('/images/booths/map.svg')",
@@ -123,8 +130,8 @@ export default {
         'tabling-banner': "url('/images/tablings/tino-tabling.svg')",
       },
       borderRadius: {
-        "2.5xl": "1.25rem", // 20px
-        "10xl": '3.125rem', // 50px
+        '2.5xl': '1.25rem', // 20px
+        '10xl': '3.125rem', // 50px
       },
       borderColor: (theme) => ({
         ...theme('colors'),
@@ -135,6 +142,12 @@ export default {
       },
       boxShadow: {
         '4xl': '0px 0px 16px rgba(0, 0, 0, 0.04)',
+        'white-md': '0px 0px 2px rgba(255, 255, 255, 1)',
+      },
+      translate: {
+        'sub-btn-1': '-65px',
+        'sub-btn-2': '-130px',
+        'sub-btn-3': '-195px',
       },
     },
     screens: {
