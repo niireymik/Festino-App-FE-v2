@@ -12,6 +12,7 @@ import CompleteReserveModal from '@/components/tablings/modals/CompleteReserveMo
 import MessageFailModal from '@/components/tablings/modals/MessageFailModal';
 import OrderModal from '@/components/orders/modals/OrderModal';
 import LoginModal from '@/components/auths/LoginModal';
+import LogoutModal from '@/components/auths/LogoutModal';
 
 const ModalPage = () => {
   const { isModalOpen, modalType } = useBaseModal();
@@ -32,6 +33,7 @@ const ModalPage = () => {
       {modalType === 'messageFailModal' && <MessageFailModal />}
       {modalType === 'orderModal' && <OrderModal />}
       {modalType === 'loginModal' && <LoginModal />}
+      {modalType === 'logoutModal' && <LogoutModal />}
     </ModalBackground>
   );
 };

@@ -42,3 +42,32 @@ export const formatDateTime = (isoString: string): string => {
 };
 
 export const formatPrice = (price: number) => price.toLocaleString();
+
+export const formatDateTimeNow = (): string => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}.${month}.${day} ${hours}:${minutes}`;
+};
+
+
+export const setCookie = (name: string, value: string, days = 7) => {
+  const expires = new Date();
+  expires.setDate(expires.getDate() + days);
+  document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()}; Secure; SameSite=Strict`;
+};
+
+export const getCookie = (name: string): string | null => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()!.split(';').shift()!;
+  return null;
+};
+
+export const removeCookie = (name: string) => {
+  document.cookie = `${name}=; Max-Age=0; path=/`;
+};
