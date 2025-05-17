@@ -3,7 +3,7 @@ import HomePage from './pages/mains/HomePage';
 import TimeTablePage from './pages/mains/TimeTablePage';
 import BoothPage from './pages/mains/BoothPage';
 import TablingPage from './pages/mains/TablingPage';
-import TeamReviewPage from './pages/mains/TeamReviewPage';
+import TeamPage from './pages/mains/TeamPage';
 import MainLayout from './layouts/MainLayout';
 import NoticePage from './pages/mains/NoticePage';
 import NoticeDetailPage from './pages/mains/NoticeDetailPage';
@@ -15,6 +15,7 @@ import ModalPage from './pages/mains/ModalPage';
 import RegisterPage from './pages/mains/RegisterPage';
 import ErrorPage from './pages/mains/ErrorPage';
 import PhotoBoardPage from './pages/mains/PhotoBoardPage';
+import ReviewPage from './pages/mains/ReviewPage';
 
 const App: React.FC = () => {
   return (
@@ -29,7 +30,8 @@ const App: React.FC = () => {
           <Route path="booths" element={<BoothPage />} />
           <Route path="booths/:type/:boothId" element={<BoothDetailPage />} />
           <Route path="reserve" element={<TablingPage />} />
-          <Route path="team-review" element={<TeamReviewPage />} />
+          <Route path="teams" element={<TeamPage />} />
+          <Route path="review" element={<ReviewPage />} />
           <Route path="notices" element={<NoticePage />} />
           <Route path="notices/:noticeId" element={<NoticeDetailPage />} />
           <Route path="register" element={<RegisterPage />} />
