@@ -11,13 +11,13 @@ const UploadCompleteModal: React.FC = () => {
           e.stopPropagation();
         }}
       >
-        <div className="w-12 h-12 bg-error rounded-full grid place-items-center">
+        <div className="w-12 h-12 bg-primary-900-light-16 rounded-full grid place-items-center">
           <img src="/icons/commons/info.svg" />
         </div>
         <div className="w-full flex flex-col gap-3 items-center break-keep text-center">
           <p className="text-secondary-700 text-xl font-bold">이미지 업로드 성공!</p>
           <p className="text-secondary-500">
-            선택하신 이미지가 성공적으로 업로드 되었습니다.
+            이미지가 성공적으로 업로드 되었습니다.
             <br />
             사진 목록에서 이미지를 확인해보세요.
           </p>
