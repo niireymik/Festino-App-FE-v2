@@ -52,6 +52,7 @@ const onMessage = (message: IMessage) => {
   switch (data.type) {
     case 'INIT': {
       const payload = data.payload;
+      console.log('[INIT 수신 완료]');
       if (Array.isArray(payload.menuList)) {
         const fullList = payload.menuList.map((menu: MenuListItem) => {
           const existing = set.menuInfo.find((m) => m.menuId === menu.menuId);
@@ -75,6 +76,8 @@ const onMessage = (message: IMessage) => {
       set.setMemberCount(payload.memberCount);
       set.setTotalPrice(payload.totalPrice);
       set.setRemainingMinutes(payload.remainingMinutes);
+
+      
       break;
     }
 
@@ -103,29 +106,43 @@ const onMessage = (message: IMessage) => {
     }
 
     case 'STARTORDER': {
-      console.log('');
       const senderSessionId = message.headers['excludeSessionId'];
       const mySessionId = useSocketStore.getState().sessionId;
 
-      if (!senderSessionId) {
-        alert('세션 아이디 없음');
-      } else if (!mySessionId) {
-        alert('나의 세션 아이디가 없습니다. 다시 접속해주세요');
+      if (!senderSessionId || !mySessionId) {
+        alert('세션 정보가 없습니다. 다시 접속해주세요.');
         window.location.reload();
-      } else if (mySessionId !== senderSessionId) {
-        disconnectOrderSocket(data.boothId, data.tableNum);
-        alert('다른 사용자가 주문을 진행하고 있습니다. 메인화면으로 이동합니다.');
-        // window.location.href = `/order/${data.boothId}/${data.tableNum}`;
-      } else {
-        console.log('[내가 보낸 STARTORDER 메시지: 이동하지 않음]');
+        return;
       }
+
+      const isNotOrderingUser = senderSessionId !== mySessionId;
+
+      if (isNotOrderingUser) {
+        useOrderStore.getState().setIsOrderInProgress(true);
+        useOrderStore.getState().setOrderingSessionId(senderSessionId);
+        alert('다른 사용자가 주문을 시작했습니다. 메뉴를 수정할 수 없습니다.');
+      }
+
       break;
     }
 
     case 'ORDERINPROGRESS': {
       useOrderStore.getState().setIsOrderInProgress(true);
-      break
-      }
+      break;
+    }
+    case 'ORDERDONE': {
+      useOrderStore.getState().setIsOrderInProgress(false);
+      useOrderStore.getState().setOrderingSessionId(null);
+      alert(' 주문이 완료되었습니다.');
+      break;
+    }
+
+    case 'ORDERCANCEL': {
+      useOrderStore.getState().setIsOrderInProgress(false);
+      useOrderStore.getState().setOrderingSessionId(null);
+      alert(' 주문이 취소되었습니다. 다시 주문해주세요.');
+      break;
+    }
 
     case 'TIMEUPDATE': {
       set.setRemainingMinutes(data.payload.remainingMinutes);
@@ -152,7 +169,7 @@ const onMessage = (message: IMessage) => {
 };
 
 type WebSocketPayload = {
-  type: 'MENUADD' | 'MENUSUB' | 'STARTORDER' | 'UNSUB' | 'INIT' | 'ORDERINPROGRESS' | 'ORDERDONE';
+  type: 'MENUADD' | 'MENUSUB' | 'STARTORDER' | 'UNSUB' | 'INIT' | 'ORDERINPROGRESS' | 'ORDERDONE'|'ORDERCANCEL';
   boothId: string;
   tableNum: number;
   payload?: {

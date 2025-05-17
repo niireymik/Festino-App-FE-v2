@@ -63,6 +63,8 @@ interface OrderState {
   kakaoPayUrl: string;
   selectedOrder: OrderType;
   remainingMinutes: number;
+  isOrderInProgress: boolean;
+  orderingSessionId: string | null;
 
   setRecentPhoneNum: (num: string) => void;
   setRecentName: (name: string) => void;
@@ -86,6 +88,8 @@ interface OrderState {
   fetchTossPay: () => Promise<void>;
   fetchKakaoPay: () => Promise<void>;
   setRemainingMinutes: (min: number) => void;
+  setIsOrderInProgress: (value: boolean) => void;
+  setOrderingSessionId: (id: string | null) => void;
 }
 
 export const useOrderStore = create<OrderState>((set, get) => ({
@@ -117,6 +121,8 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     remainingMinutes: 10,
   },
   remainingMinutes: 10,
+  isOrderInProgress: false,
+  orderingSessionId: null,
 
   setRecentPhoneNum: (num) => set({ recentPhoneNum: num }),
   setRecentName: (name) => set({ recentName: name }),
@@ -134,6 +140,8 @@ export const useOrderStore = create<OrderState>((set, get) => ({
   setMemberCount: (count) => set({ memberCount: count }),
   setSelectedOrder: (order: OrderType) => set({ selectedOrder: order }),
   setRemainingMinutes: (min: number) => set({ remainingMinutes: min }),
+  setIsOrderInProgress: (value) => set({ isOrderInProgress: value }),
+  setOrderingSessionId: (id) => set({ orderingSessionId: id }),
 
   resetOrderInfo: () => {
     set({ userOrderList: [], totalPrice: 0 });
