@@ -46,3 +46,19 @@ export const formatDateTime = (timestamp: string): string => {
 };
 
 export const formatPrice = (price: number) => price.toLocaleString();
+export const setCookie = (name: string, value: string, days = 7) => {
+  const expires = new Date();
+  expires.setDate(expires.getDate() + days);
+  document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()}; Secure; SameSite=Strict`;
+};
+
+export const getCookie = (name: string): string | null => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()!.split(';').shift()!;
+  return null;
+};
+
+export const removeCookie = (name: string) => {
+  document.cookie = `${name}=; Max-Age=0; path=/`;
+};
