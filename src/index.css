@@ -32,6 +32,9 @@
     max-height: calc(500px * 190 / 430) !important;
     min-height: calc(375px * 190 / 430) !important;
   }
+  .dynamic-left-padding {
+    padding-left: calc(20 / 430 * 100%) !important;
+  }
 }
 
 html {
