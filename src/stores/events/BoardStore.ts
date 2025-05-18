@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { baseApi, tokenizedApi } from '@/utils/api';
+import { baseApi, tokenizedApi, tokenizedBaseApi } from '@/utils/api';
 import { PhotoInfo, PhotoModalState, PhotoStore } from '@/types/Board.types';
 
 export const usePhotoModalStore = create<PhotoModalState>((set) => ({
@@ -42,6 +42,7 @@ export const getAllPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | n
     });
 
     const result = response?.data?.data;
+    
     if (!result || !result.photoList) return null;
 
     return result;
@@ -53,13 +54,27 @@ export const getAllPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | n
 
 export const getMyPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | null> => {
   const mainUserId = localStorage.getItem('mainUserId');
-
   if (!mainUserId) return null;
 
-  const response = await tokenizedApi.get(`/main/event/photo/my/${type}/user/${mainUserId}`);
+  const response = await tokenizedBaseApi.get(`/main/event/photo/my/${type}/user/${mainUserId}`);
+  let rawData = response.data;
 
-  // 응답이 성공이어도 data가 없을 수 있음
-  const result = response?.data?.data;
+  if (typeof rawData === 'string') {
+    try {
+      // 두 번째 JSON 시작 전까지 자르기 (두 번째 '{' 검색 기준)
+      const firstBrace = rawData.indexOf('{');
+      const secondBrace = rawData.indexOf('}{', firstBrace + 1);
+      const sliceEnd = secondBrace === -1 ? rawData.length : secondBrace + 1;
+
+      const jsonString = rawData.slice(firstBrace, sliceEnd);
+      rawData = JSON.parse(jsonString);
+    } catch (err) {
+      console.error('JSON 파싱 실패:', err);
+      return null;
+    }
+  }
+
+  const result = rawData?.data;
   if (!result || !result.photoList) return null;
 
   return result;
@@ -83,10 +98,6 @@ export const likePhoto = async (photoId: string, mainUserId: string) => {
     mainUserId,
   });
 
-  if (!response.data.success) {
-    throw new Error(response.data.message || '좋아요 실패');
-  }
-
   return response.data;
 };
 
@@ -94,10 +105,6 @@ export const unlikePhoto = async (photoId: string, mainUserId: string) => {
   const response = await tokenizedApi.delete('/main/event/photo/heart', {
     data: { photoId, mainUserId },
   });
-
-  if (!response.data.success) {
-    throw new Error(response.data.message || '좋아요 취소 실패');
-  }
 
   return response.data;
 };
