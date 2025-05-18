@@ -13,7 +13,6 @@ const SearchPhoto: React.FC = () => {
     const fetchMyPhotos = async () => {
       try {
         const photo = await getMyPhotos('new');
-        console.log('myPhoto:', photo);
     
         if (!photo || !photo.photoList) {
           setMyPhotos([], 0);
@@ -30,7 +29,6 @@ const SearchPhoto: React.FC = () => {
     const fetchAllPhotos = async () => {
       try {
         const photo = await getAllPhotos('new');
-        console.log(photo)
 
         if (!photo) {
           setAllPhotos([], 0);
@@ -45,6 +43,35 @@ const SearchPhoto: React.FC = () => {
     fetchMyPhotos();
     fetchAllPhotos();
   }, [mainUserId, setMyPhotos, setAllPhotos]);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        // mainUserId 유무 상관 없이 항상 전체 사진 갱신
+        const allRes = await getAllPhotos('new');
+        if (allRes) {
+          setAllPhotos(allRes.photoList, allRes.photoTotalCount);
+        } else {
+          setAllPhotos([], 0);
+        }
+  
+        // 내 사진은 mainUserId가 있는 경우만 호출
+        const mainUserId = localStorage.getItem('mainUserId');
+        if (mainUserId) {
+          const myRes = await getMyPhotos('new');
+          if (myRes) {
+            setMyPhotos(myRes.photoList, myRes.photoTotalCount);
+          } else {
+            setMyPhotos([], 0); // 데이터가 없는 경우 초기화
+          }
+        }
+      } catch (e) {
+        console.error('사진 새로고침 실패:', e);
+      }
+    }, 5000); // 5초마다 갱신
+  
+    return () => clearInterval(interval);
+  }, []); 
 
   return (
     <div className="flex flex-col">
@@ -70,7 +97,7 @@ const SearchPhoto: React.FC = () => {
                   {myPhotos
                     .filter(photo => photo.imageUrl) // imageUrl이 존재하는 경우만 필터링
                     .map((photo: PhotoPost) => (
-                      <PhotoCard key={photo.photoId} photo={photo} isUserPhoto={true} />
+                      <PhotoCard key={photo.photoId} photo={photo} />
                   ))}
                 </div>
               </>
@@ -101,7 +128,7 @@ const SearchPhoto: React.FC = () => {
                   {allPhotos
                     .filter(photo => photo.imageUrl) // imageUrl이 존재하는 경우만 필터링
                     .map((photo: PhotoPost) => (
-                      <PhotoCard key={photo.photoId} photo={photo} isUserPhoto={false} />
+                      <PhotoCard key={photo.photoId} photo={photo} />
                   ))}
                 </div>
               </div>
