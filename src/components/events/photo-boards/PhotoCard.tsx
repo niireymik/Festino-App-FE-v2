@@ -26,17 +26,21 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
   };
 
   const handleToggleLike = async () => {
-    if (isUserPhoto || !mainUserId) return;
+    if (!mainUserId) 
+      // 여기에 로그인 모달 오픈 되는 거 넣어주면 될 거 같애~~
+    if (isUserPhoto) alert('자신의 게시물에는 좋아요를 할 수 없습니다!');
 
     try {
-      if (isLike) {
-        await unlikePhoto(photo.photoId, mainUserId);
-        setIsLike(false);
-        setLikeCount(prev => prev - 1);
-      } else {
-        await likePhoto(photo.photoId, mainUserId);
-        setIsLike(true);
-        setLikeCount(prev => prev + 1);
+      if(mainUserId) {
+        if (isLike) {
+          await unlikePhoto(photo.photoId, mainUserId);
+          setIsLike(false);
+          setLikeCount(prev => prev - 1);
+        } else {
+          await likePhoto(photo.photoId, mainUserId);
+          setIsLike(true);
+          setLikeCount(prev => prev + 1);
+        }
       }
     } catch (e) {
       console.error('좋아요 처리 실패:', e);
@@ -64,7 +68,6 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
             <button
               onClick={handleToggleLike}
               className={`w-4 h-4 ${isUserPhoto || !mainUserId ? 'cursor-not-allowed' : ''}`}
-              disabled={isUserPhoto || !mainUserId}
             >
               <img
                 src={isLike ? '/icons/events/full-heart.svg' : '/icons/events/empty-heart.svg'}
