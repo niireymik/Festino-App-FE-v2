@@ -9,10 +9,10 @@ const DeletePhotoModal: React.FC = () => {
   const handleDelete = async () => {
     const mainUserId = localStorage.getItem('mainUserId');
     if (!selectedPhoto || !mainUserId) return;
-  
+
     try {
       await deletePhoto(selectedPhoto.photoId, mainUserId);
-  
+
       // 삭제 후 다시 조회
       // 내 사진 조회
       const myRes = await getMyPhotos('new');
@@ -21,7 +21,7 @@ const DeletePhotoModal: React.FC = () => {
       } else {
         setMyPhotos([], 0);
       }
-  
+
       // 전체 사진 조회
       const allRes = await getAllPhotos('new');
       if (allRes) {
@@ -29,13 +29,13 @@ const DeletePhotoModal: React.FC = () => {
       } else {
         setAllPhotos([], 0);
       }
-  
+
       clearSelectedPhoto();
       closeModal();
-    } catch (e) {
-      console.error('삭제 실패:', e);
+    } catch {
+      alert('사진을 삭제 하는 중 오류가 발생했습니다.');
     }
-  };  
+  };
 
   return (
     <>

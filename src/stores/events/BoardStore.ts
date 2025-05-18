@@ -46,8 +46,7 @@ export const getAllPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | n
     if (!result || !result.photoList) return null;
 
     return result;
-  } catch (error) {
-    console.error('getAllPhotos 에러:', error);
+  } catch {
     return null;
   }
 };
@@ -68,8 +67,7 @@ export const getMyPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | nu
 
       const jsonString = rawData.slice(firstBrace, sliceEnd);
       rawData = JSON.parse(jsonString);
-    } catch (err) {
-      console.error('JSON 파싱 실패:', err);
+    } catch {
       return null;
     }
   }
