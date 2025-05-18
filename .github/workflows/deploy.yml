@@ -59,7 +59,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             echo "Running new container..."
-            sudo docker run -p 8080:${{ secrets.PORT }} \
+            sudo docker run -p 3000:${{ secrets.PORT }} \
               --name ${{ secrets.PROJECT_NAME }} \
               -e DOCKERHUB_USERNAME="${{ secrets.DOCKER_USERNAME }}" \
               -e PROJECT_NAME="${{ secrets.PROJECT_NAME }}" \
