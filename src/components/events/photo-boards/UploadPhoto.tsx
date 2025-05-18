@@ -25,6 +25,7 @@ const UploadPhoto: React.FC = () => {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
 
     try {
@@ -46,10 +47,21 @@ const UploadPhoto: React.FC = () => {
 
       openModal('uploadCompleteModal');
     } catch {
-      openModal('requireLoginModal');
+      openModal('uploadFailModal');
     } finally {
       setUploading(false);
     }
+  };
+
+  const handleClickUploadSection = () => {
+    const mainUserId = localStorage.getItem('mainUserId');
+
+    if (!mainUserId) {
+      openModal('requireLoginModal');
+      return;
+    }
+
+    inputRef.current?.click();
   };
 
   return (
@@ -63,7 +75,7 @@ const UploadPhoto: React.FC = () => {
 
         <div
           className="w-full aspect-[3/2] border border-dashed border-secondary-400 rounded-2xl flex items-center justify-center cursor-pointer"
-          onClick={() => inputRef.current?.click()}
+          onClick={() => handleClickUploadSection()}
         >
           <div className="flex flex-col items-center justify-center text-secondary-400">
             <img src="/icons/events/photo.svg" alt="사진 추가" className="w-8 h-8 mb-2" />
