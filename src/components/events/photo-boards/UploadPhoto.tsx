@@ -54,7 +54,7 @@ const UploadPhoto: React.FC = () => {
 
   return (
     <div className="w-screen max-w-[500px] min-w-[375px] mx-auto">
-      <div className="w-full flex flex-col pt-20 px-4">
+      <div className="w-full flex flex-col pt-10 px-4">
         <p className="text-center text-base font-medium leading-relaxed whitespace-pre-line mb-8">
           내가 찍은 축제 사진을 올려주세요!
           {'\n'}(2025년 5월 26일 ~ 5월 29일 간)
