@@ -36,7 +36,7 @@ export const useEventStore = create<IEventStore>((set, get) => ({
           },
         });
       } else {
-        console.log("api error occur")
+        alert("문제를 받아오지 못했습니다.")
       }
     } catch (err) {
       console.error(err);
@@ -49,7 +49,6 @@ export const useEventStore = create<IEventStore>((set, get) => ({
         const { startTime, endTime } = res.data.responseRealTimeQuestionNextTimeGetDTO;
         set({ startTime, endTime });
       } else {
-        console.log("api error occur")
       }
     } catch (err) {
       console.error(err);
@@ -66,7 +65,7 @@ export const useEventStore = create<IEventStore>((set, get) => ({
       if (res.data.success) {
         console.log(res.data.success)
       } else {
-        console.log("api error occur")
+        alert("답변을 저장하지 못했습니다.");
       }
     } catch (err) {
       console.error(err);
