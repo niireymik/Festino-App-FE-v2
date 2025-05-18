@@ -26,8 +26,14 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
   };
 
   const handleToggleLike = async () => {
-    if (!mainUserId) openModal('requireLoginModal');
-    if (isUserPhoto) alert('자신의 게시물에는 좋아요를 할 수 없습니다!');
+    if (!mainUserId) {
+      openModal('requireLoginModal');
+      return;
+    }
+    if (isUserPhoto) {
+      alert('자신의 게시물에는 좋아요를 할 수 없습니다!');
+      return;
+    }
 
     try {
       if (mainUserId) {
