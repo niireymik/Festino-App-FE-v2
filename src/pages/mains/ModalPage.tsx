@@ -17,6 +17,7 @@ import DeletePhotoModal from '@/components/events/photo-boards/DeletePhotoModal'
 import LogoutModal from '@/components/auths/LogoutModal';
 import LoginFailModal from '@/components/auths/LoginFailModal';
 import RequireLoginModal from '@/components/events/RequrieLoginModal';
+import ExtendPhotoModal from '@/components/events/photo-boards/ExtendPhotoModal';
 
 const ModalPage = () => {
   const { isModalOpen, modalType } = useBaseModal();
@@ -42,6 +43,7 @@ const ModalPage = () => {
       {modalType === 'logoutModal' && <LogoutModal />}
       {modalType === 'loginFailModal' && <LoginFailModal />}
       {modalType === 'requireLoginModal' && <RequireLoginModal />}
+      {modalType === 'extendPhotoModal' && <ExtendPhotoModal />}
     </ModalBackground>
   );
 };

@@ -56,6 +56,10 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
     <div
       className="dynamic-item rounded-3xl bg-no-repeat bg-cover relative shrink-0 border-1"
       style={{ backgroundImage: `url(${photo.imageUrl})` }}
+      onClick={() => {
+        setSelectedPhoto(photo);
+        openModal('extendPhotoModal'); // 또는 PhotoModal이 있다면 그걸 띄워도 OK
+      }}
     >
       {isUserPhoto && (
         <button

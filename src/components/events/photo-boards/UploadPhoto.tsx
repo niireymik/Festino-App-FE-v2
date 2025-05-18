@@ -45,7 +45,7 @@ const UploadPhoto: React.FC = () => {
       setAllPhotos(allRes.photoList, allRes.photoTotalCount);
 
       openModal('uploadCompleteModal');
-    } catch (err) {
+    } catch {
       openModal('requireLoginModal');
     } finally {
       setUploading(false);
