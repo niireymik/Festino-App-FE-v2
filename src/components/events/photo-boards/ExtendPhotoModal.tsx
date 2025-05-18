@@ -1,11 +1,11 @@
 import useBaseModal from '@/stores/baseModal';
-import { likePhoto, unlikePhoto, usePhotoModalStore, usePhotoStore } from '@/stores/events/BoardStore';
+import { usePhotoModalStore, usePhotoStore } from '@/stores/events/BoardStore';
 import { useEffect, useState } from 'react';
 
 const ExtendPhotoModal: React.FC = () => {
   const { selectedPhoto } = usePhotoModalStore();
   const { closeModal, openModal } = useBaseModal();
-  const { myPhotos } = usePhotoStore();
+  const { myPhotos, likePhoto, unlikePhoto } = usePhotoStore();
 
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -31,6 +31,8 @@ const ExtendPhotoModal: React.FC = () => {
       alert('자신의 게시물에는 좋아요를 할 수 없습니다!');
       return;
     }
+
+    if (!selectedPhoto) return null;
 
     try {
       if (isLike) {

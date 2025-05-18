@@ -1,4 +1,4 @@
-import { usePhotoStore, usePhotoModalStore, likePhoto, unlikePhoto } from '@/stores/events/BoardStore';
+import { usePhotoStore, usePhotoModalStore } from '@/stores/events/BoardStore';
 import useBaseModal from '@/stores/baseModal';
 import { useState } from 'react';
 import { PhotoCardProps } from '@/types/Board.types';
@@ -9,7 +9,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
 
   const { openModal } = useBaseModal();
   const { setSelectedPhoto } = usePhotoModalStore();
-  const { myPhotos } = usePhotoStore();
+  const { myPhotos, likePhoto, unlikePhoto } = usePhotoStore();
 
   const mainUserId = localStorage.getItem('mainUserId');
 

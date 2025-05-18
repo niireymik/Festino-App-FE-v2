@@ -1,12 +1,12 @@
 import useBaseModal from '@/stores/baseModal';
-import { getAllPhotos, getMyPhotos, uploadPhotoPost, usePhotoStore } from '@/stores/events/BoardStore';
+import { usePhotoStore } from '@/stores/events/BoardStore';
 import { tokenizedApi } from '@/utils/api';
 import { useRef, useState } from 'react';
 
 const UploadPhoto: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const { openModal } = useBaseModal();
-  const { setMyPhotos, setAllPhotos } = usePhotoStore();
+  const { setMyPhotos, setAllPhotos, getAllPhotos, getMyPhotos, uploadPhotoPost } = usePhotoStore();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
