@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { baseApi, tokenizedApi, tokenizedBaseApi } from '@/utils/api';
+import { api, tokenizedApi } from '@/utils/api';
 import { PhotoInfo, PhotoModalState, PhotoStore } from '@/types/Board.types';
 
 export const usePhotoModalStore = create<PhotoModalState>((set) => ({
@@ -20,89 +20,99 @@ export const usePhotoStore = create<PhotoStore>()((set) => ({
       myPhotos: state.myPhotos.map((p) => (p.photoId === photoId ? { ...p, heart, heartCount } : p)),
       allPhotos: state.allPhotos.map((p) => (p.photoId === photoId ? { ...p, heart, heartCount } : p)),
     })),
-}));
 
-export const uploadPhotoPost = async (imageUrl: string) => {
-  const mainUserId = localStorage.getItem('mainUserId');
-
-  const response = await tokenizedApi.post('/main/event/photo', {
-    mainUserId,
-    imageUrl,
-  });
-
-  return response.data;
-};
-
-export const getAllPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | null> => {
-  const mainUserId = localStorage.getItem('mainUserId');
-
-  try {
-    const response = await baseApi.get(`/main/event/photo/all/${type}`, {
+  getAllPhotos: async (type: 'new' | 'heart'): Promise<PhotoInfo> => {
+    const mainUserId = localStorage.getItem('mainUserId');
+    const { data, message, success } = await api.get(`/main/event/photo/all/${type}`, {
       params: mainUserId ? { 'main-user-id': mainUserId } : {},
     });
-
-    const result = response?.data?.data;
-
-    if (!result || !result.photoList) return null;
-
-    return result;
-  } catch {
-    return null;
-  }
-};
-
-export const getMyPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | null> => {
-  const mainUserId = localStorage.getItem('mainUserId');
-  if (!mainUserId) return null;
-
-  const response = await tokenizedBaseApi.get(`/main/event/photo/my/${type}/user/${mainUserId}`);
-  let rawData = response.data;
-
-  if (typeof rawData === 'string') {
-    try {
-      // 두 번째 JSON 시작 전까지 자르기 (두 번째 '{' 검색 기준)
-      const firstBrace = rawData.indexOf('{');
-      const secondBrace = rawData.indexOf('}{', firstBrace + 1);
-      const sliceEnd = secondBrace === -1 ? rawData.length : secondBrace + 1;
-
-      const jsonString = rawData.slice(firstBrace, sliceEnd);
-      rawData = JSON.parse(jsonString);
-    } catch {
-      return null;
+    if (!success) {
+      console.error('Error fetching all photos:', message);
+      return {
+        photoTotalCount: 0,
+        photoList: [],
+      };
     }
-  }
+    return data as PhotoInfo;
+  },
 
-  const result = rawData?.data;
-  if (!result || !result.photoList) return null;
+  getMyPhotos: async (type: 'new' | 'heart'): Promise<PhotoInfo> => {
+    const mainUserId = localStorage.getItem('mainUserId');
+    const { data, message, success } = await api.get(`/main/event/photo/my/${type}/user/${mainUserId}`);
 
-  return result;
-};
+    if (typeof data === 'string') {
+      try {
+        // 두 번째 JSON 시작 전까지 자르기 (두 번째 '{' 검색 기준)
+        const firstBrace = data.indexOf('{');
+        const secondBrace = data.indexOf('}{', firstBrace + 1);
+        const sliceEnd = secondBrace === -1 ? data.length : secondBrace + 1;
 
-export const deletePhoto = async (photoId: string, mainUserId: string) => {
-  const response = await tokenizedApi.delete('/main/event/photo', {
-    data: { photoId, mainUserId },
-  });
+        const jsonString = data.slice(firstBrace, sliceEnd);
+        return JSON.parse(jsonString);
+      } catch {
+        console.log('Error parsing JSON');
+      }
+    }
 
-  if (!response.data.success) {
-    throw new Error(response.data.message || '삭제 실패');
-  }
+    if (!success) {
+      console.error('Error fetching my photos:', message);
+      return {
+        photoTotalCount: 0,
+        photoList: [],
+      };
+    }
+    return data as PhotoInfo;
+  },
 
-  return response.data;
-};
+  uploadPhotoPost: async (imageUrl: string) => {
+    const mainUserId = localStorage.getItem('mainUserId');
 
-export const likePhoto = async (photoId: string, mainUserId: string) => {
-  const response = await tokenizedApi.post('/main/event/photo/heart', {
-    photoId,
-    mainUserId,
-  });
+    const { data, message, success } = await tokenizedApi.post('/main/event/photo', {
+      mainUserId,
+      imageUrl,
+    });
 
-  return response.data;
-};
+    if (!success) {
+      console.error('Error posting photos:', message);
+    }
 
-export const unlikePhoto = async (photoId: string, mainUserId: string) => {
-  const response = await tokenizedApi.delete('/main/event/photo/heart', {
-    data: { photoId, mainUserId },
-  });
+    return data;
+  },
 
-  return response.data;
-};
+  deletePhoto: async (photoId: string, mainUserId: string) => {
+    const { data, message, success } = await tokenizedApi.delete('/main/event/photo', {
+      data: { photoId, mainUserId },
+    });
+
+    if (!success) {
+      console.error('Error delete photo:', message);
+    }
+
+    return data;
+  },
+
+  likePhoto: async (photoId: string, mainUserId: string) => {
+    const { data, message, success } = await tokenizedApi.post('/main/event/photo/heart', {
+      photoId,
+      mainUserId,
+    });
+
+    if (!success) {
+      console.error('Error fetching likes', message);
+    }
+
+    return data;
+  },
+
+  unlikePhoto: async (photoId: string, mainUserId: string) => {
+    const { data, message, success } = await tokenizedApi.delete('/main/event/photo/heart', {
+      data: { photoId, mainUserId },
+    });
+
+    if (!success) {
+      console.error('Error fetching unlikes:', message);
+    }
+
+    return data;
+  },
+}));
