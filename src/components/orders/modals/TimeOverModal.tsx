@@ -8,7 +8,7 @@ const TimeOverModal: React.FC = () => {
 
   const handleClick = () => {
     closeModal();
-    navigate('/retry-qr'); // retry-qr 페이지로 이동
+    navigate('/order/retry-qr'); // retry-qr 페이지로 이동
   };
 
   return (

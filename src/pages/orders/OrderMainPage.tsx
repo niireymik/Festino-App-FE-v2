@@ -37,7 +37,7 @@ const OrderMainPage: React.FC = () => {
     <div className="flex flex-col">
       <OrderMainBanner />
       <div className="w-full rounded-t-3xl bg-white pt-6 flex flex-col items-center -translate-y-12">
-        <div className="h-11 rounded-10xl bg-primary-900-light font-semibold text-primary-900 grid place-items-center px-6">
+        <div className="h-11 rounded-10xl bg-primary-900-light font-semibold text-primary-900 grid place-items-center px-6 ">
           테이블 번호 {customTableNum}
         </div>
         <div className="py-11 flex flex-col w-full px-2 gap-y-11 h-full">

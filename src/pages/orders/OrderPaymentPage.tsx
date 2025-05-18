@@ -18,9 +18,9 @@ type CategoryValue = (typeof CATEGORIES)[number]['value'];
 
 const CATEGORY_ENDPOINT_MAP: Record<CategoryValue, string> = {
   ALL: 'all',
-  0: 'menu',
+  0: 'main',
   1: 'sub',
-  2: 'call',
+  2: 'callservice',
 };
 
 const OrderPaymentPage: React.FC = () => {
@@ -95,7 +95,6 @@ const OrderPaymentPage: React.FC = () => {
   }, [boothId, tableNum]);
 
   useEffect(() => {
-    // handleTotalPrice();
     console.log('현재 주문한 메뉴:', userOrderList);
   }, [userOrderList]);
 
