@@ -3,7 +3,6 @@ import useBaseModal from '@/stores/baseModal';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/stores/auths/authStore';
-import { getCookie } from '@/utils/utils';
 
 const NavTap = () => {
   const navigate = useNavigate();
@@ -12,7 +11,7 @@ const NavTap = () => {
   const { openModal } = useBaseModal();
   const { isLogin } = useAuthStore();
 
-  const userName = getCookie('userName');
+  const userName = localStorage.getItem('userName');
 
   const login = isLogin();
 
