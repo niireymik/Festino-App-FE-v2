@@ -48,11 +48,13 @@ const SearchPhoto: React.FC = () => {
               <>
                 <div
                   className={`gap-2 ${
-                    myPhotoCount <= 2 ? 'flex justify-start' : 'grid place-content-start grid-rows-1 grid-flow-col'
+                    myPhotoCount <= 2 ? 'flex justify-start' : 'grid place-content-start grid-cols-2'
                   }`}
                 >
-                  {myPhotos.map((photo: PhotoPost) => (
-                    <PhotoCard key={photo.photoId} photo={photo} isUserPhoto={true} />
+                  {myPhotos
+                    .filter(photo => photo.imageUrl) // imageUrl이 존재하는 경우만 필터링
+                    .map((photo: PhotoPost) => (
+                      <PhotoCard key={photo.photoId} photo={photo} isUserPhoto={true} />
                   ))}
                 </div>
               </>
@@ -72,8 +74,10 @@ const SearchPhoto: React.FC = () => {
                 allPhotoCount <= 2 ? 'flex justify-start' : 'grid place-content-start grid-cols-2 grid-flow-row'
               }`}
             >
-              {allPhotos.map((photo: PhotoPost) => (
-                <PhotoCard key={photo.photoId} photo={photo} isUserPhoto={false} />
+              {allPhotos
+                .filter(photo => photo.imageUrl) // imageUrl이 존재하는 경우만 필터링
+                .map((photo: PhotoPost) => (
+                  <PhotoCard key={photo.photoId} photo={photo} isUserPhoto={false} />
               ))}
             </div>
           </div>
