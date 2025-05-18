@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { baseApi } from '@/utils/api';
+import { api } from '@/utils/api';
 import { Notice, NoticeStore } from '@/types/Notice.types';
 
 export const useNoticeStore = create<NoticeStore>((set) => ({
@@ -11,41 +11,57 @@ export const useNoticeStore = create<NoticeStore>((set) => ({
 
   getMainNotice: async () => {
     try {
-      const res = await baseApi.get('/main/notice');
-      set({ mainNoticeData: res.data.data });
-    } catch (error) {
-      console.error('getMainNotice 실패:', error);
-      set({ mainNoticeData: null });
+      const { data, success, message } = await api.get('/main/notice');
+
+      if (!success) {
+        console.error('getMainNotice 실패:', message);
+        set({ mainNoticeData: null });
+        return;
+      }
+
+      set({ mainNoticeData: data });
+    } catch {
+      console.log('Error ferching main notice');
     }
   },
 
   getNotice: async (noticeId: string) => {
     try {
-      const res = await baseApi.get(`/main/notice/${noticeId}`);
-      set({ noticeData: res.data.data });
-    } catch (error) {
-      console.error('getNotice 실패:', error);
-      set({ noticeData: null });
+      const { data, success, message } = await api.get(`/main/notice/${noticeId}`);
+
+      if (!success) {
+        console.error('getNotice 실패:', message);
+        set({ noticeData: null });
+        return;
+      }
+
+      set({ noticeData: data });
+    } catch {
+      console.log('Error ferching notice');
     }
   },
 
   getAllNotice: async () => {
     try {
-      const res = await baseApi.get('/main/notice/all');
-      const all = res.data.data;
+      const { data, success, message } = await api.get('/main/notice/all');
+
+      if (!success) {
+        console.error('getAllNotice 실패:', message);
+        set({
+          allNotices: [],
+          pinNotices: [],
+          notices: [],
+        });
+        return;
+      }
 
       set({
-        allNotices: all,
-        pinNotices: all.filter((n: Notice) => n.isPin),
-        notices: all.filter((n: Notice) => !n.isPin),
+        allNotices: data,
+        pinNotices: data.filter((n: Notice) => n.isPin),
+        notices: data.filter((n: Notice) => !n.isPin),
       });
-    } catch (error) {
-      console.error('getAllNotice 실패:', error);
-      set({
-        allNotices: [],
-        pinNotices: [],
-        notices: [],
-      });
+    } catch {
+      console.log('Error ferching all notice');
     }
   },
 }));
