@@ -8,12 +8,19 @@ export const useTimetableStore = create<TimetableStore>((set) => ({
 
   getClubTimetable: async (day) => {
     try {
-      const { data } = await api.get(`/main/club/all/date/${day}`);
+      const { data, success, message } = await api.get(`/main/club/all/date/${day}`);
+
+      if (!success) {
+        console.error('getClubTimetable 실패:', message);
+        set({ clubData: [] });
+        return;
+      }
+
       set({ clubData: data });
-    } catch (error) {
-      console.error('getClubTimetable 실패:', error);
-      set({ clubData: [] });
+    } catch {
+      console.log('Error fetching club time table');
     }
   },
+
   setSelectedClub: (club) => set({ selectedClub: club }),
 }));

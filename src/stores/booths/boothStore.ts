@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { api } from '@/utils/api';
-import { BoothInfo, BoothStore } from '@/types/Booth.types';
+import { BoothStore } from '@/types/Booth.types';
 import { BOOTH_TYPE_MAP } from '@/constants';
 
 export const useBoothStore = create<BoothStore>((set) => ({
@@ -48,7 +48,11 @@ export const useBoothStore = create<BoothStore>((set) => ({
 
       const getData = (index: number) => {
         const result = results[index];
-        return result.status === 'fulfilled' && result.value.success ? result.value.data : [];
+        if (result.status === 'fulfilled' && result.value.success) {
+          return result.value.data;
+        } else {
+          return [];
+        }
       };
 
       set({
@@ -61,11 +65,11 @@ export const useBoothStore = create<BoothStore>((set) => ({
 
       results.forEach((result, idx) => {
         if (result.status === 'rejected' || !result.value.success) {
-          console.warn(`Request failed at index ${idx}:`, result);
+          console.error(`Request failed at index ${idx}:`, result);
         }
       });
     } catch (error) {
-      console.error(`Unexpected error during booth list fetch:`, error);
+      console.log(`Unexpected error during booth list fetch:`, error);
     }
   },
 
@@ -80,16 +84,14 @@ export const useBoothStore = create<BoothStore>((set) => ({
       const { data, success, message } = await api.get(endpoint);
 
       if (!success) {
-        console.warn('부스 상세 실패:', message);
+        console.error('getBoothDetail 실패:', message);
         return;
       }
 
-      const boothDetail: BoothInfo = data;
-
-      set({ boothDetail });
-      return boothDetail;
-    } catch (err) {
-      console.error(`부스 정보가 없습니다: ${type}`, err);
+      set({ boothDetail: data });
+      return data;
+    } catch {
+      console.log(`Error fetching booth detail ${type}`);
       return;
     }
   },
