@@ -27,8 +27,13 @@ const SearchPhoto: React.FC = () => {
     // 모든 사진 불러오기
     const fetchAllPhotos = async () => {
       try {
-        const { photoList, photoTotalCount } = await getAllPhotos('new');
-        setAllPhotos(photoList, photoTotalCount);
+        const photo = await getAllPhotos('new');
+
+        if (!photo) {
+          setAllPhotos([], 0);
+        } else {
+          setAllPhotos(photo.photoList, photo.photoTotalCount);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -36,7 +41,7 @@ const SearchPhoto: React.FC = () => {
 
     fetchMyPhotos();
     fetchAllPhotos();
-  }, [setMyPhotos, setAllPhotos]);
+  }, [mainUserId, setMyPhotos, setAllPhotos]);
 
   return (
     <div className="flex flex-col">

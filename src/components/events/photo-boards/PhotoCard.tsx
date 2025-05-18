@@ -53,7 +53,11 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo, isUserPhoto = false }) => 
       try {
         // mainUserId 유무 상관 없이 항상 전체 사진 갱신
         const allRes = await getAllPhotos('new');
-        setAllPhotos(allRes.photoList, allRes.photoTotalCount);
+        if (allRes) {
+          setAllPhotos(allRes.photoList, allRes.photoTotalCount);
+        } else {
+          setAllPhotos([], 0);
+        }
   
         // 내 사진은 mainUserId가 있는 경우만 호출
         const mainUserId = localStorage.getItem('mainUserId');

@@ -14,6 +14,7 @@ const DeletePhotoModal: React.FC = () => {
       await deletePhoto(selectedPhoto.photoId, mainUserId);
   
       // 삭제 후 다시 조회
+      // 내 사진 조회
       const myRes = await getMyPhotos('new');
       if (myRes) {
         setMyPhotos(myRes.photoList, myRes.photoTotalCount);
@@ -21,8 +22,13 @@ const DeletePhotoModal: React.FC = () => {
         setMyPhotos([], 0);
       }
   
+      // 전체 사진 조회
       const allRes = await getAllPhotos('new');
-      setAllPhotos(allRes.photoList, allRes.photoTotalCount);
+      if (allRes) {
+        setAllPhotos(allRes.photoList, allRes.photoTotalCount);
+      } else {
+        setAllPhotos([], 0);
+      }
   
       clearSelectedPhoto();
       closeModal();
