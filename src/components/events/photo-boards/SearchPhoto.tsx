@@ -1,74 +1,24 @@
 import { useEffect } from 'react';
 import { usePhotoStore } from '@/stores/events/BoardStore';
-import { getAllPhotos, getMyPhotos } from '@/stores/events/BoardStore';
 import { PhotoPost } from '@/types/Board.types';
 import PhotoCard from './PhotoCard';
+import usePhotos from '@/hooks/usePhotos';
 
 const SearchPhoto: React.FC = () => {
-  const { myPhotos, myPhotoCount, allPhotos, allPhotoCount, setMyPhotos, setAllPhotos } = usePhotoStore();
+  const { myPhotos, myPhotoCount, allPhotos, allPhotoCount } = usePhotoStore();
   const mainUserId = localStorage.getItem('mainUserId');
 
-  useEffect(() => {
-    // 내가 업로드한 사진 불러오기
-    const fetchMyPhotos = async () => {
-      try {
-        const photo = await getMyPhotos('new');
-
-        if (!photo || !photo.photoList) {
-          setMyPhotos([], 0);
-        } else {
-          setMyPhotos(photo.photoList, photo.photoTotalCount);
-        }
-      } catch {
-        setMyPhotos([], 0); // 안전하게 초기화
-      }
-    };
-
-    // 모든 사진 불러오기
-    const fetchAllPhotos = async () => {
-      try {
-        const photo = await getAllPhotos('new');
-
-        if (!photo) {
-          setAllPhotos([], 0);
-        } else {
-          setAllPhotos(photo.photoList, photo.photoTotalCount);
-        }
-      } catch {
-        return null;
-      }
-    };
-
-    fetchMyPhotos();
-    fetchAllPhotos();
-  }, [mainUserId, setMyPhotos, setAllPhotos]);
+  const { getPhotos, initPhotos } = usePhotos(mainUserId);
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        // mainUserId 유무 상관 없이 항상 전체 사진 갱신
-        const allRes = await getAllPhotos('new');
-        if (allRes) {
-          setAllPhotos(allRes.photoList, allRes.photoTotalCount);
-        } else {
-          setAllPhotos([], 0);
-        }
+    initPhotos();
+    getPhotos('new', true);
+  }, [mainUserId]);
 
-        // 내 사진은 mainUserId가 있는 경우만 호출
-        const mainUserId = localStorage.getItem('mainUserId');
-        if (mainUserId) {
-          const myRes = await getMyPhotos('new');
-          if (myRes) {
-            setMyPhotos(myRes.photoList, myRes.photoTotalCount);
-          } else {
-            setMyPhotos([], 0); // 데이터가 없는 경우 초기화
-          }
-        }
-      } catch {
-        return null;
-      }
-    }, 5000); // 5초마다 갱신
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getPhotos('new');
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
