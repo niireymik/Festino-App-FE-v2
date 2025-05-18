@@ -54,7 +54,6 @@ export const formatDateTimeNow = (): string => {
   return `${year}.${month}.${day} ${hours}:${minutes}`;
 };
 
-
 export const setCookie = (name: string, value: string, days = 7) => {
   const expires = new Date();
   expires.setDate(expires.getDate() + days);

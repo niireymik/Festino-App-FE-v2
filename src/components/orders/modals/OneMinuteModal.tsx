@@ -4,7 +4,7 @@ const OneMinuteModal: React.FC = () => {
   const { closeModal } = useBaseModal();
 
   return (
-    <>
+    <div>
       <div
         className="relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-16 py-8 gap-5"
         onClick={(e) => {
@@ -29,7 +29,7 @@ const OneMinuteModal: React.FC = () => {
           확인
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
