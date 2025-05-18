@@ -78,7 +78,10 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
 
           <div className="flex items-center gap-1 text-2xs">
             <button
-              onClick={handleToggleLike}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleToggleLike();
+              }}
               className={`w-4 h-4 ${isUserPhoto || !mainUserId ? 'cursor-not-allowed' : ''}`}
             >
               <img
