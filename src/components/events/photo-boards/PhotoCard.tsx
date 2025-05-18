@@ -58,13 +58,16 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
       style={{ backgroundImage: `url(${photo.imageUrl})` }}
       onClick={() => {
         setSelectedPhoto(photo);
-        openModal('extendPhotoModal'); // 또는 PhotoModal이 있다면 그걸 띄워도 OK
+        openModal('extendPhotoModal');
       }}
     >
       {isUserPhoto && (
         <button
-          className="absolute top-4 right-4 z-20 w-6 h-6 bg-x-button bg-contain bg-no-repeat bg-center"
-          onClick={handleClickDelete}
+          className="absolute top-4 right-4 z-50 w-6 h-6 bg-x-button bg-contain bg-no-repeat bg-center"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClickDelete();
+          }}
         ></button>
       )}
 
