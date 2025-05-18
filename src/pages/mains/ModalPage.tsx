@@ -15,6 +15,7 @@ import UploadCompleteModal from '@/components/events/photo-boards/UploadComplete
 import UploadFailModal from '@/components/events/photo-boards/UploadFailModal';
 import DeletePhotoModal from '@/components/events/photo-boards/DeletePhotoModal';
 import LogoutModal from '@/components/auths/LogoutModal';
+import LoginFailModal from '@/components/auths/LoginFailModal';
 
 const ModalPage = () => {
   const { isModalOpen, modalType } = useBaseModal();
@@ -38,6 +39,7 @@ const ModalPage = () => {
       {modalType === 'uploadFailModal' && <UploadFailModal />}
       {modalType === 'deletePhotoModal' && <DeletePhotoModal />}
       {modalType === 'logoutModal' && <LogoutModal />}
+      {modalType === 'loginFailModal' && <LoginFailModal />}
     </ModalBackground>
   );
 };

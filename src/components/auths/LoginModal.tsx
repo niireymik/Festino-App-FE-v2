@@ -30,10 +30,6 @@ const LoginModal: React.FC = () => {
     const success = await login();
     if (success) {
       closeModal();
-
-      alert('로그인에 성공했습니다.');
-    } else {
-      alert('로그인에 실패했습니다. 정보를 다시 확인해주세요.');
     }
   };
 

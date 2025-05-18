@@ -3,6 +3,7 @@ import { api, baseApi } from '@/utils/api';
 import { AuthStore } from '@/types/Auth.types';
 import { formatPhoneNum, getCookie, removeCookie } from '@/utils/utils';
 import { setCookie } from '@/utils/utils';
+import useBaseModal from '../baseModal';
 
 export const useAuthStore = create<AuthStore>()((set, get) => ({
   userName: '',
@@ -25,6 +26,7 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
 
   login: async () => {
     const { userName, userPhoneNum } = get();
+    const { openModal } = useBaseModal.getState();
 
     try {
       const response = await api.get('/main/user', {
@@ -35,6 +37,12 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
       });
 
       const isSuccess = response.data.success;
+
+      if (!isSuccess) {
+        openModal('loginFailModal');
+        return false;
+      }
+
       const mainUserId = response.data.data;
 
       const accessToken = response.headers['access-token'];
@@ -49,8 +57,8 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
       localStorage.setItem('userName', userName);
 
       return isSuccess;
-    } catch (e) {
-      console.error('Login failed', e);
+    } catch {
+      openModal('loginFailModal');
       return false;
     }
   },
