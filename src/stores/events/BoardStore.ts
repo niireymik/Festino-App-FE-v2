@@ -38,11 +38,11 @@ export const getAllPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | n
 
   try {
     const response = await baseApi.get(`/main/event/photo/all/${type}`, {
-      params: mainUserId ? { 'main-user-id': mainUserId } : {}
+      params: mainUserId ? { 'main-user-id': mainUserId } : {},
     });
 
     const result = response?.data?.data;
-    
+
     if (!result || !result.photoList) return null;
 
     return result;

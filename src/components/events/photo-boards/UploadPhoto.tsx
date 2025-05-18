@@ -13,26 +13,26 @@ const UploadPhoto: React.FC = () => {
   const uploadImageToServer = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
-  
+
     const res = await tokenizedApi.post('/main/image', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    
+
     return res.data.imageUrl;
   };
-  
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-  
+
     try {
       setUploading(true);
-  
+
       const imageUrl = await uploadImageToServer(file);
       await uploadPhotoPost(imageUrl); // URL 저장
-  
+
       // 업로드 후 데이터 리패치
       const myRes = await getMyPhotos('new');
       if (myRes) {
@@ -40,19 +40,18 @@ const UploadPhoto: React.FC = () => {
       } else {
         setMyPhotos([], 0); // null이면 초기화
       }
-  
+
       const allRes = await getAllPhotos('new');
       setAllPhotos(allRes.photoList, allRes.photoTotalCount);
-  
+
       openModal('uploadCompleteModal');
     } catch (err) {
-      console.error("업로드 실패:", err);
-      openModal('uploadFailModal');
+      openModal('requireLoginModal');
     } finally {
       setUploading(false);
     }
-  };  
-  
+  };
+
   return (
     <div className="w-screen max-w-[500px] min-w-[375px] mx-auto">
       <div className="w-full flex flex-col pt-20 px-4">

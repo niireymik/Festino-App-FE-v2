@@ -18,7 +18,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
   const mainUserId = localStorage.getItem('mainUserId');
 
   // 내 사진인지 판단 (photoId가 내 사진 목록에 존재하는가)
-  const isUserPhoto = myPhotos.some(p => p.photoId === photo.photoId);
+  const isUserPhoto = myPhotos.some((p) => p.photoId === photo.photoId);
 
   const handleClickDelete = () => {
     setSelectedPhoto(photo);
@@ -26,20 +26,19 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
   };
 
   const handleToggleLike = async () => {
-    if (!mainUserId) 
-      // 여기에 로그인 모달 오픈 되는 거 넣어주면 될 거 같애~~
+    if (!mainUserId) openModal('requireLoginModal');
     if (isUserPhoto) alert('자신의 게시물에는 좋아요를 할 수 없습니다!');
 
     try {
-      if(mainUserId) {
+      if (mainUserId) {
         if (isLike) {
           await unlikePhoto(photo.photoId, mainUserId);
           setIsLike(false);
-          setLikeCount(prev => prev - 1);
+          setLikeCount((prev) => prev - 1);
         } else {
           await likePhoto(photo.photoId, mainUserId);
           setIsLike(true);
-          setLikeCount(prev => prev + 1);
+          setLikeCount((prev) => prev + 1);
         }
       }
     } catch (e) {
