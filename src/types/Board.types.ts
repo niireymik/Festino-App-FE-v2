@@ -35,3 +35,7 @@ export interface PhotoStore {
   setAllPhotos: (photos: PhotoPost[], count: number) => void;
   updatePhotoHeart: (photoId: string, heart: boolean, heartCount: number) => void;
 }
+
+export interface PhotoCardProps {
+  photo: PhotoPost;
+}

@@ -1,11 +1,7 @@
 import { usePhotoStore, usePhotoModalStore, likePhoto, unlikePhoto } from '@/stores/events/BoardStore';
 import useBaseModal from '@/stores/baseModal';
 import { useState } from 'react';
-import { PhotoPost } from '@/types/Board.types';
-
-interface PhotoCardProps {
-  photo: PhotoPost;
-}
+import { PhotoCardProps } from '@/types/Board.types';
 
 const PhotoCard: React.FC<PhotoCardProps> = ({ photo }) => {
   const [isLike, setIsLike] = useState(photo.heart);
