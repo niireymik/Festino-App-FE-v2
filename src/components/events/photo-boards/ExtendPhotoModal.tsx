@@ -18,7 +18,7 @@ const ExtendPhotoModal: React.FC = () => {
 
   return (
     <div
-      className="absolute bg-white rounded-xl overflow-hidden w-[90vw] max-h-[90vh]"
+      className="absolute bg-white rounded-xl overflow-hidden max-w-[80vw] max-h-[90vh]"
       onClick={(e) => e.stopPropagation()}
     >
       <img src={selectedPhoto.imageUrl} className="w-full h-auto max-h-[70vh] object-cover" />
