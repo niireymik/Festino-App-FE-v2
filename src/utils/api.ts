@@ -36,12 +36,18 @@ export const tokenizedBaseApi = axios.create({
 tokenizedBaseApi.interceptors.request.use((config) => {
   const accessToken = getCookie('accessToken');
   const refreshToken = getCookie('refreshToken');
+  const { openModal } = useBaseModal.getState();
 
   if (accessToken) {
     config.headers['access-token'] = accessToken;
   }
   if (refreshToken) {
     config.headers['refresh-token'] = refreshToken;
+  }
+
+  if (!accessToken?.trim() && !refreshToken?.trim()) {
+    openModal('requireLoginModal');
+    return Promise.reject(new Error('로그인이 필요합니다.'));
   }
 
   return config;
@@ -59,11 +65,10 @@ tokenizedBaseApi.interceptors.response.use(
 
       alert('로그인 세션이 만료되었습니다.');
 
-      openModal('login');
+      openModal('requireLoginModal');
 
       return Promise.reject(error);
     }
-    return Promise.reject(error);
   },
 );
 

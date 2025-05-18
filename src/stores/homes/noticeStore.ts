@@ -12,7 +12,7 @@ export const useNoticeStore = create<NoticeStore>((set) => ({
   getMainNotice: async () => {
     try {
       const res = await api.get('/main/notice');
-      set({ mainNoticeData: res.data.noticeInfo });
+      set({ mainNoticeData: res.data.data });
     } catch (error) {
       console.error('getMainNotice 실패:', error);
       set({ mainNoticeData: null });
@@ -22,7 +22,7 @@ export const useNoticeStore = create<NoticeStore>((set) => ({
   getNotice: async (noticeId: string) => {
     try {
       const res = await api.get(`/main/notice/${noticeId}`);
-      set({ noticeData: res.data.noticeInfo });
+      set({ noticeData: res.data.data });
     } catch (error) {
       console.error('getNotice 실패:', error);
       set({ noticeData: null });
@@ -32,7 +32,7 @@ export const useNoticeStore = create<NoticeStore>((set) => ({
   getAllNotice: async () => {
     try {
       const res = await api.get('/main/notice/all');
-      const all = res.data.noticesInfo;
+      const all = res.data.data;
 
       set({
         allNotices: all,

@@ -72,7 +72,7 @@ const Review: React.FC = () => {
             <button
               key={feature}
               onClick={() => setGoodFunc(feature)}
-              className={`text-xs font-bold flex items-center justify-center m-0 px-2 py-2 rounded-2.5xl border 
+              className={`text-[11px] font-bold flex items-center justify-center m-0 px-2 py-2 rounded-2.5xl border 
                 ${
                   goodFunc === feature
                     ? 'bg-primary-900 text-white border-primary-900'
@@ -95,7 +95,7 @@ const Review: React.FC = () => {
             <button
               key={feature}
               onClick={() => setBadFunc(feature)}
-              className={`text-xs font-bold flex items-center justify-center m-0 px-2 py-2 rounded-2.5xl border 
+              className={`text-[11px] font-bold flex items-center justify-center m-0 px-2 py-2 rounded-2.5xl border 
                 ${
                   badFunc === feature
                     ? 'bg-primary-900 text-white border-primary-900'
@@ -113,7 +113,7 @@ const Review: React.FC = () => {
         <div className="flex flex-col gap-[0.5rem]">
           <div className="text-[0.95rem] font-bold">3-1. 왜 그렇게 생각하셨나요?</div>
           <textarea
-            className="text-xs border border-gray-200 rounded w-full px-4 py-4 resize-none"
+            className="text-xs border border-gray-200 rounded-lg w-full px-4 py-4 resize-none"
             placeholder="내용을 작성해주세요."
             value={reason}
             onChange={(e) => setReason(e.target.value)}
@@ -143,9 +143,9 @@ const Review: React.FC = () => {
       </div>
 
       <div className="flex flex-col gap-[0.5rem]">
-        <div className="text-[0.95rem] font-bold">5. 이 외에도 좋았던 점이나 불편했던 점을 편하게 작성해주세요!</div>
+        <div className="text-[0.95rem] font-bold">5. 이 외에도 좋았던 점이나 불편했던 점을 작성해주세요!</div>
         <textarea
-          className="text-xs border border-gray-200 rounded w-full px-4 py-4 h-[200px] resize-none"
+          className="text-xs border border-gray-200 rounded-lg w-full px-4 py-4 h-[200px] resize-none"
           placeholder="내용을 작성해주세요."
           value={feedback}
           onChange={(e) => setFeedBack(e.target.value)}

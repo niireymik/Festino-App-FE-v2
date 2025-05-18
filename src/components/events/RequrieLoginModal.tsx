@@ -3,7 +3,7 @@ import { useAuthStore } from '@/stores/auths/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-const LoginModal: React.FC = () => {
+const RequireLoginModal: React.FC = () => {
   const { closeModal } = useBaseModal();
   const { setUserName, setUserPhoneNum, login } = useAuthStore();
 
@@ -69,6 +69,8 @@ const LoginModal: React.FC = () => {
       <div className="w-full flex flex-col gap-6">
         <h2 className="text-primary-900 text-3xl font-bold text-center">Login</h2>
 
+        <h2 className="text-red-500 text-base font-bold text-center">해당 서비스는 로그인이 필요한 서비스입니다.</h2>
+
         <div className="flex w-full h-14 items-center border border-primary-900 rounded-full px-4 py-3 gap-3">
           <img src="/icons/tablings/person.svg" alt="user" className="w-6 h-6 opacity-50" />
           <input
@@ -110,4 +112,4 @@ const LoginModal: React.FC = () => {
   );
 };
 
-export default LoginModal;
+export default RequireLoginModal;

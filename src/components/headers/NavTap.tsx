@@ -3,7 +3,6 @@ import useBaseModal from '@/stores/baseModal';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/stores/auths/authStore';
-import { getCookie } from '@/utils/utils';
 
 const NavTap = () => {
   const navigate = useNavigate();
@@ -12,7 +11,7 @@ const NavTap = () => {
   const { openModal } = useBaseModal();
   const { isLogin } = useAuthStore();
 
-  const userName = getCookie('userName');
+  const userName = localStorage.getItem('userName');
 
   const login = isLogin();
 
@@ -113,6 +112,17 @@ const NavTap = () => {
               <div className="text-xl text-secondary-300 font-bold">공지사항</div>
             </li>
 
+            <li
+              onClick={() => {
+                navigate('/teams');
+                close();
+              }}
+              className="px-6 pt-2 cursor-pointer flex items-center gap-4"
+            >
+              <div className="w-[28px] h-[28px] bg-header-navigation-tabling bg-center bg-no-repeat"></div>
+              <div className="text-xl text-secondary-300 font-bold">개발자 소개</div>
+            </li>
+
             <div
               className={`px-6 py-2 w-full items-center transition-colors duration-200 ${isEventOpen ? 'bg-gray-100' : ''}`}
             >
@@ -137,7 +147,7 @@ const NavTap = () => {
                   <li
                     className="cursor-pointer px-2"
                     onClick={() => {
-                      navigate('/team-review');
+                      navigate('/review');
                       close();
                     }}
                   >

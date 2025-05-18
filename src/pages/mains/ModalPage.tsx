@@ -12,7 +12,13 @@ import CompleteReserveModal from '@/components/tablings/modals/CompleteReserveMo
 import MessageFailModal from '@/components/tablings/modals/MessageFailModal';
 import OrderModal from '@/components/orders/modals/OrderModal';
 import LoginModal from '@/components/auths/LoginModal';
+import UploadCompleteModal from '@/components/events/photo-boards/UploadCompleteModal';
+import UploadFailModal from '@/components/events/photo-boards/UploadFailModal';
+import DeletePhotoModal from '@/components/events/photo-boards/DeletePhotoModal';
 import LogoutModal from '@/components/auths/LogoutModal';
+import LoginFailModal from '@/components/auths/LoginFailModal';
+import RequireLoginModal from '@/components/events/RequrieLoginModal';
+import ExtendPhotoModal from '@/components/events/photo-boards/ExtendPhotoModal';
 
 const ModalPage = () => {
   const { isModalOpen, modalType } = useBaseModal();
@@ -33,7 +39,13 @@ const ModalPage = () => {
       {modalType === 'messageFailModal' && <MessageFailModal />}
       {modalType === 'orderModal' && <OrderModal />}
       {modalType === 'loginModal' && <LoginModal />}
+      {modalType === 'uploadCompleteModal' && <UploadCompleteModal />}
+      {modalType === 'uploadFailModal' && <UploadFailModal />}
+      {modalType === 'deletePhotoModal' && <DeletePhotoModal />}
       {modalType === 'logoutModal' && <LogoutModal />}
+      {modalType === 'loginFailModal' && <LoginFailModal />}
+      {modalType === 'requireLoginModal' && <RequireLoginModal />}
+      {modalType === 'extendPhotoModal' && <ExtendPhotoModal />}
     </ModalBackground>
   );
 };
