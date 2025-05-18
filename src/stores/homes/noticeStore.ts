@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { api } from "@/utils/api";
-import { Notice, NoticeStore } from "@/types/Notice.types";
+import { create } from 'zustand';
+import { baseApi } from '@/utils/api';
+import { Notice, NoticeStore } from '@/types/Notice.types';
 
 export const useNoticeStore = create<NoticeStore>((set) => ({
   mainNoticeData: null,
@@ -11,7 +11,7 @@ export const useNoticeStore = create<NoticeStore>((set) => ({
 
   getMainNotice: async () => {
     try {
-      const res = await api.get('/main/notice');
+      const res = await baseApi.get('/main/notice');
       set({ mainNoticeData: res.data.data });
     } catch (error) {
       console.error('getMainNotice 실패:', error);
@@ -21,7 +21,7 @@ export const useNoticeStore = create<NoticeStore>((set) => ({
 
   getNotice: async (noticeId: string) => {
     try {
-      const res = await api.get(`/main/notice/${noticeId}`);
+      const res = await baseApi.get(`/main/notice/${noticeId}`);
       set({ noticeData: res.data.data });
     } catch (error) {
       console.error('getNotice 실패:', error);
@@ -31,7 +31,7 @@ export const useNoticeStore = create<NoticeStore>((set) => ({
 
   getAllNotice: async () => {
     try {
-      const res = await api.get('/main/notice/all');
+      const res = await baseApi.get('/main/notice/all');
       const all = res.data.data;
 
       set({

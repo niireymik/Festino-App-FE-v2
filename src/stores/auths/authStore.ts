@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { api, baseApi } from '@/utils/api';
+import { baseApi } from '@/utils/api';
 import { AuthStore } from '@/types/Auth.types';
 import { formatPhoneNum, getCookie, removeCookie } from '@/utils/utils';
 import { setCookie } from '@/utils/utils';
@@ -29,7 +29,7 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
     const { openModal } = useBaseModal.getState();
 
     try {
-      const response = await api.get('/main/user', {
+      const response = await baseApi.get('/main/user', {
         params: {
           'main-user-name': userName,
           'phone-num': formatPhoneNum(userPhoneNum),

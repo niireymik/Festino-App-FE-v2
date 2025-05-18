@@ -1,16 +1,16 @@
-import { create } from "zustand";
-import { api } from "@/utils/api";
-import { TimetableStore } from "@/types/ClubData.types"
+import { create } from 'zustand';
+import { baseApi } from '@/utils/api';
+import { TimetableStore } from '@/types/ClubData.types';
 
 export const useTimetableStore = create<TimetableStore>((set) => ({
   clubData: [],
   selectedClub: null,
   getClubTimetable: async (day) => {
     try {
-      const res = await api.get(`/main/club/all/date/${day}`);
+      const res = await baseApi.get(`/main/club/all/date/${day}`);
       set({ clubData: res.data.data });
     } catch (error) {
-      console.error("getClubTimetable 실패:", error);
+      console.error('getClubTimetable 실패:', error);
       set({ clubData: [] });
     }
   },

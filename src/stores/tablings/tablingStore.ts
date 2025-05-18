@@ -1,7 +1,7 @@
-import { api } from "@/utils/api";
-import { create } from "zustand";
-import { BoothInfo } from "@/types/Booth.types";
-import { ReservationStore } from "@/types/Tabling.types";
+import { api, baseApi } from '@/utils/api';
+import { create } from 'zustand';
+import { BoothInfo } from '@/types/Booth.types';
+import { ReservationStore } from '@/types/Tabling.types';
 
 export const useReservationStore = create<ReservationStore>((set, get) => {
   return {
@@ -76,7 +76,7 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
     },
 
     getAllNightBooth: async () => {
-      const res = await api.get('/main/booth/night/reservation/all');
+      const res = await baseApi.get('/main/booth/night/reservation/all');
       const boothList = res.data.data;
       const openList = boothList.filter((booth: BoothInfo) => booth.isOpen);
 
