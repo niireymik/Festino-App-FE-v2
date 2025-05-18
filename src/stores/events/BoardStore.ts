@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { baseApi, tokenizedApi } from '@/utils/api';
-import { PhotoModalState, PhotoStore } from '@/types/Board.types';
+import { PhotoInfo, PhotoModalState, PhotoStore } from '@/types/Board.types';
 
 export const usePhotoModalStore = create<PhotoModalState>((set) => ({
   selectedPhoto: null,
@@ -33,24 +33,36 @@ export const uploadPhotoPost = async (imageUrl: string) => {
   return response.data;
 };
 
-export const getAllPhotos = async (type: 'new' | 'heart') => {
+export const getAllPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | null> => {
   const mainUserId = localStorage.getItem('mainUserId');
 
-  const response = await baseApi.get(`/main/event/photo/all/${type}/user/${mainUserId}`);
+  try {
+    const response = await baseApi.get(`/main/event/photo/all/${type}`, {
+      params: mainUserId ? { 'main-user-id': mainUserId } : {}
+    });
 
-  if (!response.data.success) throw new Error('모든 사진 게시물 조회 실패');
+    const result = response?.data?.data;
+    if (!result || !result.photoList) return null;
 
-  return response.data.data;
+    return result;
+  } catch (error) {
+    console.error('getAllPhotos 에러:', error);
+    return null;
+  }
 };
 
-export const getMyPhotos = async (type: 'new' | 'heart') => {
+export const getMyPhotos = async (type: 'new' | 'heart'): Promise<PhotoInfo | null> => {
   const mainUserId = localStorage.getItem('mainUserId');
+
+  if (!mainUserId) return null;
 
   const response = await tokenizedApi.get(`/main/event/photo/my/${type}/user/${mainUserId}`);
 
-  if (!response.data.success) throw new Error('내 사진 게시물 조회 실패');
+  // 응답이 성공이어도 data가 없을 수 있음
+  const result = response?.data?.data;
+  if (!result || !result.photoList) return null;
 
-  return response.data.data;
+  return result;
 };
 
 export const deletePhoto = async (photoId: string, mainUserId: string) => {
