@@ -13,7 +13,7 @@ const TimeOverModal: React.FC = () => {
 
   return (
     <div
-      className="inset-0 justify-center relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex flex-col items-center px-16 py-8 gap-5"
+      className="flex inset-0 justify-center relative col-start-2 row-start-2 h-full dynamic-width bg-white rounded-3xl flex-col items-center px-14 py-8 gap-5"
       onClick={(e) => {
         e.stopPropagation();
       }}

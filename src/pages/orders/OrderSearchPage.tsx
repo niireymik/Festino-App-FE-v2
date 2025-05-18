@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useOrderStore } from '@/stores/orders/orderStore';
 import OrderDetail from '@/components/orders/OrderDetail';
-import axios from 'axios';
+import { api } from '@/utils/api';
 
 const TABS = ['전체', '입금 대기', '조리 중', '조리 완료', '주문 취소'];
-
-
-
 
 type OrderInfo = {
   date: number;
@@ -20,7 +17,7 @@ type OrderInfo = {
     menuCount: number;
     menuPrice: number;
   }[];
-  orderType?: number;
+  orderType: number;
 };
 
 const OrderSearchPage: React.FC = () => {
@@ -32,14 +29,16 @@ const OrderSearchPage: React.FC = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [orderList, setOrderList] = useState<OrderInfo[]>([]);
-  
-  const TAB_TO_ORDER_TYPE: Record<number, number> = {
-    1: 0,
-    2: 1,
-    3: 2,
-    4: 3,
-  };
 
+  // const TAB_TO_ORDER_TYPE: { [key: number]: number } = {
+  //   0: -1,
+  //   1: 0,
+  //   2: 1,
+  //   3: 2,
+  //   4: 3,
+  // };
+  // const status = TAB_TO_ORDER_TYPE[selectedTab];
+  // const list = status === -1 ? orderList : orderList.filter((order) => order.orderType === status);
 
   const statusMap: Record<number, string> = {
     0: '입금 대기',
@@ -62,19 +61,14 @@ const OrderSearchPage: React.FC = () => {
     3: 'text-secondary-300',
   };
 
-const filteredOrders = () => {
-  if (selectedTab === 0) return orderList; 
-  const status = TAB_TO_ORDER_TYPE[selectedTab];
-  return orderList.filter((order) => order.orderType === status);
-};
-
-
   const handleSearch = async () => {
     if (recentName.length < 2 || recentPhoneNum.length !== 13 || !recentPhoneNum.startsWith('010') || !isAgreed) return;
 
     try {
       const rawPhoneNum = recentPhoneNum.replace(/-/g, '');
-      const res = await axios.get('/main/order', {
+      console.log('[요청]', recentName, rawPhoneNum);
+
+      const res = await api.get('/main/order', {
         params: { userName: recentName, phoneNum: rawPhoneNum },
       });
 
@@ -85,14 +79,14 @@ const filteredOrders = () => {
       }
 
       setOrderList(
-        data.bills.map((bill: OrderInfo) => ({
+        data.data.map((bill: OrderInfo) => ({
           ...bill,
-          orderType: bill.date,
         })),
       );
       setIsSubmit(true);
       setSelectedTab(0);
-    } catch {
+    } catch (err) {
+      console.error('📛 주문 조회 실패:', err);
       alert('주문 조회 중 오류가 발생했습니다.');
       navigate('/error/order');
     }
@@ -205,6 +199,7 @@ const filteredOrders = () => {
             {selectedTab === 0 ? (
               [0, 1, 2, 3].map((status) => {
                 const list = orderList.filter((order) => order.orderType === status);
+                console.log(list);
 
                 return (
                   <div key={status}>
@@ -232,7 +227,7 @@ const filteredOrders = () => {
                     3: 2,
                     4: 3,
                   };
-                  const status = TAB_TO_ORDER_TYPE[selectedTab];
+                  const status = TAB_TO_ORDER_TYPE[selectedTab as keyof typeof TAB_TO_ORDER_TYPE];
                   const list = orderList.filter((order) => order.orderType === status);
                   return (
                     <div>

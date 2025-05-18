@@ -37,21 +37,21 @@ const OrderMainPage: React.FC = () => {
     <div className="flex flex-col">
       <OrderMainBanner />
       <div className="w-full rounded-t-3xl bg-white pt-6 flex flex-col items-center -translate-y-12">
-        <div className="h-11 rounded-10xl bg-primary-900-light font-semibold text-primary-900 grid place-items-center px-6 ">
+        <div className="h-11 rounded-10xl bg-primary-900-light font-semibold text-primary-900 grid place-items-center px-6 bg-primary-900-light-12">
           테이블 번호 {customTableNum}
         </div>
         <div className="py-11 flex flex-col w-full px-2 gap-y-11 h-full">
           <div className="flex flex-row justify-evenly gap-x-2">
             <button
               onClick={handleClickPayment}
-              className="h-72 w-48 min-w-[170px] rounded-3xl flex flex-col justify-start items-center border-2 border-primary-900-lighter gap-6 shadow overflow-hidden cursor-pointer"
+              className="h-72 w-40 min-w-[170px] rounded-3xl flex flex-col justify-start items-center border-2 border-primary-900-lighter gap-6 shadow overflow-hidden cursor-pointer"
             >
               <span className="font-jalnan2 text-2xl text-primary-900 pt-5">주문하기</span>
               <img src="/icons/orders/orderIcon.svg" alt="Order Icon" />
             </button>
             <button
               onClick={handleClickOrderSearchButton}
-              className="h-72 w-48 min-w-[170px] rounded-3xl flex flex-col justify-start items-center border-2 border-primary-900-lighter gap-6 shadow cursor-pointer"
+              className="h-72 w-40 min-w-[170px] rounded-3xl flex flex-col justify-start items-center border-2 border-primary-900-lighter gap-6 shadow cursor-pointer"
             >
               <span className="font-jalnan2 text-2xl text-primary-900 pt-5">주문조회</span>
               <img src="/icons/orders/orderSearch.svg" alt="Order Search Icon" />
@@ -91,6 +91,6 @@ const getCustomTableNum = async (tableNum: number, boothId: string): Promise<str
   const res = await api.get('/main/order/table', {
     params: { tableNumIndex: tableNum, boothId },
   });
-  if (res.data.success) return res.data.tableNum;
+  if (res.data.success) return res.data.data;
   throw new Error('Table number fetch failed');
 };

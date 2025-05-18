@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { sendWebSocketMessage } from '@/utils/orderSocket';
 import { useOrderStore } from '@/stores/orders/orderStore';
-import { api } from '@/utils/api'; 
+import { api } from '@/utils/api';
 
 import useBaseModal from '@/stores/baseModal';
 

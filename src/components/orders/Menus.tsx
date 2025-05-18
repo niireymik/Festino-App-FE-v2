@@ -26,8 +26,8 @@ const MenuPage: React.FC = () => {
       const endpoint =
         category === 'ALL' ? `/main/menu/all/booth/${boothId}` : `/main/menu/all/booth/${boothId}?menuType=${category}`;
       const res = await api.get(endpoint);
-      if (res.data.success && Array.isArray(res.data.MenuInfo)) {
-        setMenus(res.data.MenuInfo);
+      if (res.data.success && Array.isArray(res.data.data)) {
+        setMenus(res.data.data);
       } else {
         setMenus([]);
       }

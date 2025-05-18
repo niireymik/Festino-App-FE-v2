@@ -4,4 +4,7 @@ export interface IBaseModal {
   setModalType: (type: string) => void;
   openModal: (type: string) => void;
   closeModal: () => void;
+
+  orderCancelConfirmCallback: (() => void) | null;
+  setOrderCancelConfirmCallback: (cb: () => void) => void;
 }

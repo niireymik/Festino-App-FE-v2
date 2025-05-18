@@ -14,7 +14,7 @@ const OrderMainBanner: React.FC = () => {
       try {
         const res = await api.get(`/main/booth/night/${boothId}`);
         if (res.data.success) {
-          setOrderMajor(res.data.boothInfo.adminName);
+          setOrderMajor(res.data.data.adminName);
         } else {
           navigate('/error/order');
         }

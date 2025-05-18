@@ -7,7 +7,8 @@ import OneMinuteModal from './OneMinuteModal';
 import TimeOverModal from './TimeOverModal';
 import OrderInprocessModal from './OrderInprocessModal';
 import ExitPaymentModal from './ExitPayment';
-
+import OverrideOrderModal from './OverrideOrderModal';
+import OrderCancelConfirmModal from './OrderCancelConfirmModal';
 
 const ModalRenderer: React.FC = () => {
   const { isModalOpen, modalType, closeModal } = useBaseModal();
@@ -35,7 +36,9 @@ const ModalRenderer: React.FC = () => {
         {modalType === 'oneMinuteModal' && <OneMinuteModal />}
         {modalType === 'timeOverModal' && <TimeOverModal />}
         {modalType === 'orderInProgressModal' && <OrderInprocessModal />}
-        {modalType === 'exitPaymentModal' && <ExitPaymentModal/>}
+        {modalType === 'exitPaymentModal' && <ExitPaymentModal />}
+        {modalType === 'overrideOrderModal' && <OverrideOrderModal />}
+        {modalType === 'orderCancelConfirmModal' && <OrderCancelConfirmModal />}
       </div>
     </div>
   );

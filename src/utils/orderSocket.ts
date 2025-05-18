@@ -46,6 +46,7 @@ export const disconnectOrderSocket = (boothId: string, tableNum: number) => {
 };
 
 const onMessage = (message: IMessage) => {
+  
   const data = JSON.parse(message.body);
   const set = useOrderStore.getState();
   console.log('[Message]: ', data);
@@ -53,7 +54,12 @@ const onMessage = (message: IMessage) => {
   switch (data.type) {
     case 'INIT': {
       const payload = data.payload;
-      console.log('[INIT 수신 완료]');
+      console.log('[INIT Message]: ', data);
+      const {
+        orderInProgress,
+        orderInitiatorId, // 서버에서 받는 주문자의 세션 ID
+      } = payload;
+
       if (Array.isArray(payload.menuList)) {
         const fullList = payload.menuList.map((menu: MenuListItem) => {
           const existing = set.menuInfo.find((m) => m.menuId === menu.menuId);
@@ -77,6 +83,20 @@ const onMessage = (message: IMessage) => {
       set.setMemberCount(payload.memberCount);
       set.setTotalPrice(payload.totalPrice);
       set.setRemainingMinutes(payload.remainingMinutes);
+
+      const mySessionId = useSocketStore.getState().sessionId;
+
+      if (orderInProgress) {
+        set.setIsOrderInProgress(true);
+        set.setOrderingSessionId(orderInitiatorId);
+        if (orderInitiatorId !== mySessionId) {
+          useBaseModal.getState().openModal('orderInProgressModal');
+        }
+      } else {
+        set.setIsOrderInProgress(false);
+        set.setOrderingSessionId(null);
+      }
+
 
       break;
     }
@@ -128,9 +148,25 @@ const onMessage = (message: IMessage) => {
     }
 
     case 'ORDERINPROGRESS': {
-      useOrderStore.getState().setIsOrderInProgress(true);
+      const senderSessionId = message.headers['excludeSessionId'];
+      const mySessionId = useSocketStore.getState().sessionId;
+
+      if (!senderSessionId || !mySessionId) {
+        console.warn('세션 ID 없음: ORDERINPROGRESS 메시지');
+        return;
+      }
+
+      const isNotOrderingUser = senderSessionId !== mySessionId;
+
+      if (isNotOrderingUser) {
+        useOrderStore.getState().setIsOrderInProgress(true);
+        useOrderStore.getState().setOrderingSessionId(senderSessionId);
+        useBaseModal.getState().openModal('orderInProgressModal');
+      }
+
       break;
     }
+
     case 'ORDERDONE': {
       useOrderStore.getState().setIsOrderInProgress(false);
       useOrderStore.getState().setOrderingSessionId(null);
@@ -141,6 +177,7 @@ const onMessage = (message: IMessage) => {
     case 'ORDERCANCEL': {
       useOrderStore.getState().setIsOrderInProgress(false);
       useOrderStore.getState().setOrderingSessionId(null);
+      useBaseModal.getState().closeModal();
       break;
     }
 

@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { api } from '@/utils/api';
 
-
 export type AccountInfo = {
   account: string;
   accountHolder: string;
@@ -90,6 +89,7 @@ interface OrderState {
   setRemainingMinutes: (min: number) => void;
   setIsOrderInProgress: (value: boolean) => void;
   setOrderingSessionId: (id: string | null) => void;
+  setSelectedOrder: (order: OrderType) => void;
 }
 
 export const useOrderStore = create<OrderState>((set, get) => ({
@@ -175,8 +175,8 @@ export const useOrderStore = create<OrderState>((set, get) => ({
       console.log('API 응답:', res.data);
 
       if (res.data.success) {
-        console.log('저장될 계좌 정보:', res.data.accountInfo);
-        set({ accountInfo: res.data.accountInfo });
+        console.log('저장될 계좌 정보:', res.data.data);
+        set({ accountInfo: res.data.data });
       } else {
         console.error('실패:', res.data.message);
         window.location.href = '/error/order';
@@ -195,8 +195,8 @@ export const useOrderStore = create<OrderState>((set, get) => ({
       });
       if (res.data.success) {
         set({
-          isKakaoPay: res.data.kakaoPayInfo.isKakaoPay,
-          kakaoPayUrl: res.data.kakaoPayInfo.kakaoPay,
+          isKakaoPay: res.data.data.isKakaoPay,
+          kakaoPayUrl: res.data.data.kakaoPay,
         });
       }
     } catch (e) {
@@ -213,8 +213,8 @@ export const useOrderStore = create<OrderState>((set, get) => ({
       });
       if (res.data.success) {
         set({
-          isTossPay: res.data.tossPayInfo.isTossPay,
-          tossPayUrl: res.data.tossPayInfo.tossPay,
+          isTossPay: res.data.data.isTossPay,
+          tossPayUrl: res.data.data.tossPay,
         });
       }
     } catch (e) {

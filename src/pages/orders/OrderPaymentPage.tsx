@@ -6,12 +6,13 @@ import MenuCard from '@/components/orders/MenuCard';
 import { api } from '@/utils/api';
 import { disconnectOrderSocket, connectOrderSocket, sendWebSocketMessage } from '@/utils/orderSocket';
 import useBaseModal from '@/stores/baseModal';
+import { useSocketStore } from '@/stores/socketStore';
 
 const CATEGORIES = [
   { label: '전체 메뉴', value: 'ALL' },
   { label: '메인 메뉴', value: 0 },
   { label: '서브 메뉴', value: 1 },
-  { label: '기타 메뉴', value: 2 },
+  { label: '직원 호출', value: 2 },
 ] as const;
 
 type CategoryValue = (typeof CATEGORIES)[number]['value'];
@@ -30,40 +31,21 @@ const OrderPaymentPage: React.FC = () => {
   const navigate = useNavigate();
   const { boothId, tableNum } = useParams<{ boothId: string; tableNum: string }>();
 
-
-  
-  const {
-    setBoothId,
-    setTableNum,
-    setMenuInfo,
-    menuInfo,
-    addOrderItem,
-    userOrderList,
-    totalPrice,
-    isOrderInProgress
-  } = useOrderStore();
+  const { setBoothId, setTableNum, setMenuInfo, menuInfo, addOrderItem, userOrderList, totalPrice, isOrderInProgress } =
+    useOrderStore();
 
   const remainingMinutes = useOrderStore((state) => state.remainingMinutes);
   const memberCount = useOrderStore((state) => state.memberCount);
 
   useEffect(() => {
-    console.log('⏱️ 타이머 값 변경됨:', remainingMinutes);
   }, [remainingMinutes]);
-
-
-
-  const [orderTotalPrice, setOrderTotalPrice] = useState<number>(totalPrice);
 
   const { openModal } = useBaseModal();
   const [selectedCategory, setSelectedCategory] = useState<CategoryValue>('ALL');
 
-  
-
   useEffect(() => {
     window.scrollTo(0, 0);
     const tableIndex = Number(tableNum);
-
-    
 
     if (!boothId || !isUUID(boothId) || isNaN(tableIndex)) {
       navigate('/error/NotFound');
@@ -72,18 +54,6 @@ const OrderPaymentPage: React.FC = () => {
 
     try {
       connectOrderSocket(boothId, tableIndex);
-      // .then(() => {
-      //   if (boothId && tableIndex) {
-      //     sendWebSocketMessage({
-      //       type: 'INIT',
-      //       boothId,
-      //       tableNum: tableIndex,
-      //     });
-      //   }
-      // })
-      // .catch((e) => {
-      //   console.error(e);
-      // });
     } catch (e) {
       console.error(e);
     }
@@ -98,16 +68,8 @@ const OrderPaymentPage: React.FC = () => {
     console.log('현재 주문한 메뉴:', userOrderList);
   }, [userOrderList]);
 
-  // useEffect(() => {
-  //   if (!boothId || !isUUID(boothId)) return;
-  //   const tableIndex = Number(tableNum);
-  //   connectOrderSocket(boothId, tableIndex);
-  // }, [boothId, tableNum]);
-
   useEffect(() => {
     const tableIndex = Number(tableNum);
-    
-    
 
     const handleBeforeUnload = () => {
       if (boothId && !isNaN(tableIndex)) {
@@ -136,9 +98,9 @@ const OrderPaymentPage: React.FC = () => {
     try {
       const res = await api.get(endpoint);
       console.log('[메뉴 조회 응답]', res.data);
-      if (res.data.success && Array.isArray(res.data.menuList)) {
-        console.log('[로딩된 메뉴 수]', res.data.menuList.length);
-        setMenuInfo(res.data.menuList);
+      if (res.data.success && Array.isArray(res.data.data)) {
+        console.log('[로딩된 메뉴 수]', res.data.data.length);
+        setMenuInfo(res.data.data);
 
         window.scrollTo({
           top: 0,
@@ -152,12 +114,24 @@ const OrderPaymentPage: React.FC = () => {
       navigate('/error/NotFound');
     }
   };
+  const orderingSessionId = useOrderStore((state) => state.orderingSessionId);
 
   const handleClickReserveButton = () => {
+    console.log('📦 isOrderInProgress:', isOrderInProgress);
     if (totalPrice === 0) {
       alert('메뉴를 선택해주세요.');
       return;
     }
+
+    const mySessionId = useSocketStore.getState().sessionId;
+    console.log('👤 내 세션:', mySessionId);
+    console.log('🧾 주문자 세션:', orderingSessionId);
+
+    if (isOrderInProgress && orderingSessionId !== mySessionId) {
+      openModal('overrideOrderModal');
+      return;
+    }
+
     sendWebSocketMessage({
       type: 'STARTORDER',
       boothId: boothId!,
@@ -172,12 +146,6 @@ const OrderPaymentPage: React.FC = () => {
 
     openModal('orderModal');
   };
-
-  useEffect(() => {
-    if (totalPrice) {
-      setOrderTotalPrice(Number(totalPrice));
-    }
-  }, [totalPrice]);
 
   return (
     <div className="flex flex-col h-full pt-[60px]">
@@ -194,14 +162,14 @@ const OrderPaymentPage: React.FC = () => {
         <div className="w-6" />
       </div>
       <div className="fixed top-[60px] w-full max-w-[500px] z-10 bg-white">
-        <div className="w-full max-w-[500px] fixed bg-primary-700 text-white text-center py-3 flex justify-between px-3">
+        <div className="w-full max-w-[500px] fixed bg-primary-700 text-white text-center py-3 flex justify-between px-4">
           <span>{memberCount}명이 주문에 참여하고 있어요.</span>
           <span className="flex items-center gap-1">
             <img src="/icons/orders/10Clock.svg" /> {remainingMinutes}분
           </span>
         </div>
         <div className="fixed w-full max-w-[500px] bg-white ">
-          <div className="flex w-full flex-grow max-w-[500px] justify-between fixed bg-white top-[84px] gap-2 px-4 pt-2 pb-2 mt-6 overflow-x-auto">
+          <div className="flex w-full flex-grow max-w-[500px] justify-between fixed bg-white top-[84px] gap-2 px-4 pt-4 pb-4 mt-6 overflow-x-auto">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.value}
@@ -209,7 +177,7 @@ const OrderPaymentPage: React.FC = () => {
                   setSelectedCategory(cat.value);
                   fetchMenuByCategory(cat.value);
                 }}
-                className={`flex-1 min-w-0 basis-0 px-4 py-3 rounded-full border text-sm transition-colors
+                className={`flex-1 leading-none whitespace-nowrap text-center min-w-0 basis-0 px-4 py-3 rounded-full border text-sm transition-colors
         ${selectedCategory === cat.value ? 'bg-primary-700 text-white ' : 'bg-white text-blue-300 border-blue-200'}
       `}
               >
@@ -219,10 +187,13 @@ const OrderPaymentPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="p-5 mt-28 mb-5 overflow-scroll pb-[120px]">
-        {menuInfo.map(
-          (menu) =>
-            !menu.isSoldOut && (
+      <div className="p-5 mt-28 mb-5 overflow-scroll pb-[120px] ">
+        {menuInfo.filter((menu) => !menu.isSoldOut).length === 0 ? (
+          <div className="text-gray-400 text-sm text-center">메뉴가 없습니다.</div>
+        ) : (
+          menuInfo
+            .filter((menu) => !menu.isSoldOut)
+            .map((menu) => (
               <MenuCard
                 key={menu.menuId}
                 menu={menu}
@@ -237,21 +208,19 @@ const OrderPaymentPage: React.FC = () => {
                     menuPrice: menu.menuPrice,
                     menuCount: count,
                   };
-
                   addOrderItem(order);
                 }}
               />
-            ),
+            ))
         )}
       </div>
 
-      <div className="w-full max-w-[500px] shadow-xs rounded-t-3xl fixed bottom-0 bg-white flex justify-center px-[20px] py-[30px]">
+      <div className="shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] drop-shadow-lg w-full max-w-[500px] shadow-xs rounded-t-3xl fixed bottom-0 bg-white flex justify-center px-[20px] py-[30px]">
         <div
           className={`flex items-center justify-center w-full h-[60px] rounded-full text-white font-extrabold cursor-pointer ${
             totalPrice === 0 ? 'bg-secondary-100' : 'bg-primary-700'
           }`}
           onClick={() => {
-            if (isOrderInProgress) return; // 클릭 막기
             handleClickReserveButton();
           }}
         >
