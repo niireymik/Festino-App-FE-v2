@@ -53,13 +53,13 @@ const DeletePhotoModal: React.FC = () => {
         </div>
         <div className="flex w-full gap-2">
           <button
-            className="w-1/2 h-12 bg-white border-1 border-primary-900 rounded-3xl text-primary-900 font-semibold text-xl"
+            className="w-1/2 h-12 bg-white border-1 border-red-500 rounded-3xl text-red-500 font-semibold text-xl"
             onClick={() => closeModal()}
           >
             돌아가기
           </button>
           <button
-            className="w-1/2 h-12 bg-primary-900 rounded-3xl text-white font-semibold text-xl"
+            className="w-1/2 h-12 bg-red-500 rounded-3xl text-white font-semibold text-xl"
             onClick={() => handleDelete()}
           >
             삭제하기
