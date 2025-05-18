@@ -38,7 +38,7 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
         closeModal();
 
         if (res.data.success) {
-          const msgStatus = res.data.reservationInfo.messageStatus;
+          const msgStatus = res.data.data.messageStatus;
           if (msgStatus === 'SEND_FAIL') openModal('messageFailModal');
           if (msgStatus === 'SEND_SUCCESS') openModal('completeReserveModal');
         } else {
@@ -56,10 +56,10 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
     getReservation: async (payload, { openModal, closeModal, navigate }) => {
       try {
         const res = await api.get('/main/reservation', { params: payload });
-        set({ reservationInfo: res.data.reservationInfo });
+        set({ reservationInfo: res.data.data });
 
         if (res.data.success) {
-          const info = res.data.reservationInfo;
+          const info = res.data.data;
           if (info.totalTeamCount === 1) {
             openModal('enterBoothModal');
           } else {
@@ -77,7 +77,7 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
 
     getAllNightBooth: async () => {
       const res = await api.get('/main/booth/night/reservation/all');
-      const boothList = res.data.boothList;
+      const boothList = res.data.data;
       const openList = boothList.filter((booth: BoothInfo) => booth.isOpen);
 
       set({
@@ -91,7 +91,7 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
       try {
         const res = await api.get(`/main/reservation/duplication?phoneNum=${phoneNum}`);
         if (res.data.success) {
-          set({ prevReserveBoothName: res.data.adminName });
+          set({ prevReserveBoothName: res.data.data });
           openModal('duplicateModal');
         } else {
           openModal('loadingModal');
