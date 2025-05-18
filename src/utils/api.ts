@@ -7,24 +7,54 @@ export const baseApi = axios.create({
   withCredentials: true,
 });
 
+type Response = {
+  success: boolean;
+  message: string;
+  data: any;
+};
+
+const errorReponse: Response = {
+  success: false,
+  message: 'Something went wrong... Please try again later.',
+  data: undefined,
+};
+
+const responseWrapper = (response: AxiosResponse): Response => {
+  const data = response.data;
+  // Handle Error status with Constants
+  if (ERROR_STATUS.includes(data.status)) {
+    return {
+      ...errorReponse,
+      message: data.message || errorReponse.message,
+    };
+  }
+  return data;
+};
+
+const ERROR_STATUS = [401, 403, 500, 502, 503, 504];
+
 export const api = {
-  get: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
-    return baseApi.get<T>(url, config);
+  get: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<Response> => {
+    const response = await baseApi.get<T>(url, config);
+    return responseWrapper(response);
   },
 
-  post: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+  post: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<Response> => {
     await baseApi.post('/main/auth/token');
-    return baseApi.post<T, AxiosResponse<T>, D>(url, data, config);
+    const response = await baseApi.post<T, AxiosResponse<T>, D>(url, data, config);
+    return responseWrapper(response);
   },
 
-  put: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+  put: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<Response> => {
     await baseApi.post('/main/auth/token');
-    return baseApi.put<T, AxiosResponse<T>, D>(url, data, config);
+    const response = await baseApi.put<T, AxiosResponse<T>, D>(url, data, config);
+    return responseWrapper(response);
   },
 
-  delete: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+  delete: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<Response> => {
     await baseApi.post('/main/auth/token');
-    return baseApi.delete<T>(url, config);
+    const response = await baseApi.delete<T>(url, config);
+    return responseWrapper(response);
   },
 };
 
@@ -73,19 +103,23 @@ tokenizedBaseApi.interceptors.response.use(
 );
 
 export const tokenizedApi = {
-  get: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
-    return tokenizedBaseApi.get<T>(url, config);
+  get: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<Response> => {
+    const response = await tokenizedBaseApi.get<T>(url, config);
+    return responseWrapper(response);
   },
 
-  post: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
-    return tokenizedBaseApi.post<T, AxiosResponse<T>, D>(url, data, config);
+  post: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<Response> => {
+    const response = await tokenizedBaseApi.post<T, AxiosResponse<T>, D>(url, data, config);
+    return responseWrapper(response);
   },
 
-  put: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
-    return tokenizedBaseApi.put<T, AxiosResponse<T>, D>(url, data, config);
+  put: async <T = any, D = any>(url: string, data?: D, config?: AxiosRequestConfig): Promise<Response> => {
+    const response = await tokenizedBaseApi.put<T, AxiosResponse<T>, D>(url, data, config);
+    return responseWrapper(response);
   },
 
-  delete: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
-    return tokenizedBaseApi.delete<T>(url, config);
+  delete: async <T = any>(url: string, config?: AxiosRequestConfig): Promise<Response> => {
+    const response = await tokenizedBaseApi.delete<T>(url, config);
+    return responseWrapper(response);
   },
 };
