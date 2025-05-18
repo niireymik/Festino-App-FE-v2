@@ -1,11 +1,13 @@
 import useBaseModal from '@/stores/baseModal';
-import { uploadPhotoPost } from '@/stores/events/BoardStore';
+import { getAllPhotos, getMyPhotos, uploadPhotoPost, usePhotoStore } from '@/stores/events/BoardStore';
 import { tokenizedApi } from '@/utils/api';
 import { useRef, useState } from 'react';
 
 const UploadPhoto: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const { openModal } = useBaseModal();
+  const { setMyPhotos, setAllPhotos } = usePhotoStore();
+
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const uploadImageToServer = async (file: File): Promise<string> => {
@@ -29,7 +31,18 @@ const UploadPhoto: React.FC = () => {
       setUploading(true);
   
       const imageUrl = await uploadImageToServer(file);
-      await uploadPhotoPost(imageUrl); // URL을 사용
+      await uploadPhotoPost(imageUrl); // URL 저장
+  
+      // 업로드 후 데이터 리패치
+      const myRes = await getMyPhotos('new');
+      if (myRes) {
+        setMyPhotos(myRes.photoList, myRes.photoTotalCount);
+      } else {
+        setMyPhotos([], 0); // null이면 초기화
+      }
+  
+      const allRes = await getAllPhotos('new');
+      setAllPhotos(allRes.photoList, allRes.photoTotalCount);
   
       openModal('uploadCompleteModal');
     } catch (err) {
@@ -38,7 +51,7 @@ const UploadPhoto: React.FC = () => {
     } finally {
       setUploading(false);
     }
-  };
+  };  
   
   return (
     <div className="w-screen max-w-[500px] min-w-[375px] mx-auto">

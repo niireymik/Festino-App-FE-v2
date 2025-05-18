@@ -11,8 +11,13 @@ const SearchPhoto: React.FC = () => {
     // 내가 업로드한 사진 불러오기
     const fetchMyPhotos = async () => {
       try {
-        const { photoList, photoTotalCount } = await getMyPhotos('new');
-        setMyPhotos(photoList, photoTotalCount);
+        const photo = await getMyPhotos('new');
+
+        if (!photo) {
+          setMyPhotos([], 0);
+        } else {
+          setMyPhotos(photo.photoList, photo.photoTotalCount);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -42,8 +47,8 @@ const SearchPhoto: React.FC = () => {
             className="w-full flex overflow-x-scroll scroll-smooth"
             onTouchStart={(e) => e.stopPropagation()}
           >
-            {myPhotoCount < 0 ? (
-              <div>사진을 업로드 해보세요!</div>
+            {myPhotoCount === 0 ? (
+              <div className="w-full text-center text-primary-700">사진을 업로드 해보세요!</div>
             ) : (
               <>
                 <div

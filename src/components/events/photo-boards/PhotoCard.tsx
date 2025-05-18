@@ -1,7 +1,7 @@
 import { PhotoPost } from '@/types/Board.types';
 import useBaseModal from '@/stores/baseModal';
-import { likePhoto, unlikePhoto, usePhotoModalStore, usePhotoStore } from '@/stores/events/BoardStore';
-import { useState } from 'react';
+import { getAllPhotos, getMyPhotos, likePhoto, unlikePhoto, usePhotoModalStore, usePhotoStore } from '@/stores/events/BoardStore';
+import { useEffect, useState } from 'react';
 
 interface PhotoCardProps {
   photo: PhotoPost;
@@ -14,7 +14,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo, isUserPhoto = false }) => 
 
   const { openModal } = useBaseModal();
   const { setSelectedPhoto } = usePhotoModalStore();
-  const { updatePhotoHeart } = usePhotoStore();
+  const { updatePhotoHeart, setMyPhotos, setAllPhotos } = usePhotoStore();
 
   const handleClickDelete = () => {
     setSelectedPhoto(photo);
@@ -48,10 +48,35 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ photo, isUserPhoto = false }) => 
     }
   };
 
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        // mainUserId 유무 상관 없이 항상 전체 사진 갱신
+        const allRes = await getAllPhotos('new');
+        setAllPhotos(allRes.photoList, allRes.photoTotalCount);
+  
+        // 내 사진은 mainUserId가 있는 경우만 호출
+        const mainUserId = localStorage.getItem('mainUserId');
+        if (mainUserId) {
+          const myRes = await getMyPhotos('new');
+          if (myRes) {
+            setMyPhotos(myRes.photoList, myRes.photoTotalCount);
+          } else {
+            setMyPhotos([], 0); // 데이터가 없는 경우 초기화
+          }
+        }
+      } catch (e) {
+        console.error('사진 새로고침 실패:', e);
+      }
+    }, 5000); // 5초마다 갱신
+  
+    return () => clearInterval(interval);
+  }, []);  
+
   return (
     <div
       key={photo.photoId}
-      className="dynamic-item rounded-3xl bg-no-repeat bg-cover relative shrink-0"
+      className="dynamic-item rounded-3xl bg-no-repeat bg-cover relative shrink-0 border-1"
       style={{ backgroundImage: `url(${photo.imageUrl})` }}
     >
       {isUserPhoto && (

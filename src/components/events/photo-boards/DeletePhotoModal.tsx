@@ -1,40 +1,35 @@
 import useBaseModal from '@/stores/baseModal';
-import { deletePhoto, getMyPhotos, usePhotoModalStore, usePhotoStore } from '@/stores/events/BoardStore';
-import { useEffect } from 'react';
+import { deletePhoto, getAllPhotos, getMyPhotos, usePhotoModalStore, usePhotoStore } from '@/stores/events/BoardStore';
 
 const DeletePhotoModal: React.FC = () => {
   const { closeModal } = useBaseModal();
   const { selectedPhoto, clearSelectedPhoto } = usePhotoModalStore();
-  const { setMyPhotos } = usePhotoStore();
+  const { setMyPhotos, setAllPhotos } = usePhotoStore();
 
   const handleDelete = async () => {
     const mainUserId = localStorage.getItem('mainUserId');
     if (!selectedPhoto || !mainUserId) return;
-
+  
     try {
       await deletePhoto(selectedPhoto.photoId, mainUserId);
-
+  
+      // 삭제 후 다시 조회
+      const myRes = await getMyPhotos('new');
+      if (myRes) {
+        setMyPhotos(myRes.photoList, myRes.photoTotalCount);
+      } else {
+        setMyPhotos([], 0);
+      }
+  
+      const allRes = await getAllPhotos('new');
+      setAllPhotos(allRes.photoList, allRes.photoTotalCount);
+  
       clearSelectedPhoto();
       closeModal();
     } catch (e) {
       console.error('삭제 실패:', e);
     }
-  };
-
-  useEffect(() => {
-    if (selectedPhoto !== null) return;
-
-    const refreshMyPhotos = async () => {
-      try {
-        const { photoList, photoTotalCount } = await getMyPhotos('new');
-        setMyPhotos(photoList, photoTotalCount);
-      } catch (e) {
-        console.error('사진 목록 리패치 실패:', e);
-      }
-    };
-
-    refreshMyPhotos();
-  }, [selectedPhoto, setMyPhotos]);
+  };  
 
   return (
     <>
