@@ -24,6 +24,10 @@ export interface PhotoStore {
   updatePhotoHeart: (photoId: string, heart: boolean, heartCount: number) => void;
   getAllPhotos: (type: 'new' | 'heart') => Promise<PhotoInfo>;
   getMyPhotos: (type: 'new' | 'heart') => Promise<PhotoInfo>;
+  uploadPhotoPost: (photoId: string) => void;
+  deletePhoto: (photoId: string, mainUserId: string) => void;
+  likePhoto: (photoId: string, mainUserId: string) => void;
+  unlikePhoto: (photoId: string, mainUserId: string) => void;
 }
 
 export interface PhotoCardProps {
