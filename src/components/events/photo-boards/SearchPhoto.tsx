@@ -6,6 +6,7 @@ import PhotoCard from './PhotoCard';
 
 const SearchPhoto: React.FC = () => {
   const { myPhotos, myPhotoCount, allPhotos, allPhotoCount, setMyPhotos, setAllPhotos } = usePhotoStore();
+  const mainUserId = localStorage.getItem('mainUserId');
 
   useEffect(() => {
     // 내가 업로드한 사진 불러오기
@@ -47,9 +48,11 @@ const SearchPhoto: React.FC = () => {
             className="w-full flex overflow-x-scroll scroll-smooth"
             onTouchStart={(e) => e.stopPropagation()}
           >
-            {myPhotoCount === 0 ? (
+            {mainUserId ? (myPhotoCount === 0 ? (
+              // 로그인 상태, 내 게시물이 존재하지 않을 때
               <div className="w-full text-center text-primary-700">사진을 업로드 해보세요!</div>
             ) : (
+              // 로그인 상태, 내 게시물 존재
               <>
                 <div
                   className={`gap-2 ${
@@ -63,6 +66,9 @@ const SearchPhoto: React.FC = () => {
                   ))}
                 </div>
               </>
+            )) : (
+              // 로그아웃 상태
+              <div className="w-full text-center text-primary-700">로그인 후 이벤트에 참여하세요!</div>
             )}
           </div>
 
