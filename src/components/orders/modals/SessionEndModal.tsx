@@ -1,6 +1,5 @@
 import useBaseModal from '@/stores/baseModal';
 
-
 const OrderInprocessModal: React.FC = () => {
     const { closeModal } = useBaseModal();
   

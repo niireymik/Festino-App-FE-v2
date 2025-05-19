@@ -1,5 +1,4 @@
 import useBaseModal from '@/stores/baseModal';
-import { useParams } from 'react-router-dom';
 import { sendWebSocketMessage } from '@/utils/orderSocket';
 import { useOrderStore } from '@/stores/orders/orderStore';
 
