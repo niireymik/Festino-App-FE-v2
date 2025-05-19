@@ -1,7 +1,7 @@
-import { api } from "@/utils/api";
-import { create } from "zustand";
-import { BoothInfo } from "@/types/Booth.types";
-import { ReservationStore } from "@/types/Tabling.types";
+import { api } from '@/utils/api';
+import { create } from 'zustand';
+import { BoothInfo } from '@/types/Booth.types';
+import { ReservationStore } from '@/types/Tabling.types';
 
 export const useReservationStore = create<ReservationStore>((set, get) => {
   return {
@@ -34,73 +34,95 @@ export const useReservationStore = create<ReservationStore>((set, get) => {
     saveReservation: async (payload, { openModal, closeModal, navigate }) => {
       openModal('loadingModal');
       try {
-        const res = await api.post('/main/reservation', payload);
+        const { data, success, message } = await api.post('/main/reservation', payload);
         closeModal();
 
-        if (res.data.success) {
-          const msgStatus = res.data.reservationInfo.messageStatus;
-          if (msgStatus === 'SEND_FAIL') openModal('messageFailModal');
-          if (msgStatus === 'SEND_SUCCESS') openModal('completeReserveModal');
-        } else {
+        if (!success) {
+          console.error('saveReservation 실패:', message);
           openModal('failReservationModal');
+          return;
         }
 
+        const msgStatus = data.messageStatus;
+        if (msgStatus === 'SEND_FAIL') openModal('messageFailModal');
+        else if (msgStatus === 'SEND_SUCCESS') openModal('completeReserveModal');
+
         await get().getAllNightBooth();
-      } catch (err) {
+      } catch {
         closeModal();
         navigate(`/error/main`);
-        console.error(err);
+        console.log('Error save reservation');
       }
     },
 
     getReservation: async (payload, { openModal, closeModal, navigate }) => {
       try {
-        const res = await api.get('/main/reservation', { params: payload });
-        set({ reservationInfo: res.data.reservationInfo });
+        const { data, success, message } = await api.get('/main/reservation', { params: payload });
 
-        if (res.data.success) {
-          const info = res.data.reservationInfo;
-          if (info.totalTeamCount === 1) {
-            openModal('enterBoothModal');
-          } else {
-            openModal('searchReservationModal');
-          }
-        } else {
+        if (!success) {
+          console.log('getReservation 실패:', message);
           openModal('noReserveModal');
+          return;
         }
-      } catch (err) {
+
+        set({ reservationInfo: data });
+
+        if (data.totalTeamCount === 1) {
+          openModal('enterBoothModal');
+        } else {
+          openModal('searchReservationModal');
+        }
+      } catch {
         closeModal();
         navigate(`/error/main`);
-        console.error(err);
+        console.log('Error fetching reservation');
       }
     },
 
     getAllNightBooth: async () => {
-      const res = await api.get('/main/booth/night/reservation/all');
-      const boothList = res.data.boothList;
-      const openList = boothList.filter((booth: BoothInfo) => booth.isOpen);
+      try {
+        const { data, success, message } = await api.get('/main/booth/night/reservation/all');
 
-      set({
-        nightBoothInfo: boothList,
-        openNightBoothInfo: openList,
-        openNightBoothInfoLength: openList.length,
-      });
+        if (!success) {
+          console.error('getAllNightBooth 실패:', message);
+          set({
+            nightBoothInfo: [],
+            openNightBoothInfo: [],
+            openNightBoothInfoLength: 0,
+          });
+          return;
+        }
+
+        const boothList = data;
+        const openList = boothList.filter((booth: BoothInfo) => booth.isOpen);
+
+        set({
+          nightBoothInfo: boothList,
+          openNightBoothInfo: openList,
+          openNightBoothInfoLength: openList.length,
+        });
+      } catch {
+        console.error('Error fetching all night booth');
+      }
     },
 
     checkDuplicateReserve: async (phoneNum, { openModal, closeModal, navigate }) => {
       try {
-        const res = await api.get(`/main/reservation/duplication?phoneNum=${phoneNum}`);
-        if (res.data.success) {
-          set({ prevReserveBoothName: res.data.adminName });
-          openModal('duplicateModal');
-        } else {
+        const { data, success, message } = await api.get(`/main/reservation/duplication?phoneNum=${phoneNum}`);
+
+        if (!success) {
+          console.error('checkDuplicateReserve 실패:', message);
           openModal('loadingModal');
           await get().saveReservation(get().reserveInfo, { openModal, closeModal, navigate });
+          return;
         }
-      } catch (err) {
+
+        set({ prevReserveBoothName: data });
+        openModal('duplicateModal');
+      } catch {
         closeModal();
         navigate(`/error/main`);
-        console.error(err);
+        console.error('Error checking duplicate');
       }
     },
   };

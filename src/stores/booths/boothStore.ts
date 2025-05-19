@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import { api } from '@/utils/api';
-import { BoothInfo, BoothStore } from '@/types/Booth.types';
+import { BoothStore } from '@/types/Booth.types';
 import { BOOTH_TYPE_MAP } from '@/constants';
 
 export const useBoothStore = create<BoothStore>((set) => ({
   boothListAll: [],
   boothListNight: [],
   boothListDay: [],
-  boothListFood:[],
-  boothListFacility:[],
+  boothListFood: [],
+  boothListFacility: [],
   boothDetail: null,
   selectBoothCategory: 0,
   isTicketBooth: false,
@@ -16,20 +16,20 @@ export const useBoothStore = create<BoothStore>((set) => ({
   init: () => {
     set({
       selectBoothCategory: 0,
-      isTicketBooth: false
-    })
+      isTicketBooth: false,
+    });
   },
 
   setSelectBoothCategory: (index: number | undefined) => {
-    if(index === undefined) {
-      set({ 
+    if (index === undefined) {
+      set({
         selectBoothCategory: 4,
-        isTicketBooth: true
-      })
+        isTicketBooth: true,
+      });
     } else {
-      set({ 
+      set({
         selectBoothCategory: index,
-        isTicketBooth: false
+        isTicketBooth: false,
       });
     }
   },
@@ -43,33 +43,35 @@ export const useBoothStore = create<BoothStore>((set) => ({
         '/main/booth/food/all',
         '/main/facility/all',
       ];
-  
-      const results = await Promise.allSettled(
-        urls.map((url) => api.get(url))
-      );
-  
-      const getData = (index: number, key: string) => {
+
+      const results = await Promise.allSettled(urls.map((url) => api.get(url)));
+
+      const getData = (index: number) => {
         const result = results[index];
-        return result.status === 'fulfilled' ? result.value.data[key] : [];
+        if (result.status === 'fulfilled' && result.value.success) {
+          return result.value.data;
+        } else {
+          return [];
+        }
       };
-  
+
       set({
-        boothListAll: getData(0, 'boothList'),
-        boothListNight: getData(1, 'boothList'),
-        boothListDay: getData(2, 'boothList'),
-        boothListFood: getData(3, 'boothList'),
-        boothListFacility: getData(4, 'facilityList'),
+        boothListAll: getData(0),
+        boothListNight: getData(1),
+        boothListDay: getData(2),
+        boothListFood: getData(3),
+        boothListFacility: getData(4),
       });
-  
+
       results.forEach((result, idx) => {
-        if (result.status === 'rejected') {
-          console.warn(`Request failed at index ${idx}:`, result.reason);
+        if (result.status === 'rejected' || !result.value.success) {
+          console.error(`Request failed at index ${idx}:`, result);
         }
       });
     } catch (error) {
-      console.error(`Unexpected error during booth list fetch:`, error);
+      console.log(`Unexpected error during booth list fetch:`, error);
     }
-  },  
+  },
 
   getBoothDetail: async (type: string, id: string) => {
     const urlType = BOOTH_TYPE_MAP[type];
@@ -77,19 +79,19 @@ export const useBoothStore = create<BoothStore>((set) => ({
     if (!urlType) return;
 
     try {
-      const endpoint =
-        urlType === 'facility'
-          ? `/main/${urlType}/${id}`
-          : `/main/booth/${urlType}/${id}`;
+      const endpoint = urlType === 'facility' ? `/main/${urlType}/${id}` : `/main/booth/${urlType}/${id}`;
 
-      const res = await api.get(endpoint);
-      const boothDetail: BoothInfo =
-        urlType === 'facility' ? res.data.facility : res.data.boothInfo;
+      const { data, success, message } = await api.get(endpoint);
 
-      set({ boothDetail });
-      return boothDetail;
-    } catch (err) {
-      console.error(`부스 정보가 없습니다: ${type}`, err);
+      if (!success) {
+        console.error('getBoothDetail 실패:', message);
+        return;
+      }
+
+      set({ boothDetail: data });
+      return data;
+    } catch {
+      console.log(`Error fetching booth detail ${type}`);
       return;
     }
   },

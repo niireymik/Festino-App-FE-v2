@@ -23,7 +23,7 @@ const FloatingButton: React.FC = () => {
   const screenHeight = document.body.clientHeight;
 
   const handleClickReviewEvent = () => {
-    navigate('/team-review');
+    navigate('/review');
   };
 
   const handleClickUploadEvent = () => {

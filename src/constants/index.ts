@@ -49,4 +49,4 @@ export const REGEX = /^010/;
 
 export const FLOATING_SIZE = 60;
 
-export const HIDE_PATHS: string[] = ['/register', '/order', '/reserve', '/team-review', '/photo-board'];
+export const HIDE_PATHS: string[] = ['/register', '/order', '/reserve', '/review', '/photo-board', '/teams'];
