@@ -8,12 +8,16 @@ import MainLayout from './layouts/MainLayout';
 import NoticePage from './pages/mains/NoticePage';
 import NoticeDetailPage from './pages/mains/NoticeDetailPage';
 import OrderLayout from './layouts/OrderLayout';
-import OrderHomePage from './pages/orders/OrderHomePage';
 import BoothDetailPage from './pages/mains/BoothDetailPage';
 import ScrollToTop from './components/commons/ScrollToTop';
+import OrderMainPage from './pages/orders/OrderMainPage';
+import OrderPaymentPage from './pages/orders/OrderPaymentPage';
+import ModalRenderer from './components/orders/modals/ModalRenderer';
 import ModalPage from './pages/mains/ModalPage';
 import RegisterPage from './pages/mains/RegisterPage';
 import ErrorPage from './pages/mains/ErrorPage';
+import OrderSearchPage from './pages/orders/OrderSearchPage';
+import RetryQRPage from './pages/orders/ReTryQRPage';
 import PhotoBoardPage from './pages/mains/PhotoBoardPage';
 import ReviewPage from './pages/mains/ReviewPage';
 
@@ -21,6 +25,8 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+
+      <ModalRenderer />
       <ModalPage />
       <Routes>
         {/* Main */}
@@ -40,7 +46,10 @@ const App: React.FC = () => {
 
         {/* Order */}
         <Route path="/order" element={<OrderLayout />}>
-          <Route path=":boothId/:tableNum" element={<OrderHomePage />} />
+          <Route path=":boothId/:tableNum" element={<OrderMainPage />} />
+          <Route path=":boothId/:tableNum/payment" element={<OrderPaymentPage />} />
+          <Route path=":boothId/:tableNum/search" element={<OrderSearchPage />} />
+          <Route path="retry-qr" element={<RetryQRPage />} />
         </Route>
 
         {/* Error */}
