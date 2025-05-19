@@ -1,7 +1,6 @@
 import Header from '@/components/headers/Header';
 import Profile from '@/components/teamreview/Profile';
 import { Member } from '@/components/teamreview/Profile';
-import Review from '@/components/teamreview/Review';
 import { openNewTap } from '@/utils/utils';
 
 const TeamReviewPage: React.FC = () => {
@@ -123,7 +122,7 @@ const TeamReviewPage: React.FC = () => {
           ))}{' '}
         </div>
       </div>
-      <div className="flex flex-col w-full bg-primary-900-light-12 py-[60px] px-[20px] justify-center items-center">
+      <div className="dynamic-bottom flex flex-col w-full bg-primary-900-light-12 py-[60px] px-[20px] justify-center items-center">
         <div className="text-primary-900 text-2xl font-bold text-center">
           한국공학대학교
           <br />
@@ -158,15 +157,6 @@ const TeamReviewPage: React.FC = () => {
             <div className="text-[#4B4B4B] text-2xs font-medium">- Festino</div>
           </div>
         </div>
-      </div>
-      <div className="flex flex-col w-full items-center justify-center px-6 gap-4 pt-6 pb-16">
-        <div className="text-primary-900 text-2xl font-bold">REVIEW</div>
-        <div className="text-secondary-700 text py-4 text-center">
-          Festino 서비스를 이용하면서 좋았던
-          <br />
-          불편했던 점을 작성해주세요!
-        </div>
-        <Review />
       </div>
     </>
   );
