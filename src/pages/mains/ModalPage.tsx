@@ -16,6 +16,8 @@ import UploadCompleteModal from '@/components/events/photo-boards/UploadComplete
 import UploadFailModal from '@/components/events/photo-boards/UploadFailModal';
 import DeletePhotoModal from '@/components/events/photo-boards/DeletePhotoModal';
 import LogoutModal from '@/components/auths/LogoutModal';
+import QuizModal from '@/components/events/modals/QuizModal';
+import ConfirmModal from '@/components/events/modals/ConfirmModal';
 import LoginFailModal from '@/components/auths/LoginFailModal';
 import RequireLoginModal from '@/components/events/RequrieLoginModal';
 import ExtendPhotoModal from '@/components/events/photo-boards/ExtendPhotoModal';
@@ -43,6 +45,8 @@ const ModalPage = () => {
       {modalType === 'uploadFailModal' && <UploadFailModal />}
       {modalType === 'deletePhotoModal' && <DeletePhotoModal />}
       {modalType === 'logoutModal' && <LogoutModal />}
+      {modalType === 'quizModal' && <QuizModal />}
+      {modalType === 'confirm' && <ConfirmModal />}
       {modalType === 'loginFailModal' && <LoginFailModal />}
       {modalType === 'requireLoginModal' && <RequireLoginModal />}
       {modalType === 'extendPhotoModal' && <ExtendPhotoModal />}
